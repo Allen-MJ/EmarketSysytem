@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<dimen name="frame_text_big_size">29.6111sp</dimen>
+	<dimen name="frame_text_middle_size">26.6500sp</dimen>
+	<dimen name="frame_text_normal_size">23.6889sp</dimen>
+	<dimen name="frame_text_small_size">20.7278sp</dimen>
+	<dimen name="frame_text_smaller_size">17.7667sp</dimen>
+	<dimen name="frame_text_smallst_size">14.8056sp</dimen>
+	<dimen name="frame_two_distance">2.9611dp</dimen>
+	<dimen name="frame_four_distance">5.9222dp</dimen>
+	<dimen name="frame_eight_distance">11.8444dp</dimen>
+	<dimen name="frame_edge_distance">23.6889dp</dimen>
+	<dimen name="frame_32_distance">47.3778dp</dimen>
+	<dimen name="frame_title_height">97.7167dp</dimen>
+	<dimen name="frame_title_icon_height">94.7556dp</dimen>
+	<dimen name="frame_photo_icon_size">71.0667dp</dimen>
+	<dimen name="frame_photo_icon_big_size">142.1333dp</dimen>
+	<dimen name="frame_photo_icon_big_height">198.3944dp</dimen>
+	<dimen name="frame_photo_small_icon_size">47.3778dp</dimen>
+	<dimen name="frame_photo_big_size">130.2889dp</dimen>
+	<dimen name="btn_radius">5.9222dp</dimen>
+	<dimen name="progress_length">142.1333dp</dimen>
+	<dimen name="mis_image_size">177.6667dp</dimen>
+	<dimen name="mis_space_size">@dimen/frame_two_distance</dimen>
+	<dimen name="mis_folder_cover_size">@dimen/frame_photo_big_size</dimen>
+	<dimen name="frame_edit_min_size">148.0556dp</dimen>
+	<dimen name="design_bottom_navigation_margin">@dimen/frame_eight_distance</dimen>
+	<dimen name="design_bottom_navigation_height">@dimen/frame_photo_icon_size</dimen>
+</resources>

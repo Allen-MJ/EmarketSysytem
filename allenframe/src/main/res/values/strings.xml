@@ -1,0 +1,4 @@
+<resources>
+    <string name="frameprogress">正在加载,请稍等...</string>
+    <string name="app_frame_result_null">暂无数据</string>
+</resources>

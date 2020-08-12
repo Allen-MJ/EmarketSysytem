@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="frame_default_title_bar_color">@color/colorPrimary</color>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="text_black_color">#2B2B2B</color>
+    <color name="text_white_color">#ffffff</color>
+    <color name="orange">#FF6600</color>
+    <color name="gray">#C0C0C0</color>
+    <color name="bg_gray_white">#fbfbfb</color>
+    <color name="gray_line_color">#f4f4f4</color>
+    <color name="text_gray_color">#7e7d7d</color>
+    <color name="text_blue_color">#4757EB</color>
+    <color name="light_gray">#f4f4f4</color>
+    <color name="balck_transparent">#1A2B2B2B</color>
+    <color name="text_red_color">#ff0700</color>
+    <color name="text_green_color">#00ce0a</color>
+    <!-- ffcd07 -->
+    <color name="text_yellow_color">#ffcd07</color>
+
+    <color name="res_popup_bg_black">#333333</color>
+    <color name="res_popup_bg_gray">#f5f5f5</color>
+    <color name="res_popup_text_blue">#0287ff</color>
+    <color name="blue">#009dda</color>
+
+    <color name="material_red">#ffF44336</color>
+    <color name="material_green">#ff4CAF50</color>
+    <color name="material_blue">#ff03A9F4</color>
+    <color name="material_yellow">#ffFFEB3B</color>
+
+    <color name="text_normal_color">#2b2b2b</color>
+    <color name="text_normal_grey_color">#666666</color>
+
+    <color name="frame_btn_selected_color">#4876FF</color>
+    <color name="frame_btn_normal_color">#08a9e9</color>
+
+    <color name="colorblue">#0287ff</color>
+
+    <color name="class_menu_start_color">#0287ff</color>
+    <color name="class_menu_end_color">#02aaff</color>
+    <color name="class_menu_text_orange">#feab2b</color>
+
+    <color name="white">#FFFFFF</color>
+
+    <!-- 二维码相关颜色 -->
+    <color name="contents_text">#ff000000</color>
+    <color name="encode_view">#ffffffff</color>
+    <color name="possible_result_points">#c0ffbd21</color> <!-- Android standard ICS color -->
+    <color name="result_minor_text">#ffc0c0c0</color>
+    <color name="result_points">#c099cc00</color> <!-- Android standard ICS color -->
+    <color name="result_text">#ffffffff</color>
+    <color name="result_view">#b0000000</color>
+    <color name="status_text">#ffffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="viewfinder_laser">#ffcc0000</color> <!-- Android standard ICS color -->
+    <color name="viewfinder_mask">#60000000</color>
+    <!-- 图片选择器 -->
+    <color name="mis_actionbar_color">#21282C</color>
+    <!-- 屏幕推流 -->
+    <color name="colorText">#FFFFFF</color>
+
+    <color name="black_overlay">#66000000</color>
+
+    <color name="white_background">#ffffffff</color>
+    <color name="transparent_background">#66000000</color>
+    <color name="light_blue">#7ea8d9</color>
+
+
+    <color name="text_blue">#3481DF</color>
+</resources>

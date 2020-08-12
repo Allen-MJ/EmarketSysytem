@@ -1,0 +1,44 @@
+﻿<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="frame_text_large_size">32sp</dimen>
+    <dimen name="frame_text_big_size">20sp</dimen>
+    <dimen name="frame_text_middle_size">18sp</dimen>
+    <dimen name="frame_text_normal_size">16sp</dimen>
+    <dimen name="frame_text_small_size">14sp</dimen>
+    <dimen name="frame_text_smaller_size">12sp</dimen>
+    <dimen name="frame_text_smallst_size">10sp</dimen>
+
+    <!-- 杈硅窛 -->
+    <dimen name="frame_two_distance">2dp</dimen>
+    <dimen name="frame_four_distance">4dp</dimen>
+    <dimen name="frame_eight_distance">8dp</dimen>
+    <dimen name="frame_edge_distance">16dp</dimen>
+    <dimen name="frame_32_distance">32dp</dimen>
+    <dimen name="frame_45_distance">45dp</dimen>
+    <dimen name="frame_43_distance">43dp</dimen>
+    <dimen name="frame_100_distance">100dp</dimen>
+    <dimen name="frame_203_distance">203dp</dimen>
+    <dimen name="frame_210_distance">210dp</dimen>
+
+    <dimen name="frame_title_height">66dp</dimen>
+    <dimen name="frame_title_icon_height">64dp</dimen>
+    <dimen name="frame_photo_icon_size">48dp</dimen>
+    <dimen name="frame_minus_24_distance">-24dp</dimen>
+    <dimen name="frame_photo_icon_big_size">96dp</dimen>
+    <dimen name="frame_photo_icon_big_height">134dp</dimen>
+    <dimen name="frame_photo_icon_biger_height">269dp</dimen>
+    <dimen name="frame_photo_icon_biger_weight">193dp</dimen>
+    <dimen name="frame_photo_small_icon_size">32dp</dimen>
+    <dimen name="frame_photo_big_size">88dp</dimen>
+
+    <dimen name="btn_radius">4dp</dimen>
+
+    <dimen name="progress_length">96dp</dimen>
+    <dimen name="mis_image_size">120dp</dimen>
+    <dimen name="mis_space_size">@dimen/frame_two_distance</dimen>
+    <dimen name="mis_folder_cover_size">@dimen/frame_photo_big_size</dimen>
+    <dimen name="frame_edit_min_size">100dp</dimen>
+
+    <dimen name="design_bottom_navigation_margin" tools:override="true">@dimen/frame_eight_distance</dimen>//icon与文本之间的间距
+    <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/frame_photo_icon_size</dimen>//高度
+
+</resources>
