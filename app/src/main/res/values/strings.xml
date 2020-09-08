@@ -1,3 +1,17 @@
 <resources>
-    <string name="app_name">EmarketSysytem</string>
+    <string name="app_name">营销</string>
+    <!--登录 start-->
+    <string name="login_name_hint">请输入账号</string>
+    <string name="login_psw_hint">请输入密码</string>
+    <string name="login_bt_hint">登入</string>
+    <string name="regist_fast_hint">快速注册</string>
+    <string name="forget_psw_hint">忘记登录密码</string>
+    <!--登录 end-->
+    <!--注册 start-->
+    <string name="regist_phone_hint">手机号码</string>
+    <string name="regist_psw_hint">登入密码</string>
+    <string name="regist_nickname_hint">昵称</string>
+    <string name="regist_invitation_hint">邀请码</string>
+    <string name="regist_bt_hint">提交注册</string>
+    <!--注册 end-->
 </resources>

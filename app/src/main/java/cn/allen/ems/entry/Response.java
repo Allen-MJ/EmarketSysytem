@@ -9,7 +9,7 @@ public class Response implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String code;
 	private String message;
-	private String data;
+	private Object data;
 	public Response() {
 		super();
 	}
@@ -30,10 +30,10 @@ public class Response implements Serializable {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public String getData() {
+	public Object getData() {
 		return data;
 	}
-	public void setData(String data) {
+	public void setData(Object data) {
 		this.data = data;
 	}
 	public boolean isSuccess(String code){

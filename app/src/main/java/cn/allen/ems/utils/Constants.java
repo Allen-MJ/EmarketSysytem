@@ -1,7 +1,10 @@
 package cn.allen.ems.utils;
 
+import cn.allen.ems.data.WebService;
+
 public class Constants {
     public static final String Url = "http://yx.chilvwz.com/api/App/";
+    public static final int RequestType = WebService.Get;
 
     public static final String User_Id = "_User_Id";
     public static final String User_Name = "_User_Name";

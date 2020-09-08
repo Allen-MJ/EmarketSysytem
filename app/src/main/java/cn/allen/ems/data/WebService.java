@@ -1,7 +1,18 @@
 package cn.allen.ems.data;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 
 import allen.frame.tools.Logger;
 import allen.frame.tools.StringUtils;
@@ -11,9 +22,11 @@ public class WebService {
     public static int Get = 0;
     public static int Post = 1;
     private HttpUtil httpUtil;
+    private Gson gson;
 
     public WebService(){
         httpUtil = new HttpUtil();
+        gson = new Gson();
     }
 
     public Response getWebservice(String MethodName, Object[] arrays, int type) {
@@ -54,33 +67,16 @@ public class WebService {
     }
 
     public Response getResult(String data) {
-        Logger.http("result.", data);
+        Logger.http("result->", data);
         Response response = new Response();
         if (StringUtils.empty(data)) {
             response.setCode("-200");
             response.setMessage("服务连接异常");
             response.setData("");
         } else {
-            JSONObject object;
             try {
-                object = new JSONObject(data);
-                try {
-                    response.setCode(object.getString("code"));
-                } catch (Exception e) {
-                    response.setCode("-201");
-                }
-                try {
-                    response.setMessage(object.getString("Msg"));
-                } catch (Exception e) {
-                    response.setMessage("解析异常,请更新应用!");
-                }
-                try {
-                    response.setData(object.getString("data"));
-                } catch (Exception e) {
-                    response.setData("");
-                }
-            } catch (JSONException e) {
-                // TODO Auto-generated catch block
+                response = gson.fromJson(data,Response.class);
+            } catch (Exception e) {
                 response.setCode("-201");
                 response.setMessage("解析异常,请更新应用!");
                 response.setData("");
@@ -89,5 +85,4 @@ public class WebService {
         }
         return response;
     }
-
 }

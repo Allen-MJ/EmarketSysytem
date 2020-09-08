@@ -25,38 +25,52 @@
         android:padding="@dimen/frame_32_distance"
         android:orientation="vertical">
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/login_phone"
+            android:id="@+id/regist_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/frame_eight_distance"
             android:drawablePadding="@dimen/frame_eight_distance"
             android:gravity="center_vertical"
-            android:hint="@string/login_name_hint"
+            android:hint="@string/regist_phone_hint"
             android:textColor="@color/text_black_color"
             android:textSize="@dimen/frame_text_normal_size"
             android:background="@drawable/input_bg"/>
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/login_psw"
+            android:id="@+id/regist_psw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/frame_eight_distance"
             android:drawablePadding="@dimen/frame_eight_distance"
             android:gravity="center_vertical"
-            android:hint="@string/login_psw_hint"
+            android:hint="@string/regist_psw_hint"
             android:textColor="@color/text_black_color"
             android:textSize="@dimen/frame_text_normal_size"
             android:layout_marginTop="@dimen/frame_edge_distance"
             android:background="@drawable/input_bg"/>
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/login_bt"
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/regist_nick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/frame_text_middle_size"
-            android:textColor="@color/text_white_color"
-            android:gravity="center"
-            android:text="@string/login_bt_hint"
             android:padding="@dimen/frame_eight_distance"
-            android:layout_marginTop="@dimen/frame_eight_distance"/>
+            android:drawablePadding="@dimen/frame_eight_distance"
+            android:gravity="center_vertical"
+            android:hint="@string/regist_nickname_hint"
+            android:textColor="@color/text_black_color"
+            android:textSize="@dimen/frame_text_normal_size"
+            android:layout_marginTop="@dimen/frame_edge_distance"
+            android:background="@drawable/input_bg"/>
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/regist_invitation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/frame_eight_distance"
+            android:drawablePadding="@dimen/frame_eight_distance"
+            android:gravity="center_vertical"
+            android:hint="@string/regist_invitation_hint"
+            android:textColor="@color/text_black_color"
+            android:textSize="@dimen/frame_text_normal_size"
+            android:layout_marginTop="@dimen/frame_edge_distance"
+            android:background="@drawable/input_bg"/>
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/regist_bt"
             android:layout_width="match_parent"
@@ -64,17 +78,8 @@
             android:textSize="@dimen/frame_text_middle_size"
             android:textColor="@color/text_white_color"
             android:gravity="center"
-            android:text="@string/regist_fast_hint"
+            android:text="@string/regist_bt_hint"
             android:padding="@dimen/frame_eight_distance"
-            android:layout_marginTop="@dimen/frame_eight_distance"/>
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/forget_psw"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/frame_eight_distance"
-            android:text="@string/forget_psw_hint"
-            android:textColor="@color/text_red_color"
-            android:textSize="@dimen/frame_text_small_size"
             android:layout_marginTop="@dimen/frame_eight_distance"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
     <androidx.appcompat.widget.AppCompatImageView

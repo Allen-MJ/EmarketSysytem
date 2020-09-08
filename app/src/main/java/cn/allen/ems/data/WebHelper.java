@@ -65,10 +65,10 @@ public class WebHelper {
         Object[] objects = new Object[]{
                 "loginName",name,"loginPass",psw
         };
-        Response response = service.getWebservice(Api.Login,objects,WebService.Post);
+        Response response = service.getWebservice(Api.Login,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
-            User user = gson.fromJson(response.getData(),User.class);
+            User user = gson.fromJson(response.getData().toString(),User.class);
             if(user!=null){
                 saveToLoacal(user);
                 msg.what = 0;
@@ -96,7 +96,7 @@ public class WebHelper {
         Object[] objects = new Object[]{
                 "phone",phone,"loginPass",psw,"username",username,"Invitationcode",invitationcode
         };
-        Response response = service.getWebservice(Api.Register,objects,WebService.Post);
+        Response response = service.getWebservice(Api.Register,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
             msg.what = 0;
@@ -117,7 +117,7 @@ public class WebHelper {
         Object[] objects = new Object[]{
                 "uid",uid,"username",nickName
         };
-        Response response = service.getWebservice(Api.EditUserName,objects,WebService.Post);
+        Response response = service.getWebservice(Api.EditUserName,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
             AllenManager.getInstance().getStoragePreference().edit()
@@ -140,11 +140,11 @@ public class WebHelper {
         Object[] objects = new Object[]{
                 "phoneNo",phone
         };
-        Response response = service.getWebservice(Api.SendVCode,objects,WebService.Post);
+        Response response = service.getWebservice(Api.SendVCode,objects,Constants.RequestType);
         String code="";
         Message msg = new Message();
         if(response.isSuccess("200")){
-            Vcode vcode = gson.fromJson(response.getData(),Vcode.class);
+            Vcode vcode = gson.fromJson(response.getData().toString(),Vcode.class);
             if(vcode!=null){
                 msg.what = 0;
                 msg.obj = response.getMessage();
@@ -173,7 +173,7 @@ public class WebHelper {
         Object[] objects = new Object[]{
                 "uid",uid,"phone",phone,"verifycode",verifycode,"verifyKey",verifyKey
         };
-        Response response = service.getWebservice(Api.EditPhone,objects,WebService.Post);
+        Response response = service.getWebservice(Api.EditPhone,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
             AllenManager.getInstance().getStoragePreference().edit()
@@ -198,7 +198,7 @@ public class WebHelper {
         Object[] objects = new Object[]{
                 "uid",uid,"oldpass",oldpass,"newpass",newpass
         };
-        Response response = service.getWebservice(Api.EditPassword,objects,WebService.Post);
+        Response response = service.getWebservice(Api.EditPassword,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
             AllenManager.getInstance().getStoragePreference().edit()
@@ -219,12 +219,12 @@ public class WebHelper {
      */
     public String getCustomerServicePhone(Handler handler){
         Object[] objects = new Object[]{};
-        Response response = service.getWebservice(Api.GetCustomerServicePhone,objects,WebService.Post);
+        Response response = service.getWebservice(Api.GetCustomerServicePhone,objects,Constants.RequestType);
         Message msg = new Message();
         String phone = "";
         if(response.isSuccess("200")){
             msg.what = 0;
-            phone = response.getData();
+            phone = response.getData().toString();
         }else{
             msg.what = -1;
         }
@@ -249,7 +249,7 @@ public class WebHelper {
                 "uid",uid,"realname",realname,"cardno",cardno,"idcard1Base64",idcard1Base64,
                 "idcard2Base64",idcard2Base64,"describe",describe
         };
-        Response response = service.getWebservice(Api.VerifiedRealName,objects,WebService.Post);
+        Response response = service.getWebservice(Api.VerifiedRealName,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
             msg.what = 0;
@@ -270,9 +270,9 @@ public class WebHelper {
                 "uid",uid
         };
         List<Address> list = new ArrayList<>();
-        Response response = service.getWebservice(Api.GetAddress,objects,WebService.Post);
+        Response response = service.getWebservice(Api.GetAddress,objects,Constants.RequestType);
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData(), new TypeToken<List<Address>>(){}.getType());
+            list = gson.fromJson(response.getData().toString(), new TypeToken<List<Address>>(){}.getType());
         }
         return list;
     }
@@ -295,7 +295,7 @@ public class WebHelper {
                 "uid",uid,"recipiment",recipiment,"telphone",telphone,"area",area,
                 "city",city,"county",county,"street","","detailaddress",detailaddress,"type",type
         };
-        Response response = service.getWebservice(Api.AddAddress,objects,WebService.Post);
+        Response response = service.getWebservice(Api.AddAddress,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
             msg.what = 0;
@@ -316,7 +316,7 @@ public class WebHelper {
         Object[] objects = new Object[]{
                 "uid",uid,"addressid",addressid
         };
-        Response response = service.getWebservice(Api.SetDefaultAddress,objects,WebService.Post);
+        Response response = service.getWebservice(Api.SetDefaultAddress,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
             msg.what = 0;
@@ -345,7 +345,7 @@ public class WebHelper {
                 "addressid",addressid,"recipiment",recipiment,"telphone",telphone,"area",area,
                 "city",city,"county",county,"street","","detailaddress",detailaddress,"type",type
         };
-        Response response = service.getWebservice(Api.EditAddress,objects,WebService.Post);
+        Response response = service.getWebservice(Api.EditAddress,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
             msg.what = 0;
@@ -365,7 +365,7 @@ public class WebHelper {
         Object[] objects = new Object[]{
                 "addressid",addressid
         };
-        Response response = service.getWebservice(Api.DeleteAddress,objects,WebService.Post);
+        Response response = service.getWebservice(Api.DeleteAddress,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
             msg.what = 0;
@@ -383,9 +383,9 @@ public class WebHelper {
     public List<Notice> getTipsList(){
         Object[] objects = new Object[]{};
         List<Notice> list = new ArrayList<>();
-        Response response = service.getWebservice(Api.GetTips,objects,WebService.Post);
+        Response response = service.getWebservice(Api.GetTips,objects,Constants.RequestType);
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData(), new TypeToken<List<Notice>>(){}.getType());
+            list = gson.fromJson(response.getData().toString(), new TypeToken<List<Notice>>(){}.getType());
         }
         return list;
     }
@@ -397,9 +397,9 @@ public class WebHelper {
     public List<QrCode> getQrCodeList(){
         Object[] objects = new Object[]{};
         List<QrCode> list = new ArrayList<>();
-        Response response = service.getWebservice(Api.GetQRCode,objects,WebService.Post);
+        Response response = service.getWebservice(Api.GetQRCode,objects,Constants.RequestType);
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData(), new TypeToken<List<QrCode>>(){}.getType());
+            list = gson.fromJson(response.getData().toString(), new TypeToken<List<QrCode>>(){}.getType());
         }
         return list;
     }
@@ -414,9 +414,9 @@ public class WebHelper {
                 "city",city
         };
         List<NineGrid> list = new ArrayList<>();
-        Response response = service.getWebservice(Api.GetNineGame,objects,WebService.Post);
+        Response response = service.getWebservice(Api.GetNineGame,objects,Constants.RequestType);
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData(), new TypeToken<List<NineGrid>>(){}.getType());
+            list = gson.fromJson(response.getData().toString(), new TypeToken<List<NineGrid>>(){}.getType());
         }
         return list;
     }
@@ -431,7 +431,7 @@ public class WebHelper {
         Object[] objects = new Object[]{
                 "uid",uid,"ngid",ngid
         };
-        Response response = service.getWebservice(Api.SmashEgg,objects,WebService.Post);
+        Response response = service.getWebservice(Api.SmashEgg,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
             msg.what = 10;
@@ -454,10 +454,10 @@ public class WebHelper {
         Object[] objects = new Object[]{
                 "uid",uid
         };
-        Response response = service.getWebservice(Api.BeginDrill,objects,WebService.Post);
+        Response response = service.getWebservice(Api.BeginDrill,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
-            Drill drill = gson.fromJson(response.getData(),Drill.class);
+            Drill drill = gson.fromJson(response.getData().toString(),Drill.class);
             if(drill!=null){
                 msg.what = 20;
                 msg.obj = response.getMessage();
@@ -488,10 +488,10 @@ public class WebHelper {
         Object[] objects = new Object[]{
                 "uid",uid,"drillId",drillId,"qtime",qtime
         };
-        Response response = service.getWebservice(Api.QuickenDrill,objects,WebService.Post);
+        Response response = service.getWebservice(Api.QuickenDrill,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
-            Drill drill = gson.fromJson(response.getData(),Drill.class);
+            Drill drill = gson.fromJson(response.getData().toString(),Drill.class);
             if(drill!=null){
                 msg.what = 20;
                 msg.obj = response.getMessage();
@@ -521,9 +521,9 @@ public class WebHelper {
                 "page",page,"pagesize",pageSize
         };
         List<PhotoShow> list = new ArrayList<>();
-        Response response = service.getWebservice(Api.GetshowPhoto,objects,WebService.Post);
+        Response response = service.getWebservice(Api.GetshowPhoto,objects,Constants.RequestType);
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData(), new TypeToken<List<PhotoShow>>(){}.getType());
+            list = gson.fromJson(response.getData().toString(), new TypeToken<List<PhotoShow>>(){}.getType());
         }
         return list;
     }
@@ -539,9 +539,9 @@ public class WebHelper {
                 "page",page,"pagesize",pageSize
         };
         List<MessageShow> list = new ArrayList<>();
-        Response response = service.getWebservice(Api.GetshowMessage,objects,WebService.Post);
+        Response response = service.getWebservice(Api.GetshowMessage,objects,Constants.RequestType);
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData(), new TypeToken<List<MessageShow>>(){}.getType());
+            list = gson.fromJson(response.getData().toString(), new TypeToken<List<MessageShow>>(){}.getType());
         }
         return list;
     }
@@ -557,7 +557,7 @@ public class WebHelper {
         Object[] objects = new Object[]{
                 "uid",uid,"content",content,"photoBase64",photoBase64
         };
-        Response response = service.getWebservice(Api.PutshowPhoto,objects,WebService.Post);
+        Response response = service.getWebservice(Api.PutshowPhoto,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
             msg.what = 0;
@@ -578,7 +578,7 @@ public class WebHelper {
         Object[] objects = new Object[]{
                 "uid",uid,"content",content
         };
-        Response response = service.getWebservice(Api.PutshowMessage,objects,WebService.Post);
+        Response response = service.getWebservice(Api.PutshowMessage,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
             msg.what = 0;
