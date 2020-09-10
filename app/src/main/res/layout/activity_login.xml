@@ -9,7 +9,8 @@
         android:layout_weight="2"
         android:fitsSystemWindows="true"
         android:gravity="center"
-        android:padding="@dimen/frame_32_distance">
+        android:padding="@dimen/frame_32_distance"
+        android:background="@mipmap/ic_logo_1">
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +23,8 @@
         android:layout_height="0dp"
         android:layout_weight="3"
         android:gravity="center"
-        android:padding="@dimen/frame_32_distance"
+        android:paddingStart="@dimen/frame_32_distance"
+        android:paddingEnd="@dimen/frame_32_distance"
         android:orientation="vertical">
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/login_phone"
@@ -32,6 +34,7 @@
             android:drawablePadding="@dimen/frame_eight_distance"
             android:gravity="center_vertical"
             android:hint="@string/login_name_hint"
+            android:drawableStart="@mipmap/ic_logo_16"
             android:textColor="@color/text_black_color"
             android:textSize="@dimen/frame_text_normal_size"
             android:background="@drawable/input_bg"/>
@@ -43,7 +46,9 @@
             android:drawablePadding="@dimen/frame_eight_distance"
             android:gravity="center_vertical"
             android:hint="@string/login_psw_hint"
+            android:drawableStart="@mipmap/ic_logo_17"
             android:textColor="@color/text_black_color"
+            android:inputType="textPassword"
             android:textSize="@dimen/frame_text_normal_size"
             android:layout_marginTop="@dimen/frame_edge_distance"
             android:background="@drawable/input_bg"/>
@@ -81,5 +86,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter"/>
+        android:scaleType="fitCenter"
+        android:src="@mipmap/ic_logo_9"/>
 </androidx.appcompat.widget.LinearLayoutCompat>

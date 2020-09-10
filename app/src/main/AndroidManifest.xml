@@ -28,6 +28,33 @@
         <activity android:name=".RegistActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".ForgetPswActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".user.ChangePswActivity"
+            android:label="@string/change_psw_label"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".user.VersionActivity"
+            android:label="@string/user_my_version_hint"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".user.UserInfoActivity"
+            android:label="@string/user_my_info_hint"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".user.CampaignActivity"
+            android:label="@string/user_my_hint"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".user.AddressActivity"
+            android:label="@string/user_my_address_hint"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".user.AddAddressActivity"
+            android:label="@string/add_address_label"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

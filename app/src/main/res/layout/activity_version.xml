@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <include layout="@layout/alen_toolbar_layout"/>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom|center_horizontal"
+        android:padding="@dimen/frame_edge_distance"
+        android:background="@color/gray_line_color">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="@dimen/frame_photo_big_size"
+            android:layout_height="@dimen/frame_photo_big_size"
+            android:background="@color/text_white_color"
+            android:padding="@dimen/frame_eight_distance">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@mipmap/ic_launcher"
+                android:scaleType="fitCenter"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="@dimen/frame_edge_distance"
+        android:background="@color/gray_line_color">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/version_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/text_gray_color"
+            android:textSize="@dimen/frame_text_small_size"
+            android:lineSpacingMultiplier="1.5"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>

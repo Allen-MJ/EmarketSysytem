@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="frame_default_title_bar_color">@color/colorPrimary</color>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimary">#E74744</color>
+    <color name="colorPrimaryDark">#E74744</color>
     <color name="colorAccent">#D81B60</color>
 
     <color name="text_black_color">#2B2B2B</color>
@@ -18,7 +18,7 @@
     <color name="text_red_color">#ff0700</color>
     <color name="text_green_color">#00ce0a</color>
     <!-- ffcd07 -->
-    <color name="text_yellow_color">#ffcd07</color>
+    <color name="text_yellow_color">#FAC810</color>
 
     <color name="res_popup_bg_black">#333333</color>
     <color name="res_popup_bg_gray">#f5f5f5</color>

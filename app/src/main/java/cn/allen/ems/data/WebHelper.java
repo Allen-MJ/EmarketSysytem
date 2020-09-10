@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import allen.frame.AllenManager;
+import allen.frame.tools.Logger;
 import cn.allen.ems.entry.Address;
 import cn.allen.ems.entry.Drill;
 import cn.allen.ems.entry.MessageShow;
@@ -22,6 +24,7 @@ import cn.allen.ems.entry.Response;
 import cn.allen.ems.entry.User;
 import cn.allen.ems.entry.Vcode;
 import cn.allen.ems.utils.Constants;
+import cn.allen.ems.utils.NullStringEmptyTypeAdapterFactory;
 
 public class WebHelper {
 
@@ -31,7 +34,7 @@ public class WebHelper {
 
     private WebHelper(){
         service = new WebService();
-        gson = new Gson();
+        gson = new GsonBuilder().registerTypeAdapterFactory(new NullStringEmptyTypeAdapterFactory()).create();
     }
     public static WebHelper init(){
         if(helper==null){
@@ -41,6 +44,7 @@ public class WebHelper {
     }
 
     private void saveToLoacal(User user){
+        Logger.debug("user",user.toString());
         AllenManager.getInstance().getStoragePreference().edit()
                 .putInt(Constants.User_Id,user.getId())
                 .putString(Constants.User_CardNo,user.getCardNo())
@@ -50,8 +54,15 @@ public class WebHelper {
                 .putString(Constants.User_Openid,user.getOpenid())
                 .putString(Constants.User_RealName,user.getRealName())
                 .putInt(Constants.User_Sex,user.getSex())
+                .putInt(Constants.User_LoginCount,user.getLogincount())
                 .putString(Constants.User_PassWord,user.getPassWord())
                 .putString(Constants.User_City,user.getCity())
+                .putString(Constants.User_Invitation,user.getInvitationcode())
+                .putFloat(Constants.User_ChangeScore,user.getCurrency1())
+                .putFloat(Constants.User_Gold,user.getCurrency2())
+                .putFloat(Constants.User_Diamond,user.getCurrency3())
+                .putString(Constants.User_LastTime,user.getEditTime())
+                .putString(Constants.User_RegistTime,user.getCreateTime())
                 .apply();
     }
 
@@ -68,7 +79,7 @@ public class WebHelper {
         Response response = service.getWebservice(Api.Login,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
-            User user = gson.fromJson(response.getData().toString(),User.class);
+            User user = gson.fromJson(response.getData(),User.class);
             if(user!=null){
                 saveToLoacal(user);
                 msg.what = 0;
@@ -144,7 +155,7 @@ public class WebHelper {
         String code="";
         Message msg = new Message();
         if(response.isSuccess("200")){
-            Vcode vcode = gson.fromJson(response.getData().toString(),Vcode.class);
+            Vcode vcode = gson.fromJson(response.getData(),Vcode.class);
             if(vcode!=null){
                 msg.what = 0;
                 msg.obj = response.getMessage();
@@ -224,7 +235,7 @@ public class WebHelper {
         String phone = "";
         if(response.isSuccess("200")){
             msg.what = 0;
-            phone = response.getData().toString();
+            phone = response.getData();
         }else{
             msg.what = -1;
         }
@@ -272,7 +283,7 @@ public class WebHelper {
         List<Address> list = new ArrayList<>();
         Response response = service.getWebservice(Api.GetAddress,objects,Constants.RequestType);
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData().toString(), new TypeToken<List<Address>>(){}.getType());
+            list = gson.fromJson(response.getData(), new TypeToken<List<Address>>(){}.getType());
         }
         return list;
     }
@@ -385,7 +396,7 @@ public class WebHelper {
         List<Notice> list = new ArrayList<>();
         Response response = service.getWebservice(Api.GetTips,objects,Constants.RequestType);
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData().toString(), new TypeToken<List<Notice>>(){}.getType());
+            list = gson.fromJson(response.getData(), new TypeToken<List<Notice>>(){}.getType());
         }
         return list;
     }
@@ -399,7 +410,7 @@ public class WebHelper {
         List<QrCode> list = new ArrayList<>();
         Response response = service.getWebservice(Api.GetQRCode,objects,Constants.RequestType);
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData().toString(), new TypeToken<List<QrCode>>(){}.getType());
+            list = gson.fromJson(response.getData(), new TypeToken<List<QrCode>>(){}.getType());
         }
         return list;
     }
@@ -416,7 +427,7 @@ public class WebHelper {
         List<NineGrid> list = new ArrayList<>();
         Response response = service.getWebservice(Api.GetNineGame,objects,Constants.RequestType);
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData().toString(), new TypeToken<List<NineGrid>>(){}.getType());
+            list = gson.fromJson(response.getData(), new TypeToken<List<NineGrid>>(){}.getType());
         }
         return list;
     }
@@ -457,7 +468,7 @@ public class WebHelper {
         Response response = service.getWebservice(Api.BeginDrill,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
-            Drill drill = gson.fromJson(response.getData().toString(),Drill.class);
+            Drill drill = gson.fromJson(response.getData(),Drill.class);
             if(drill!=null){
                 msg.what = 20;
                 msg.obj = response.getMessage();
@@ -491,7 +502,7 @@ public class WebHelper {
         Response response = service.getWebservice(Api.QuickenDrill,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
-            Drill drill = gson.fromJson(response.getData().toString(),Drill.class);
+            Drill drill = gson.fromJson(response.getData(),Drill.class);
             if(drill!=null){
                 msg.what = 20;
                 msg.obj = response.getMessage();
@@ -523,7 +534,7 @@ public class WebHelper {
         List<PhotoShow> list = new ArrayList<>();
         Response response = service.getWebservice(Api.GetshowPhoto,objects,Constants.RequestType);
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData().toString(), new TypeToken<List<PhotoShow>>(){}.getType());
+            list = gson.fromJson(response.getData(), new TypeToken<List<PhotoShow>>(){}.getType());
         }
         return list;
     }
@@ -541,7 +552,7 @@ public class WebHelper {
         List<MessageShow> list = new ArrayList<>();
         Response response = service.getWebservice(Api.GetshowMessage,objects,Constants.RequestType);
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData().toString(), new TypeToken<List<MessageShow>>(){}.getType());
+            list = gson.fromJson(response.getData(), new TypeToken<List<MessageShow>>(){}.getType());
         }
         return list;
     }

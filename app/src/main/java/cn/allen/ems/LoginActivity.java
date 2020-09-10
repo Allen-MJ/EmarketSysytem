@@ -78,7 +78,7 @@ public class LoginActivity extends AllenIMBaseActivity {
                 startActivity(new Intent(context,RegistActivity.class));
                 break;
             case R.id.forget_psw:
-                test();
+                startActivity(new Intent(context,ForgetPswActivity.class));
                 break;
         }
         view.setEnabled(true);
