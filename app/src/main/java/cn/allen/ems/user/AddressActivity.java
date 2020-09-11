@@ -1,6 +1,8 @@
 package cn.allen.ems.user;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +14,7 @@ import java.util.List;
 import allen.frame.ActivityHelper;
 import allen.frame.AllenBaseActivity;
 import allen.frame.AllenManager;
+import allen.frame.tools.MsgUtils;
 import allen.frame.widget.MaterialRefreshLayout;
 import allen.frame.widget.MaterialRefreshListener;
 import androidx.annotation.NonNull;
@@ -51,6 +54,17 @@ public class AddressActivity extends AllenBaseActivity {
     @Override
     protected int getLayoutResID() {
         return R.layout.activity_address;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK){
+            if(requestCode==1){
+                actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
+                loadData();
+            }
+        }
     }
 
     @Override
@@ -103,17 +117,39 @@ public class AddressActivity extends AllenBaseActivity {
 
         @Override
         public void deleteClick(View v, Address entry) {
-
+            MsgUtils.showMDMessage(context, "确定删除地址?", "确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    delete(entry.getId());
+                }
+            }, "", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
         }
 
         @Override
         public void editClick(View v, Address entry) {
-
+            startActivityForResult(new Intent(context,AddAddressActivity.class).putExtra(Constants.Entry_Flag,entry),1);
         }
 
         @Override
         public void initClick(View v, Address entry) {
-
+            MsgUtils.showMDMessage(context, "确定设置为默认地址?", "确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    init(entry.getId());
+                }
+            }, "", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
         }
     };
 
@@ -122,7 +158,27 @@ public class AddressActivity extends AllenBaseActivity {
             @Override
             public void run() {
                 list = WebHelper.init().getAddressList(uid);
-                handler.sendEmptyMessage(0);
+                handler.sendEmptyMessage(1);
+            }
+        }).start();
+    }
+
+    private void delete(int addressid){
+        showProgressDialog("");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                WebHelper.init().deleteAddress(handler,addressid);
+            }
+        }).start();
+    }
+
+    private void init(int addressid){
+        showProgressDialog("");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                WebHelper.init().setDefaultAddress(handler,uid,addressid);
             }
         }).start();
     }
@@ -132,12 +188,22 @@ public class AddressActivity extends AllenBaseActivity {
         @Override
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
-                case 0:
+                case 1:
                     actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
                     if (isRefresh) {
                         mater.finishRefresh();
                     }
                     adapter.setList(list);
+                    break;
+                case 0:
+                    dismissProgressDialog();
+                    MsgUtils.showShortToast(context, (String) msg.obj);
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
+                    loadData();
+                    break;
+                case -1:
+                    dismissProgressDialog();
+                    MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
         }

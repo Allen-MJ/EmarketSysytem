@@ -18,11 +18,14 @@ import cn.allen.ems.entry.Drill;
 import cn.allen.ems.entry.MessageShow;
 import cn.allen.ems.entry.NineGrid;
 import cn.allen.ems.entry.Notice;
+import cn.allen.ems.entry.Order;
 import cn.allen.ems.entry.PhotoShow;
 import cn.allen.ems.entry.QrCode;
 import cn.allen.ems.entry.Response;
+import cn.allen.ems.entry.Task;
 import cn.allen.ems.entry.User;
 import cn.allen.ems.entry.Vcode;
+import cn.allen.ems.entry.VideoTask;
 import cn.allen.ems.utils.Constants;
 import cn.allen.ems.utils.NullStringEmptyTypeAdapterFactory;
 
@@ -599,8 +602,126 @@ public class WebHelper {
         msg.obj = response.getMessage();
         handler.sendMessage(msg);
     }
+    /**
+     * 获取商家订单区信息
+     * @param page
+     * @param pageSize
+     * @param city
+     * @return
+     */
+    public List<Order> getMerchantOrder(int page,int pageSize,String city){
+        Object[] objects = new Object[]{
+                "page",page,"pagesize",pageSize,"city",city
+        };
+        List<Order> list = new ArrayList<>();
+        Response response = service.getWebservice(Api.GetMerchantOrder,objects,Constants.RequestType);
+        if(response.isSuccess("200")){
+            list = gson.fromJson(response.getData(), new TypeToken<List<Order>>(){}.getType());
+        }
+        return list;
+    }
+
+    /**
+     * 获取兑换区商品信息
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public List<Order> getExchange(int page,int pageSize){
+        Object[] objects = new Object[]{
+                "page",page,"pagesize",pageSize
+        };
+        List<Order> list = new ArrayList<>();
+        Response response = service.getWebservice(Api.GetExchange,objects,Constants.RequestType);
+        if(response.isSuccess("200")){
+            list = gson.fromJson(response.getData(), new TypeToken<List<Order>>(){}.getType());
+        }
+        return list;
+    }
+
+    /**
+     * 下单
+     * @param handler
+     * @param uid
+     * @param shopid
+     */
+    public void preOrder(Handler handler,int uid,int shopid){
+        Object[] objects = new Object[]{
+                "uid",uid,"shopid",shopid
+        };
+        Response response = service.getWebservice(Api.PreOrder,objects,Constants.RequestType);
+        Message msg = new Message();
+        if(response.isSuccess("200")){
+            msg.what = 0;
+        }else {
+            msg.what = -1;
+        }
+        msg.obj = response.getMessage();
+        handler.sendMessage(msg);
+    }
+
+    /**
+     * 获取任务列表
+     * @param uid
+     * @return
+     */
+    public List<Task> getTaskList(int uid){
+        Object[] objects = new Object[]{
+                "uid",uid
+        };
+        List<Task> list = new ArrayList<>();
+        Response response = service.getWebservice(Api.GetTaskList,objects,Constants.RequestType);
+        if(response.isSuccess("200")){
+            list = gson.fromJson(response.getData(), new TypeToken<List<Task>>(){}.getType());
+        }
+        return list;
+    }
+
+    /**
+     * 获取视频信息
+     * @param handler
+     * @param taskid
+     * @return
+     */
+    public VideoTask GetTaskVideo(Handler handler,int taskid){
+        Object[] objects = new Object[]{
+                "taskid",taskid
+        };
+        VideoTask task = null;
+        Response response = service.getWebservice(Api.GetTaskVideo,objects,Constants.RequestType);
+        if(response.isSuccess("200")){
+            task = gson.fromJson(response.getData(), VideoTask.class);
+        }else{
+            Message msg = new Message();
+            msg.what = -1;
+            msg.obj = response.getMessage();
+            handler.sendMessage(msg);
+        }
+        return task;
+    }
 
 
+
+    /**
+     * 观看视频完成
+     * @param handler
+     * @param uid
+     * @param taskid
+     */
+    public void SeenVideo(Handler handler,int uid,int taskid){
+        Object[] objects = new Object[]{
+                "uid",uid,"taskid",taskid
+        };
+        Response response = service.getWebservice(Api.SeenVideo,objects,Constants.RequestType);
+        Message msg = new Message();
+        if(response.isSuccess("200")){
+            msg.what = 1;
+        }else {
+            msg.what = -1;
+        }
+        msg.obj = response.getMessage();
+        handler.sendMessage(msg);
+    }
 
 
 }

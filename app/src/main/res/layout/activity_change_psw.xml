@@ -78,5 +78,6 @@
         android:padding="@dimen/frame_eight_distance"
         android:layout_marginTop="@dimen/frame_photo_big_size"
         android:layout_marginStart="@dimen/frame_32_distance"
-        android:layout_marginEnd="@dimen/frame_32_distance"/>
+        android:layout_marginEnd="@dimen/frame_32_distance"
+        android:background="@drawable/dark_bt_bg"/>
 </androidx.appcompat.widget.LinearLayoutCompat>

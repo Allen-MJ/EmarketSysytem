@@ -6,6 +6,8 @@ public class Constants {
     public static final String Url = "http://yx.chilvwz.com/api/App/";
     public static final int RequestType = WebService.Post;
 
+    public static final String Entry_Flag = "_Entry_Flag";
+
     public static final String User_Id = "_User_Id";
     public static final String User_Name = "_User_Name";
     public static final String User_Sex = "_User_Sex";

@@ -31,11 +31,10 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:latest.release'
     androidTestImplementation 'androidx.test.espresso:espresso-core:latest.release'
     api files('libs/pinyin4j-2.5.0.jar')
-//    api files('libs/okio-1.15.0.jar')
-//    api files('libs/okhttp-3.12.1.jar')
     api files('libs/glide-3.6.0.jar')
     api 'com.zhihu.android:matisse:0.5.2-beta2'
     api 'com.squareup.okhttp3:okhttp:3.12.1'
     api 'com.squareup.okio:okio:1.15.0'
+    api 'com.google.code.gson:gson:2.8.6'
     //    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
 }

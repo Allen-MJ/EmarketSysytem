@@ -55,6 +55,14 @@
             android:label="@string/add_address_label"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".user.UserNickActivity"
+            android:label="@string/change_nick_hint"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".task.WatchActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack.Translucent">
+        </activity>
     </application>
 
 </manifest>

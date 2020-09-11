@@ -1,11 +1,15 @@
 package cn.allen.ems.user;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
 import allen.frame.AllenBaseActivity;
 import allen.frame.AllenManager;
+import allen.frame.tools.MsgUtils;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
@@ -69,7 +73,17 @@ public class CampaignActivity extends AllenBaseActivity {
     }
 
     @OnClick(R.id.campaign_copy)
-    public void onViewClicked() {
+    public void onViewClicked(View v) {
+        v.setEnabled(false);
+        switch (v.getId()){
+            case R.id.campaign_copy:
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData mClipData = ClipData.newPlainText("Label", campaign);
+                cm.setPrimaryClip(mClipData);
+                MsgUtils.showShortToast(context,"复制成功!");
+                break;
+        }
+        v.setEnabled(true);
     }
 
 }

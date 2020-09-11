@@ -56,6 +56,11 @@ public class UserInfoActivity extends AllenBaseActivity {
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         shared = AllenManager.getInstance().getStoragePreference();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         Glide.with(context).load(shared.getString(Constants.User_HeadImage_Url,"")).into(infoPhoto);
         infoNick.setText(shared.getString(Constants.User_Name,""));
         infoPhone.setText(shared.getString(Constants.User_Phone,""));
@@ -79,6 +84,7 @@ public class UserInfoActivity extends AllenBaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.info_nick:
+                startActivity(new Intent(context,UserNickActivity.class));
                 break;
             case R.id.info_phone:
                 break;

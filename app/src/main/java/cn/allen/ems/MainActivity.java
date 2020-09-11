@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.allen.ems.adapter.FragmentAdapter;
+import cn.allen.ems.task.TaskFragment;
 import cn.allen.ems.user.UserFragment;
 
 public class MainActivity extends AllenBaseActivity {
@@ -45,7 +46,7 @@ public class MainActivity extends AllenBaseActivity {
         list = new ArrayList<>();
         list.add(UserFragment.init());
         list.add(UserFragment.init());
-        list.add(UserFragment.init());
+        list.add(TaskFragment.init());
         list.add(UserFragment.init());
         list.add(UserFragment.init());
         adapter = new FragmentAdapter(getSupportFragmentManager(),list);

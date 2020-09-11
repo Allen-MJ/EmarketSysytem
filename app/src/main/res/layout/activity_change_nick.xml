@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <include layout="@layout/alen_toolbar_layout"/>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/text_white_color"
+        android:layout_margin="@dimen/frame_eight_distance"
+        app:cardElevation="@dimen/frame_two_distance"
+        app:contentPadding="@dimen/frame_eight_distance">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/user_nick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:gravity="start"
+            android:inputType="text"
+            android:textColor="@color/text_black_color"
+            android:textSize="@dimen/frame_text_normal_size"
+            android:padding="@dimen/frame_eight_distance"
+            android:hint="@string/input_nick_hint"/>
+    </androidx.cardview.widget.CardView>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/commit_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/frame_text_middle_size"
+        android:textColor="@color/text_white_color"
+        android:gravity="center"
+        android:text="@string/save_hint"
+        android:padding="@dimen/frame_eight_distance"
+        android:layout_marginTop="@dimen/frame_photo_big_size"
+        android:layout_marginStart="@dimen/frame_32_distance"
+        android:layout_marginEnd="@dimen/frame_32_distance"
+        android:background="@drawable/dark_bt_bg"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

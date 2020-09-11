@@ -11,7 +11,8 @@
         app:cardBackgroundColor="@color/text_white_color"
         app:cardElevation="1dp"
         android:layout_margin="@dimen/frame_eight_distance"
-        app:cardCornerRadius="@dimen/frame_four_distance">
+        app:cardCornerRadius="@dimen/frame_four_distance"
+        app:contentPadding="@dimen/frame_four_distance">
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,7 +77,7 @@
                     android:text="@string/delete_bt_hint"
                     android:textColor="@color/text_gray_color"
                     android:textSize="@dimen/frame_text_smaller_size"
-                    android:padding="@dimen/frame_edge_distance"
+                    android:padding="@dimen/frame_eight_distance"
                     android:drawablePadding="@dimen/frame_four_distance"
                     android:drawableStart="@mipmap/ic_logo_47"
                     android:gravity="center"/>
@@ -87,7 +88,7 @@
                     android:text="@string/edit_bt_hint"
                     android:textColor="@color/text_gray_color"
                     android:textSize="@dimen/frame_text_smaller_size"
-                    android:padding="@dimen/frame_edge_distance"
+                    android:padding="@dimen/frame_eight_distance"
                     android:drawablePadding="@dimen/frame_four_distance"
                     android:drawableStart="@mipmap/ic_logo_48"
                     android:gravity="center"/>
@@ -98,7 +99,7 @@
                     android:text="@string/init_bt_hint"
                     android:textColor="@color/text_gray_color"
                     android:textSize="@dimen/frame_text_smaller_size"
-                    android:padding="@dimen/frame_edge_distance"
+                    android:padding="@dimen/frame_eight_distance"
                     android:drawablePadding="@dimen/frame_four_distance"
                     android:drawableStart="@mipmap/ic_logo_49"
                     android:gravity="center"/>

@@ -61,7 +61,8 @@
             android:gravity="center"
             android:text="@string/login_bt_hint"
             android:padding="@dimen/frame_eight_distance"
-            android:layout_marginTop="@dimen/frame_eight_distance"/>
+            android:layout_marginTop="@dimen/frame_eight_distance"
+            android:background="@drawable/dark_bt_bg"/>
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/regist_bt"
             android:layout_width="match_parent"
@@ -71,7 +72,8 @@
             android:gravity="center"
             android:text="@string/regist_fast_hint"
             android:padding="@dimen/frame_eight_distance"
-            android:layout_marginTop="@dimen/frame_eight_distance"/>
+            android:layout_marginTop="@dimen/frame_eight_distance"
+            android:background="@drawable/light_bt_bg"/>
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/forget_psw"
             android:layout_width="wrap_content"

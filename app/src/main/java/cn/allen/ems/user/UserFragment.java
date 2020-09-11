@@ -86,6 +86,11 @@ public class UserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         shared = AllenManager.getInstance().getStoragePreference();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         Glide.with(getActivity()).load(shared.getString(Constants.User_HeadImage_Url,"")).into(userPhoto);
         userName.setText(shared.getString(Constants.User_Name,""));
         userCount.setText("登入:"+shared.getInt(Constants.User_LoginCount,0)+"次");

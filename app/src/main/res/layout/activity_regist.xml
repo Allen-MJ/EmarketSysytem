@@ -86,7 +86,8 @@
             android:gravity="center"
             android:text="@string/regist_bt_hint"
             android:padding="@dimen/frame_eight_distance"
-            android:layout_marginTop="@dimen/frame_eight_distance"/>
+            android:layout_marginTop="@dimen/frame_eight_distance"
+            android:background="@drawable/dark_bt_bg"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
