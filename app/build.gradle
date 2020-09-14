@@ -3,15 +3,21 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
-
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
     defaultConfig {
         applicationId "cn.allen.ems"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi","armeabi-v7a","arm64-v8a","x86","x86_64"
+        }
     }
 
     buildTypes {
@@ -43,6 +49,5 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
     implementation project(':allenframe')
-//    implementation 'com.google.code.gson:gson:2.8.6'
 
 }

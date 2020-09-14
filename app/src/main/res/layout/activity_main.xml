@@ -7,11 +7,24 @@
     android:orientation="vertical"
     tools:context=".MainActivity"
     android:background="@color/colorPrimary">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/frame_text_normal_size"
+            android:textColor="@color/text_white_color"
+            android:gravity="center"
+            android:padding="@dimen/frame_eight_distance"/>
+    </RelativeLayout>
     <allen.frame.widget.ContrlScrollViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        app:iscanscroll="false"/>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom"
         android:layout_width="match_parent"

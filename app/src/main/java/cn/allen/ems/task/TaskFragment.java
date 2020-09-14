@@ -77,6 +77,17 @@ public class TaskFragment extends Fragment {
         addEvent(view);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==getActivity().RESULT_OK){
+            if(requestCode==11){
+                actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START, "");
+                loadData();
+            }
+        }
+    }
+
     private void initUI(View view){
         shared = AllenManager.getInstance().getStoragePreference();
         uid = shared.getInt(Constants.User_Id, -1);
@@ -114,7 +125,7 @@ public class TaskFragment extends Fragment {
 
         @Override
         public void getClick(View v, Task entry) {
-            startActivityForResult(new Intent(getActivity(),WatchActivity.class).putExtra(Constants.Entry_Flag,entry.getTaskid()),1);
+            startActivityForResult(new Intent(getActivity(),WatchActivity.class).putExtra(Constants.Entry_Flag,entry.getTaskid()),11);
         }
     };
 

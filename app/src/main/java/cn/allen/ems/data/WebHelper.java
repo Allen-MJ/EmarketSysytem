@@ -66,6 +66,7 @@ public class WebHelper {
                 .putFloat(Constants.User_Diamond,user.getCurrency3())
                 .putString(Constants.User_LastTime,user.getEditTime())
                 .putString(Constants.User_RegistTime,user.getCreateTime())
+                .putString(Constants.User_Grade,user.getGrade())
                 .apply();
     }
 
@@ -708,7 +709,7 @@ public class WebHelper {
      * @param uid
      * @param taskid
      */
-    public void SeenVideo(Handler handler,int uid,int taskid){
+    public void seenVideo(Handler handler,int uid,int taskid){
         Object[] objects = new Object[]{
                 "uid",uid,"taskid",taskid
         };

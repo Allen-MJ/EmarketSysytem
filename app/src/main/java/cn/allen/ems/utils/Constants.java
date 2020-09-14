@@ -13,6 +13,7 @@ public class Constants {
     public static final String User_Sex = "_User_Sex";
     public static final String User_RealName= "_User_realName";
     public static final String User_CardNo = "_User_cardNo";
+    public static final String User_Grade = "_User_Grade";
     public static final String User_PassWord = "_User_passWord";
     public static final String User_HeadImage_Url = "_User_headImage_Url";
     public static final String User_Phone = "_User_phone";

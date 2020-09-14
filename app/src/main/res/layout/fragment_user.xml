@@ -78,6 +78,57 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="@dimen/frame_eight_distance"
+            android:layout_margin="@dimen/frame_four_distance">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/frame_edge_distance"
+                    android:layout_height="@dimen/frame_edge_distance"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/ic_logo_32"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/user_level_cur"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_white_color"
+                    android:textSize="@dimen/frame_text_smallst_size"
+                    android:textStyle="bold"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+            <allen.frame.widget.ExpView
+                android:id="@+id/user_exp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/frame_eight_distance"
+                app:totalColor="#E0493E"
+                app:usedColor="#FAC810"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/frame_edge_distance"
+                    android:layout_height="@dimen/frame_edge_distance"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/ic_logo_32"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/user_level_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_white_color"
+                    android:textSize="@dimen/frame_text_smallst_size"
+                    android:textStyle="bold"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:gravity="bottom">
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="0dp"

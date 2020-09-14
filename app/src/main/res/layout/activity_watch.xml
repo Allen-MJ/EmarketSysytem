@@ -7,6 +7,7 @@
     android:background="@color/watch_bg_color"
     android:fitsSystemWindows="true">
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -30,17 +31,14 @@
             android:padding="@dimen/frame_four_distance"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
     <RelativeLayout
+        android:id="@+id/watch_video"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/text_black_color">
-        <VideoView
-            android:id="@+id/watch_video"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/text_black_color"/>
     </RelativeLayout>
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

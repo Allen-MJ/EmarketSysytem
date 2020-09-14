@@ -1,8 +1,10 @@
 package cn.allen.ems;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,11 +20,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.app.ActivityCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.allen.ems.data.WebHelper;
 import cn.allen.ems.utils.Constants;
+
+import static androidx.core.content.PermissionChecker.PERMISSION_GRANTED;
 
 public class LoginActivity extends AllenIMBaseActivity {
     @BindView(R.id.login_phone)
@@ -36,6 +41,7 @@ public class LoginActivity extends AllenIMBaseActivity {
     @BindView(R.id.forget_psw)
     AppCompatTextView forgetPsw;
     private SharedPreferences shared;
+    public static final int REQUEST_CAMERA_PERMISSION = 1003;
 
     @Override
     protected boolean isStatusBarColorWhite() {
@@ -54,9 +60,41 @@ public class LoginActivity extends AllenIMBaseActivity {
         Logger.init().setDebug(true).setHttp(true);
     }
 
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CAMERA_PERMISSION: {
+                if(checkIsOk(grantResults)){
+
+                }else{
+                    finish();
+                }
+                break;
+            }
+        }
+    }
+
+    private boolean checkIsOk(int[] grantResults){
+        boolean isok = true;
+        for(int i:grantResults){
+            isok = isok && (i == PackageManager.PERMISSION_GRANTED);
+        }
+        return isok;
+    }
+
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         loginPhone.setText(shared.getString(Constants.User_Phone,""));
+        loginPsw.setText("qwe!123");
+        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE) !=PERMISSION_GRANTED||
+                ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_WIFI_STATE) !=PERMISSION_GRANTED||
+                ActivityCompat.checkSelfPermission(this,Manifest.permission.READ_PHONE_STATE) !=PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.ACCESS_WIFI_STATE,Manifest.permission.READ_PHONE_STATE}, REQUEST_CAMERA_PERMISSION);
+            return;
+        }
     }
 
     @Override
