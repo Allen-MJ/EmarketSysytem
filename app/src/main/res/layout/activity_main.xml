@@ -18,6 +18,38 @@
             android:textColor="@color/text_white_color"
             android:gravity="center"
             android:padding="@dimen/frame_eight_distance"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/frame_text_small_size"
+            android:textColor="@color/text_white_color"
+            android:gravity="center"
+            android:padding="@dimen/frame_eight_distance"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_logo_34"
+            android:layout_margin="@dimen/frame_eight_distance"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/frame_text_small_size"
+            android:textColor="@color/text_white_color"
+            android:gravity="center"
+            android:padding="@dimen/frame_eight_distance"
+            android:drawablePadding="@dimen/frame_eight_distance"
+            android:drawableEnd="@mipmap/ic_logo_35"
+            android:layout_toStartOf="@id/message"
+            android:hint="@string/address_city_hint"
+            android:textColorHint="@color/text_white_color"
+            android:layout_centerVertical="true"/>
     </RelativeLayout>
     <allen.frame.widget.ContrlScrollViewPager
         android:id="@+id/pager"

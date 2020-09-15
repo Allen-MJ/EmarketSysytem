@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import allen.frame.AllenManager;
 import allen.frame.tools.StringUtils;
 import allen.frame.widget.CircleImageView;
+import allen.frame.widget.ExpView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
@@ -66,6 +67,8 @@ public class UserFragment extends Fragment {
     AppCompatTextView userLevelCur;
     @BindView(R.id.user_level_next)
     AppCompatTextView userLevelNext;
+    @BindView(R.id.user_exp)
+    ExpView userExp;
     private SharedPreferences shared;
 
     public static UserFragment init() {
@@ -99,10 +102,13 @@ public class UserFragment extends Fragment {
         Glide.with(getActivity()).load(shared.getString(Constants.User_HeadImage_Url, "")).into(userPhoto);
         userName.setText(shared.getString(Constants.User_Name, ""));
         userCount.setText("登入:" + shared.getInt(Constants.User_LoginCount, 0) + "次");
-        String level =  shared.getString(Constants.User_Grade, "");
+        String level = shared.getString(Constants.User_Grade, "");
         userLevel.setText(level);
-        userLevelCur.setText(StringUtils.empty(level)?"0":level);
-        userLevelNext.setText(StringUtils.empty(level)?"1":""+(Integer.parseInt(level)+1));
+        userLevelCur.setText(StringUtils.empty(level) ? "0" : level);
+        userLevelNext.setText(StringUtils.empty(level) ? "1" : "" + (Integer.parseInt(level) + 1));
+        float cur = shared.getFloat(Constants.User_CurEXP,0f);
+        float next = shared.getFloat(Constants.User_NextEXP,0f);
+        userExp.setPercent(cur/(cur+next));
         userCampaignCode.setText("邀请码:" + shared.getString(Constants.User_Invitation, ""));
         userChange.setText("" + shared.getFloat(Constants.User_ChangeScore, 0f));
         userGold.setText("" + shared.getFloat(Constants.User_Gold, 0f));
@@ -117,10 +123,13 @@ public class UserFragment extends Fragment {
                 startActivity(new Intent(getActivity(), CampaignActivity.class));
                 break;
             case R.id.user_my_shop:
+                startActivity(new Intent(getActivity(), UserTicketActivity.class));
                 break;
             case R.id.user_my_record:
+                startActivity(new Intent(getActivity(), UserRecordActivity.class));
                 break;
             case R.id.user_my_real:
+                startActivity(new Intent(getActivity(), UserVerifyActivity.class));
                 break;
             case R.id.user_my_info:
                 startActivity(new Intent(getActivity(), UserInfoActivity.class));

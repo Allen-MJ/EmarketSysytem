@@ -30,6 +30,9 @@
         <activity android:name=".MainActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".NoticeActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".RegistActivity"
             android:screenOrientation="portrait">
         </activity>
@@ -62,6 +65,18 @@
         </activity>
         <activity android:name=".user.UserNickActivity"
             android:label="@string/change_nick_hint"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".user.UserVerifyActivity"
+            android:label="@string/user_my_real_hint"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".user.UserTicketActivity"
+            android:label="@string/user_my_shop_hint"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".user.UserRecordActivity"
+            android:label="@string/user_my_record_hint"
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".task.WatchActivity"

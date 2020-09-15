@@ -14,6 +14,8 @@ public class Constants {
     public static final String User_RealName= "_User_realName";
     public static final String User_CardNo = "_User_cardNo";
     public static final String User_Grade = "_User_Grade";
+    public static final String User_CurEXP = "_User_empiricalvalue";
+    public static final String User_NextEXP = "_User_differempirical";
     public static final String User_PassWord = "_User_passWord";
     public static final String User_HeadImage_Url = "_User_headImage_Url";
     public static final String User_Phone = "_User_phone";
@@ -26,4 +28,8 @@ public class Constants {
     public static final String User_Diamond = "_User_Diamond";
     public static final String User_LastTime = "_User_LastTime";
     public static final String User_RegistTime = "_User_RegistTime";
+    public static final String User_Id_Front_Url = "_User_Id_front_Url";
+    public static final String User_Id_Back_Url = "_User_Id_back_Url";
+    public static final String User_Auth = "_User_Auth";
+    public static final String User_Auth_Describe = "_User_Auth_Describe";
 }

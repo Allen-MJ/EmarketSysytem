@@ -10,7 +10,10 @@
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/frame_four_distance"
-        android:layout_margin="@dimen/frame_eight_distance"
+        android:layout_marginStart="@dimen/frame_eight_distance"
+        android:layout_marginEnd="@dimen/frame_eight_distance"
+        android:layout_marginTop="@dimen/frame_four_distance"
+        android:layout_marginBottom="@dimen/frame_four_distance"
         app:cardElevation="1dp"
         app:contentPadding="@dimen/frame_four_distance">
         <androidx.appcompat.widget.LinearLayoutCompat

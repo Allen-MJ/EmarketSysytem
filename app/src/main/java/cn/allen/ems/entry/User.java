@@ -20,6 +20,7 @@ public class User implements Serializable {
     private String editTime;
     private String grade;
     private float empiricalvalue;
+    private float differempirical;
     private String invitationcode;
     private String invitationcoded;
     private float currency1;
@@ -53,6 +54,7 @@ public class User implements Serializable {
                 ", editTime='" + editTime + '\'' +
                 ", grade='" + grade + '\'' +
                 ", empiricalvalue=" + empiricalvalue +
+                ", differempirical=" + differempirical +
                 ", invitationcode='" + invitationcode + '\'' +
                 ", invitationcoded='" + invitationcoded + '\'' +
                 ", currency1=" + currency1 +
@@ -199,6 +201,14 @@ public class User implements Serializable {
 
     public void setEmpiricalvalue(float empiricalvalue) {
         this.empiricalvalue = empiricalvalue;
+    }
+
+    public float getDifferempirical() {
+        return differempirical;
+    }
+
+    public void setDifferempirical(float differempirical) {
+        this.differempirical = differempirical;
     }
 
     public String getInvitationcode() {

@@ -61,6 +61,13 @@
     <string name="address_contry_hint">区县</string>
     <string name="address_info_hint">详细地址</string>
 
+    <string name="verify_name_hint">姓名</string>
+    <string name="verify_id_hint">身份证号</string>
+    <string name="verify_id_font_hint">点击上传身份证正面照片</string>
+    <string name="verify_id_back_hint">点击上传身份证反面照片</string>
+    <string name="verify_info_hint">描述</string>
+
+
     <!--个人中心 end-->
     <!--任务 start-->
     <string name="get_task_hint">领取任务</string>
@@ -68,6 +75,7 @@
     <!--商城 start-->
     <string name="shop_sift_hint">筛选</string>
     <string name="shop_redeem_hint">立即兑换</string>
+    <string name="redeem_ok_hint">确认兑换</string>
     <!--商城 end-->
     <!--通用 start-->
     <string name="copy_hint">复制</string>

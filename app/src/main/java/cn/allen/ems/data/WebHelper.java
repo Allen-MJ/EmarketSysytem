@@ -64,9 +64,16 @@ public class WebHelper {
                 .putFloat(Constants.User_ChangeScore,user.getCurrency1())
                 .putFloat(Constants.User_Gold,user.getCurrency2())
                 .putFloat(Constants.User_Diamond,user.getCurrency3())
+                .putFloat(Constants.User_CurEXP,user.getEmpiricalvalue())
+                .putFloat(Constants.User_NextEXP,user.getDifferempirical())
                 .putString(Constants.User_LastTime,user.getEditTime())
                 .putString(Constants.User_RegistTime,user.getCreateTime())
                 .putString(Constants.User_Grade,user.getGrade())
+                .putString(Constants.User_Id_Front_Url,user.getIdcardurl1())
+                .putString(Constants.User_Id_Back_Url,user.getIdcardurl2())
+                .putString(Constants.User_Id_Back_Url,user.getIdcardurl2())
+                .putString(Constants.User_Auth_Describe,user.getAuthenticationdescribe())
+                .putInt(Constants.User_Auth,user.getAuthentication())
                 .apply();
     }
 
@@ -85,9 +92,14 @@ public class WebHelper {
         if(response.isSuccess("200")){
             User user = gson.fromJson(response.getData(),User.class);
             if(user!=null){
-                saveToLoacal(user);
-                msg.what = 0;
-                msg.obj = response.getMessage();
+                if(user.getEnable()==1){
+                    saveToLoacal(user);
+                    msg.what = 0;
+                    msg.obj = response.getMessage();
+                }else{
+                    msg.what = -1;
+                    msg.obj = "账户已被禁用!";
+                }
             }else{
                 msg.what = -1;
                 msg.obj = "数据异常!";
@@ -562,6 +574,25 @@ public class WebHelper {
     }
 
     /**
+     * 获取我的发布记录
+     * @param uid
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public List<MessageShow> getShowMessageByUid(int uid,int page, int pageSize){
+        Object[] objects = new Object[]{
+                "uid",uid,"page",page,"pagesize",pageSize
+        };
+        List<MessageShow> list = new ArrayList<>();
+        Response response = service.getWebservice(Api.GetShowMessageByUid,objects,Constants.RequestType);
+        if(response.isSuccess("200")){
+            list = gson.fromJson(response.getData(), new TypeToken<List<MessageShow>>(){}.getType());
+        }
+        return list;
+    }
+
+    /**
      * 发布图片墙
      * @param handler
      * @param uid
@@ -616,6 +647,24 @@ public class WebHelper {
         };
         List<Order> list = new ArrayList<>();
         Response response = service.getWebservice(Api.GetMerchantOrder,objects,Constants.RequestType);
+        if(response.isSuccess("200")){
+            list = gson.fromJson(response.getData(), new TypeToken<List<Order>>(){}.getType());
+        }
+        return list;
+    }
+
+    /**
+     * 获取我的商品列表
+     * @param uid
+     * @param type
+     * @return
+     */
+    public List<Order> getShopByUid(int uid,int type){
+        Object[] objects = new Object[]{
+                "uid",uid
+        };
+        List<Order> list = new ArrayList<>();
+        Response response = service.getWebservice(Api.GetShopByUid,objects,Constants.RequestType);
         if(response.isSuccess("200")){
             list = gson.fromJson(response.getData(), new TypeToken<List<Order>>(){}.getType());
         }

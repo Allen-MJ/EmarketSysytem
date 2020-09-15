@@ -30,4 +30,6 @@ public class Api {
     public static final String GetTaskList = "GetTaskList";//获取任务列表
     public static final String GetTaskVideo = "GetTaskVideo";//获取视频信息
     public static final String SeenVideo = "SeenVideo";//观看视频完成
+    public static final String GetShopByUid = "GetShopByUid";//我的商品
+    public static final String GetShowMessageByUid = "GetShowMessageByUid";//我的发布记录
 }
