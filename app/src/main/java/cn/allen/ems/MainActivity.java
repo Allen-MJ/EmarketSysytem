@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.allen.ems.Exchange.ExchangeFragment;
 import cn.allen.ems.adapter.FragmentAdapter;
 import cn.allen.ems.shop.ShopHomeFragment;
 import cn.allen.ems.task.TaskFragment;
@@ -75,7 +76,7 @@ public class MainActivity extends AllenBaseActivity {
     protected void initUI(@Nullable Bundle savedInstanceState) {
         list = new ArrayList<>();
         list.add(UserFragment.init());
-        list.add(UserFragment.init());
+        list.add(ExchangeFragment.init());
         list.add(TaskFragment.init());
         list.add(ShopHomeFragment.init());
         list.add(UserFragment.init());
