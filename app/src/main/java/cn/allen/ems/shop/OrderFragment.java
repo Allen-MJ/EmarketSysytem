@@ -125,7 +125,7 @@ public class OrderFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sublist = WebHelper.init().getMerchantOrder(page++, pagesize, mcity);
+                sublist = WebHelper.init().getMerchantOrder(page++, pagesize, mcity).getList();
                 handler.sendEmptyMessage(0);
             }
         }).start();

@@ -117,7 +117,7 @@ public class UserRecordActivity extends AllenBaseActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sublist = WebHelper.init().getShowMessageByUid(uid, page++, pagesize);
+                sublist = WebHelper.init().getShowMessageByUid(uid, page++, pagesize).getList();
                 handler.sendEmptyMessage(0);
             }
         }).start();

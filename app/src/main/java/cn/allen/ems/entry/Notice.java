@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Notice implements Serializable {
     private int tipid;
+    private String title;
     private String tipcontent;
     private String tipstatus;
     private String createtime;
@@ -15,6 +16,7 @@ public class Notice implements Serializable {
     public String toString() {
         return "Notice{" +
                 "tipid=" + tipid +
+                ", title='" + title + '\'' +
                 ", tipcontent='" + tipcontent + '\'' +
                 ", tipstatus='" + tipstatus + '\'' +
                 ", createtime='" + createtime + '\'' +
@@ -27,6 +29,14 @@ public class Notice implements Serializable {
 
     public void setTipid(int tipid) {
         this.tipid = tipid;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getTipcontent() {

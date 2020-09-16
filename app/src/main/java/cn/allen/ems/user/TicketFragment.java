@@ -37,8 +37,10 @@ public class TicketFragment extends Fragment {
     MaterialRefreshLayout mater;
     private SharedPreferences shared;
     private int type,uid;
+    private int page = 0;
+    private int pagesize = 10;
     private TicketAdapter adapter;
-    private List<Order> list;
+    private List<Order> list,sublist;
     private ActivityHelper actHelper;
     private boolean isRefresh = false;
 
@@ -87,6 +89,13 @@ public class TicketFragment extends Fragment {
         @Override
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = true;
+            page = 0;
+            loadData();
+        }
+
+        @Override
+        public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
+            isRefresh = false;
             loadData();
         }
     };
@@ -112,7 +121,7 @@ public class TicketFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                list = WebHelper.init().getShopByUid(uid,type);
+                sublist = WebHelper.init().getShopByUid(uid,type,page++,pagesize).getList();
                 handler.sendEmptyMessage(1);
             }
         }).start();
@@ -124,9 +133,21 @@ public class TicketFragment extends Fragment {
             switch (msg.what) {
                 case 1:
                     actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
-                    if (isRefresh) {
+                    if(isRefresh){
+                        list = sublist;
                         mater.finishRefresh();
+                    }else{
+                        if(page==1){
+                            list = sublist;
+                        }else{
+                            list.addAll(sublist);
+                        }
+                        mater.finishRefreshLoadMore();
                     }
+                    if(list.size()==0){
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,"");
+                    }
+                    actHelper.setCanLoadMore(mater,pagesize,list);
                     adapter.setList(list);
                     break;
             }
