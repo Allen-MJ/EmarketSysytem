@@ -109,7 +109,7 @@ public class PointFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sublist = WebHelper.init().getExchange(page++,pagesize);
+                sublist = WebHelper.init().getExchange(page++,pagesize).getList();
                 handler.sendEmptyMessage(0);
             }
         }).start();

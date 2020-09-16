@@ -8,12 +8,16 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import allen.frame.AllenManager;
 import allen.frame.tools.Logger;
 import cn.allen.ems.entry.Address;
+import cn.allen.ems.entry.Data;
 import cn.allen.ems.entry.Drill;
 import cn.allen.ems.entry.MessageShow;
 import cn.allen.ems.entry.NineGrid;
@@ -407,14 +411,24 @@ public class WebHelper {
      * 获取广告列表
      * @return
      */
-    public List<Notice> getTipsList(){
-        Object[] objects = new Object[]{};
-        List<Notice> list = new ArrayList<>();
+    public Data<Notice> getTipsList(int page,int pagesize){
+        Object[] objects = new Object[]{
+                "page",page,"pagesize",pagesize
+        };
+        Data<Notice> data = new Data<>();
         Response response = service.getWebservice(Api.GetTips,objects,Constants.RequestType);
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData(), new TypeToken<List<Notice>>(){}.getType());
+            try {
+                List<Notice> list = new ArrayList<>();
+                Object[] ob = getDataFromJson(response.getData());
+                list = gson.fromJson(ob[1].toString(), new TypeToken<List<Notice>>(){}.getType());
+                data.setCount(Integer.parseInt(ob[0].toString()));
+                data.setList(list);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-        return list;
+        return data;
     }
 
     /**
@@ -543,16 +557,25 @@ public class WebHelper {
      * @param pageSize
      * @return
      */
-    public List<PhotoShow> getshowPhoto(int page,int pageSize){
+    public Data<PhotoShow> getshowPhoto(int page,int pageSize){
         Object[] objects = new Object[]{
                 "page",page,"pagesize",pageSize
         };
-        List<PhotoShow> list = new ArrayList<>();
         Response response = service.getWebservice(Api.GetshowPhoto,objects,Constants.RequestType);
+        List<PhotoShow> list = new ArrayList<>();
+        Data<PhotoShow> data = new Data<>();
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData(), new TypeToken<List<PhotoShow>>(){}.getType());
+            try {
+                Object[] ob = getDataFromJson(response.getData());
+                list = gson.fromJson(ob[1].toString(), new TypeToken<List<PhotoShow>>(){}.getType());
+                data.setCount(Integer.parseInt(ob[0].toString()));
+                data.setList(list);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-        return list;
+
+        return data;
     }
 
     /**
@@ -561,16 +584,25 @@ public class WebHelper {
      * @param pageSize
      * @return
      */
-    public List<MessageShow> getshowMessage(int page, int pageSize){
+    public Data<MessageShow> getshowMessage(int page, int pageSize){
         Object[] objects = new Object[]{
                 "page",page,"pagesize",pageSize
         };
-        List<MessageShow> list = new ArrayList<>();
         Response response = service.getWebservice(Api.GetshowMessage,objects,Constants.RequestType);
+        List<MessageShow> list = new ArrayList<>();
+        Data<MessageShow> data = new Data<>();
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData(), new TypeToken<List<MessageShow>>(){}.getType());
+            try {
+                Object[] ob = getDataFromJson(response.getData());
+                list = gson.fromJson(ob[1].toString(), new TypeToken<List<MessageShow>>(){}.getType());
+                data.setCount(Integer.parseInt(ob[0].toString()));
+                data.setList(list);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-        return list;
+
+        return data;
     }
 
     /**
@@ -580,16 +612,25 @@ public class WebHelper {
      * @param pageSize
      * @return
      */
-    public List<MessageShow> getShowMessageByUid(int uid,int page, int pageSize){
+    public Data<MessageShow> getShowMessageByUid(int uid,int page, int pageSize){
         Object[] objects = new Object[]{
                 "uid",uid,"page",page,"pagesize",pageSize
         };
-        List<MessageShow> list = new ArrayList<>();
         Response response = service.getWebservice(Api.GetShowMessageByUid,objects,Constants.RequestType);
+        List<MessageShow> list = new ArrayList<>();
+        Data<MessageShow> data = new Data<>();
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData(), new TypeToken<List<MessageShow>>(){}.getType());
+            try {
+                Object[] ob = getDataFromJson(response.getData());
+                list = gson.fromJson(ob[1].toString(), new TypeToken<List<MessageShow>>(){}.getType());
+                data.setCount(Integer.parseInt(ob[0].toString()));
+                data.setList(list);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-        return list;
+
+        return data;
     }
 
     /**
@@ -641,16 +682,24 @@ public class WebHelper {
      * @param city
      * @return
      */
-    public List<Order> getMerchantOrder(int page,int pageSize,String city){
+    public Data<Order> getMerchantOrder(int page,int pageSize,String city){
         Object[] objects = new Object[]{
                 "page",page,"pagesize",pageSize,"city",city
         };
-        List<Order> list = new ArrayList<>();
         Response response = service.getWebservice(Api.GetMerchantOrder,objects,Constants.RequestType);
+        Data<Order> data = new Data<>();
+        List<Order> list = new ArrayList<>();
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData(), new TypeToken<List<Order>>(){}.getType());
+            try {
+                Object[] ob = getDataFromJson(response.getData());
+                list = gson.fromJson(ob[1].toString(), new TypeToken<List<Order>>(){}.getType());
+                data.setCount(Integer.parseInt(ob[0].toString()));
+                data.setList(list);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-        return list;
+        return data;
     }
 
     /**
@@ -659,16 +708,24 @@ public class WebHelper {
      * @param type
      * @return
      */
-    public List<Order> getShopByUid(int uid,int type){
+    public Data<Order> getShopByUid(int uid,int type,int page,int pagesize){
         Object[] objects = new Object[]{
-                "uid",uid
+                "uid",uid,"page",page,"pagesize",pagesize
         };
-        List<Order> list = new ArrayList<>();
         Response response = service.getWebservice(Api.GetShopByUid,objects,Constants.RequestType);
+        Data<Order> data = new Data<>();
+        List<Order> list = new ArrayList<>();
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData(), new TypeToken<List<Order>>(){}.getType());
+            try {
+                Object[] ob = getDataFromJson(response.getData());
+                list = gson.fromJson(ob[1].toString(), new TypeToken<List<Order>>(){}.getType());
+                data.setCount(Integer.parseInt(ob[0].toString()));
+                data.setList(list);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-        return list;
+        return data;
     }
 
     /**
@@ -677,16 +734,24 @@ public class WebHelper {
      * @param pageSize
      * @return
      */
-    public List<Order> getExchange(int page,int pageSize){
+    public Data<Order> getExchange(int page,int pageSize){
         Object[] objects = new Object[]{
                 "page",page,"pagesize",pageSize
         };
-        List<Order> list = new ArrayList<>();
         Response response = service.getWebservice(Api.GetExchange,objects,Constants.RequestType);
+        Data<Order> data = new Data<>();
+        List<Order> list = new ArrayList<>();
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData(), new TypeToken<List<Order>>(){}.getType());
+            try {
+                Object[] ob = getDataFromJson(response.getData());
+                list = gson.fromJson(ob[1].toString(), new TypeToken<List<Order>>(){}.getType());
+                data.setCount(Integer.parseInt(ob[0].toString()));
+                data.setList(list);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-        return list;
+        return data;
     }
 
     /**
@@ -774,4 +839,11 @@ public class WebHelper {
     }
 
 
+    private Object[] getDataFromJson(String json) throws JSONException {
+        Object[] data = new Object[2];
+        JSONObject object = new JSONObject(json);
+        data[0] = object.optInt("m_Item1");
+        data[1] = object.getString("m_Item2");
+        return data;
+    }
 }

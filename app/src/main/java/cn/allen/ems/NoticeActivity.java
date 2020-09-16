@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 
+import java.util.List;
+
 import allen.frame.ActivityHelper;
 import allen.frame.AllenBaseActivity;
 import allen.frame.entry.City;
@@ -20,6 +22,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.allen.ems.adapter.NoticeAdapter;
+import cn.allen.ems.data.WebHelper;
+import cn.allen.ems.entry.Notice;
 
 public class NoticeActivity extends AllenBaseActivity {
     @BindView(R.id.toolbar)
@@ -31,6 +36,8 @@ public class NoticeActivity extends AllenBaseActivity {
 
     private SharedPreferences shared;
     private boolean isRefresh = false;
+    private List<Notice> list,sublist;
+    private NoticeAdapter adapter;
     private int page = 0;
     private int pagesize = 10;
     private int uid;
@@ -48,6 +55,8 @@ public class NoticeActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
+        setSupportActionBar(bar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -55,7 +64,8 @@ public class NoticeActivity extends AllenBaseActivity {
         LinearLayoutManager manager = new LinearLayoutManager(context);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         rv.setLayoutManager(manager);
-
+        adapter = new NoticeAdapter();
+        rv.setAdapter(adapter);
         actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START, "");
         loadData();
     }
@@ -71,7 +81,7 @@ public class NoticeActivity extends AllenBaseActivity {
             }
         });
         mater.setMaterialRefreshListener(materListener);
-//        adapter.setOnItemClickListener(listener);
+        adapter.setOnItemClickListener(listener);
     }
 
     private MaterialRefreshListener materListener = new MaterialRefreshListener() {
@@ -89,8 +99,21 @@ public class NoticeActivity extends AllenBaseActivity {
         }
     };
 
-    private void loadData(){
+    private NoticeAdapter.OnItemClickListener listener = new NoticeAdapter.OnItemClickListener() {
+        @Override
+        public void itemClick(View v, Notice entry) {
 
+        }
+    };
+
+    private void loadData(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                sublist = WebHelper.init().getTipsList(page++,pagesize).getList();
+                handler.sendEmptyMessage(0);
+            }
+        }).start();
     }
 
     @SuppressLint("HandlerLeak")
@@ -100,22 +123,22 @@ public class NoticeActivity extends AllenBaseActivity {
             switch (msg.what) {
                 case 0:
                     actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
-//                    if (isRefresh) {
-//                        list = sublist;
-//                        mater.finishRefresh();
-//                    } else {
-//                        if (page == 1) {
-//                            list = sublist;
-//                        } else {
-//                            list.addAll(sublist);
-//                        }
-//                        mater.finishRefreshLoadMore();
-//                    }
-//                    if (list.size() == 0) {
-//                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL, "");
-//                    }
-//                    actHelper.setCanLoadMore(mater, pagesize, list);
-//                    adapter.setList(list);
+                    if (isRefresh) {
+                        list = sublist;
+                        mater.finishRefresh();
+                    } else {
+                        if (page == 1) {
+                            list = sublist;
+                        } else {
+                            list.addAll(sublist);
+                        }
+                        mater.finishRefreshLoadMore();
+                    }
+                    if (list.size() == 0) {
+                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL, "");
+                    }
+                    actHelper.setCanLoadMore(mater, pagesize, list);
+                    adapter.setList(list);
                     break;
             }
         }

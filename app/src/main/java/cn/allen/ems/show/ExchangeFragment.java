@@ -1,4 +1,4 @@
-package cn.allen.ems.Exchange;
+package cn.allen.ems.show;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -27,10 +27,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.allen.ems.R;
 import cn.allen.ems.adapter.FragmentAdapter;
-import cn.allen.ems.adapter.TaskAdapter;
-import cn.allen.ems.entry.Task;
-import cn.allen.ems.shop.OrderFragment;
-import cn.allen.ems.shop.PointFragment;
 import cn.allen.ems.utils.Constants;
 
 public class ExchangeFragment extends Fragment {

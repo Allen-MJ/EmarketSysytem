@@ -67,6 +67,8 @@
     <string name="verify_id_back_hint">点击上传身份证反面照片</string>
     <string name="verify_info_hint">描述</string>
 
+    <string name="notice_hint">信息公告</string>
+
 
     <!--个人中心 end-->
     <!--任务 start-->
@@ -77,6 +79,16 @@
     <string name="shop_redeem_hint">立即兑换</string>
     <string name="redeem_ok_hint">确认兑换</string>
     <!--商城 end-->
+    <!--展示墙 start-->
+    <string name="show_issue_hint">发布</string>
+    <string name="show_shop_hint">发布商品</string>
+    <!--展示墙 end-->
+    <!--首页 start-->
+    <string name="home_game_hint">游戏规则</string>
+    <string name="game_one_hint">九宫格</string>
+    <string name="game_two_hint">挖钻机</string>
+    <string name="game_speed_hint">加速</string>
+    <!--首页 end-->
     <!--通用 start-->
     <string name="copy_hint">复制</string>
     <string name="commit_bt_hint">提交</string>

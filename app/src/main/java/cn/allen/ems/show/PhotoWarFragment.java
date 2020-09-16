@@ -1,4 +1,4 @@
-package cn.allen.ems.Exchange;
+package cn.allen.ems.show;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -9,12 +9,10 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -31,11 +29,10 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.allen.ems.R;
 import cn.allen.ems.data.WebHelper;
-import cn.allen.ems.entry.MessageShow;
 import cn.allen.ems.entry.PhotoShow;
 import cn.allen.ems.utils.Constants;
 
-public class ExchangeAreaFragment extends Fragment {
+public class PhotoWarFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
@@ -43,22 +40,22 @@ public class ExchangeAreaFragment extends Fragment {
     MaterialRefreshLayout refreshLayout;
     private SharedPreferences shared;
     private boolean isRefresh = false;
-    private int uid;
-    private ActivityHelper actHelper;
-    private List<MessageShow> list,sublist;
-    private CommonAdapter<MessageShow> adapter;
     private int page = 0;
     private int pagesize = 10;
+    private int uid;
+    private ActivityHelper actHelper;
+    private List<PhotoShow> list,sublist;
+    private CommonAdapter<PhotoShow> adapter;
 
-    public static ExchangeAreaFragment init() {
-        ExchangeAreaFragment fragment = new ExchangeAreaFragment();
+    public static PhotoWarFragment init() {
+        PhotoWarFragment fragment = new PhotoWarFragment();
         return fragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_exchange_area, container, false);
+        View v = inflater.inflate(R.layout.fragment_photo_war, container, false);
         actHelper = new ActivityHelper(getActivity(), v);
         unbinder = ButterKnife.bind(this, v);
         return v;
@@ -94,15 +91,15 @@ public class ExchangeAreaFragment extends Fragment {
     }
 
     private void initAdapter() {
-        LinearLayoutManager linearLayoutManager =
-                new LinearLayoutManager(getContext(),
-                        LinearLayoutManager.VERTICAL,false);
-        recyclerview.setLayoutManager(linearLayoutManager);
-        adapter=new CommonAdapter<MessageShow>(getContext(),R.layout.exchange_area_item_layout) {
+        StaggeredGridLayoutManager staggeredGridLayoutManager =
+                new StaggeredGridLayoutManager(2,
+                        StaggeredGridLayoutManager.VERTICAL);
+        recyclerview.setLayoutManager(staggeredGridLayoutManager);
+        adapter=new CommonAdapter<PhotoShow>(getContext(),R.layout.photo_wall_item_layout) {
             @Override
-            public void convert(ViewHolder holder, MessageShow entity, int position) {
+            public void convert(ViewHolder holder, PhotoShow entity, int position) {
+                holder.setImageByUrl(R.id.iv_photo,entity.getShowpicurl(),R.drawable.mis_default_error);
                 holder.setText(R.id.tv_photo_text,entity.getShowcontent());
-                holder.setText(R.id.tv_date,entity.getCreatetime());
             }
         };
         recyclerview.setAdapter(adapter);
@@ -126,17 +123,15 @@ public class ExchangeAreaFragment extends Fragment {
         }
     };
 
-
     private void loadData() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sublist = WebHelper.init().getshowMessage(page++, pagesize);
+                sublist = WebHelper.init().getshowPhoto(page++, pagesize).getList();
                 handler.sendEmptyMessage(0);
             }
         }).start();
     }
-
 
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {

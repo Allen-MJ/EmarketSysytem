@@ -22,7 +22,8 @@ import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.allen.ems.Exchange.ExchangeFragment;
+import cn.allen.ems.home.HomeFragment;
+import cn.allen.ems.show.ExchangeFragment;
 import cn.allen.ems.adapter.FragmentAdapter;
 import cn.allen.ems.shop.ShopHomeFragment;
 import cn.allen.ems.task.TaskFragment;
@@ -62,7 +63,7 @@ public class MainActivity extends AllenBaseActivity {
     protected void onResume() {
         super.onResume();
         name.setText(shared.getString(Constants.User_Name,""));
-        city.setText(shared.getString(Constants.User_City,"城市"));
+        city.setText(shared.getString(Constants.User_City,"重庆"));
     }
 
     @Override
@@ -75,7 +76,7 @@ public class MainActivity extends AllenBaseActivity {
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         list = new ArrayList<>();
-        list.add(UserFragment.init());
+        list.add(HomeFragment.init());
         list.add(ExchangeFragment.init());
         list.add(TaskFragment.init());
         list.add(ShopHomeFragment.init());
@@ -98,7 +99,7 @@ public class MainActivity extends AllenBaseActivity {
                     pager.setCurrentItem(0);
                     title.setText("");
                     name.setText(shared.getString(Constants.User_Name,""));
-                    city.setText(shared.getString(Constants.User_City,"城市"));
+                    city.setText(shared.getString(Constants.User_City,"重庆"));
                     name.setVisibility(View.VISIBLE);
                     city.setVisibility(View.VISIBLE);
                     break;
