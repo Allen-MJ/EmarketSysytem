@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -25,11 +26,13 @@
         android:layout_height="wrap_content"
         android:minWidth="@dimen/frame_photo_icon_size"
         android:layout_alignParentEnd="true"
+        android:clickable="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/frame_edge_distance"
         app:cardBackgroundColor="@color/colorPrimary"
         app:cardElevation="@dimen/frame_two_distance">
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layout_issuse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"

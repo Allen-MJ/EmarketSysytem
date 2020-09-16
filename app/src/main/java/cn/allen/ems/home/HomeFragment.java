@@ -21,6 +21,10 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import allen.frame.adapter.CommonAdapter;
+import allen.frame.adapter.ViewHolder;
+import allen.frame.tools.MsgUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -60,11 +64,13 @@ public class HomeFragment extends Fragment {
     private ActivityHelper actHelper;
     private List<Notice> list;
     private GameAdapter adapter;
+//    private CommonAdapter<NineGrid> adapter;
     private List<NineGrid> nineGrids;
     private String city="重庆";
     private List<QrCode> qrCodes;
     private ShareAdapter shareAdapter;
     private Drill drill;
+    private int clickPosition;
 
     public static HomeFragment init() {
         HomeFragment fragment = new HomeFragment();
@@ -121,6 +127,7 @@ public class HomeFragment extends Fragment {
         adapter.setOnItemClickListener(new GameAdapter.OnItemClickListener() {
             @Override
             public void itemClick(View v, int index) {
+                clickPosition=index;
 
             }
         });
@@ -148,6 +155,16 @@ public class HomeFragment extends Fragment {
             public void run() {
                 nineGrids = WebHelper.init().getNineGame(city);
                 handler.sendEmptyMessage(102);
+            }
+        }).start();
+    }
+
+    private void getSmashEgg(int id) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                WebHelper.init().smashEgg(handler,uid,id);
+                handler.sendEmptyMessage(1);
             }
         }).start();
     }
@@ -206,6 +223,16 @@ public class HomeFragment extends Fragment {
                     time.setText(drill.getSurplustime());
                     speedScore.setText(drill.getQuickentime());
                     speed.setText(getString(R.string.game_speed_hint) +"  "+ drill.getQuickencount());
+                    break;
+                case 10:
+                    MsgUtils.showLongToast(getContext(),(String)msg.obj);
+                    nineGrids.get(clickPosition).setIsclick(2);
+
+                    break;
+                case 11:
+                    MsgUtils.showLongToast(getContext(),(String)msg.obj);
+                    nineGrids.get(clickPosition).setIsclick(2);
+
                     break;
                 case -20:
 

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -26,29 +27,32 @@ import allen.frame.widget.MaterialRefreshLayout;
 import allen.frame.widget.MaterialRefreshListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.allen.ems.R;
 import cn.allen.ems.data.WebHelper;
 import cn.allen.ems.entry.PhotoShow;
 import cn.allen.ems.utils.Constants;
 
-public class PhotoWarFragment extends Fragment {
+public class PhotoWallFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     @BindView(R.id.refreshLayout)
     MaterialRefreshLayout refreshLayout;
+    @BindView(R.id.issue)
+    CardView issue;
     private SharedPreferences shared;
     private boolean isRefresh = false;
     private int page = 0;
     private int pagesize = 10;
     private int uid;
     private ActivityHelper actHelper;
-    private List<PhotoShow> list,sublist;
+    private List<PhotoShow> list, sublist;
     private CommonAdapter<PhotoShow> adapter;
 
-    public static PhotoWarFragment init() {
-        PhotoWarFragment fragment = new PhotoWarFragment();
+    public static PhotoWallFragment init() {
+        PhotoWallFragment fragment = new PhotoWallFragment();
         return fragment;
     }
 
@@ -78,7 +82,10 @@ public class PhotoWarFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == getActivity().RESULT_OK) {
-            if (requestCode == 11) {
+            if (requestCode == 100) {
+                isRefresh=true;
+                page=0;
+                loadData();
             }
         }
     }
@@ -95,11 +102,11 @@ public class PhotoWarFragment extends Fragment {
                 new StaggeredGridLayoutManager(2,
                         StaggeredGridLayoutManager.VERTICAL);
         recyclerview.setLayoutManager(staggeredGridLayoutManager);
-        adapter=new CommonAdapter<PhotoShow>(getContext(),R.layout.photo_wall_item_layout) {
+        adapter = new CommonAdapter<PhotoShow>(getContext(), R.layout.photo_wall_item_layout) {
             @Override
             public void convert(ViewHolder holder, PhotoShow entity, int position) {
-                holder.setImageByUrl(R.id.iv_photo,entity.getShowpicurl(),R.drawable.mis_default_error);
-                holder.setText(R.id.tv_photo_text,entity.getShowcontent());
+                holder.setImageByUrl(R.id.iv_photo, entity.getShowpicurl(), R.drawable.mis_default_error);
+                holder.setText(R.id.tv_photo_text, entity.getShowcontent());
             }
         };
         recyclerview.setAdapter(adapter);
@@ -108,6 +115,7 @@ public class PhotoWarFragment extends Fragment {
     private void addEvent(View view) {
         refreshLayout.setMaterialRefreshListener(materListener);
     }
+
     private MaterialRefreshListener materListener = new MaterialRefreshListener() {
         @Override
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
@@ -127,7 +135,7 @@ public class PhotoWarFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sublist = WebHelper.init().getshowPhoto(page++, pagesize);
+                sublist = WebHelper.init().getshowPhoto(page++, pagesize).getList();
                 handler.sendEmptyMessage(0);
             }
         }).start();
@@ -160,4 +168,12 @@ public class PhotoWarFragment extends Fragment {
             }
         }
     };
+
+    @OnClick(R.id.issue)
+    public void onViewClicked() {
+        Intent intent=new Intent(getActivity(),IssuePhotoActivity.class);
+        startActivityForResult(intent,100);
+
+    }
+
 }

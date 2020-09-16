@@ -9,14 +9,14 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.List;
 
@@ -28,11 +28,11 @@ import allen.frame.widget.MaterialRefreshLayout;
 import allen.frame.widget.MaterialRefreshListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.allen.ems.R;
 import cn.allen.ems.data.WebHelper;
 import cn.allen.ems.entry.MessageShow;
-import cn.allen.ems.entry.PhotoShow;
 import cn.allen.ems.utils.Constants;
 
 public class ExchangeAreaFragment extends Fragment {
@@ -41,11 +41,15 @@ public class ExchangeAreaFragment extends Fragment {
     RecyclerView recyclerview;
     @BindView(R.id.refreshLayout)
     MaterialRefreshLayout refreshLayout;
+    @BindView(R.id.issue)
+    CardView issue;
+    @BindView(R.id.layout_issuse)
+    LinearLayoutCompat layoutIssuse;
     private SharedPreferences shared;
     private boolean isRefresh = false;
     private int uid;
     private ActivityHelper actHelper;
-    private List<MessageShow> list,sublist;
+    private List<MessageShow> list, sublist;
     private CommonAdapter<MessageShow> adapter;
     private int page = 0;
     private int pagesize = 10;
@@ -81,7 +85,10 @@ public class ExchangeAreaFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == getActivity().RESULT_OK) {
-            if (requestCode == 11) {
+            if (requestCode == 100) {
+                isRefresh = true;
+                page = 0;
+                loadData();
             }
         }
     }
@@ -96,13 +103,13 @@ public class ExchangeAreaFragment extends Fragment {
     private void initAdapter() {
         LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(getContext(),
-                        LinearLayoutManager.VERTICAL,false);
+                        LinearLayoutManager.VERTICAL, false);
         recyclerview.setLayoutManager(linearLayoutManager);
-        adapter=new CommonAdapter<MessageShow>(getContext(),R.layout.exchange_area_item_layout) {
+        adapter = new CommonAdapter<MessageShow>(getContext(), R.layout.exchange_area_item_layout) {
             @Override
             public void convert(ViewHolder holder, MessageShow entity, int position) {
-                holder.setText(R.id.tv_photo_text,entity.getShowcontent());
-                holder.setText(R.id.tv_date,entity.getCreatetime());
+                holder.setText(R.id.tv_photo_text, entity.getShowcontent());
+                holder.setText(R.id.tv_date, entity.getCreatetime());
             }
         };
         recyclerview.setAdapter(adapter);
@@ -111,6 +118,7 @@ public class ExchangeAreaFragment extends Fragment {
     private void addEvent(View view) {
         refreshLayout.setMaterialRefreshListener(materListener);
     }
+
     private MaterialRefreshListener materListener = new MaterialRefreshListener() {
         @Override
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
@@ -131,7 +139,7 @@ public class ExchangeAreaFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sublist = WebHelper.init().getshowMessage(page++, pagesize);
+                sublist = WebHelper.init().getshowMessage(page++, pagesize).getList();
                 handler.sendEmptyMessage(0);
             }
         }).start();
@@ -165,4 +173,18 @@ public class ExchangeAreaFragment extends Fragment {
             }
         }
     };
+
+    @OnClick({R.id.issue, R.id.layout_issuse})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.issue:
+                Intent intent = new Intent(getActivity(), IssueMessageActivity.class);
+                startActivityForResult(intent, 100);
+                break;
+            case R.id.layout_issuse:
+                Intent intent1 = new Intent(getActivity(), IssueMessageActivity.class);
+                startActivityForResult(intent1, 100);
+                break;
+        }
+    }
 }

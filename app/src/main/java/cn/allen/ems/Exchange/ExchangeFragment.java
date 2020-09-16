@@ -27,10 +27,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.allen.ems.R;
 import cn.allen.ems.adapter.FragmentAdapter;
-import cn.allen.ems.adapter.TaskAdapter;
-import cn.allen.ems.entry.Task;
-import cn.allen.ems.shop.OrderFragment;
-import cn.allen.ems.shop.PointFragment;
 import cn.allen.ems.utils.Constants;
 
 public class ExchangeFragment extends Fragment {
@@ -87,7 +83,7 @@ public class ExchangeFragment extends Fragment {
         shared = AllenManager.getInstance().getStoragePreference();
         uid = shared.getInt(Constants.User_Id, -1);
         list = new ArrayList<>();
-        list.add(PhotoWarFragment.init());
+        list.add(PhotoWallFragment.init());
         list.add(ExchangeAreaFragment.init());
         adapter = new FragmentAdapter(getChildFragmentManager(),list,titles);
         pager.setAdapter(adapter);
