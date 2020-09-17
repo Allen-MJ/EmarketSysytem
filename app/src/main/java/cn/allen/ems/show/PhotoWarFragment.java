@@ -81,7 +81,10 @@ public class PhotoWarFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == getActivity().RESULT_OK) {
-            if (requestCode == 11) {
+            if (requestCode == 100) {
+                isRefresh=true;
+                page=0;
+                loadData();
             }
         }
     }
@@ -170,6 +173,8 @@ public class PhotoWarFragment extends Fragment {
         view.setEnabled(false);
         switch (view.getId()){
             case R.id.issue:
+                Intent intent=new Intent(getActivity(), IssuePhotoActivity.class);
+                startActivityForResult(intent,100);
                 break;
         }
         view.setEnabled(true);

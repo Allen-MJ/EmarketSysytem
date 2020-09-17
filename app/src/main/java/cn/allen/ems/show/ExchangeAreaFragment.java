@@ -81,7 +81,10 @@ public class ExchangeAreaFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == getActivity().RESULT_OK) {
-            if (requestCode == 11) {
+            if (requestCode == 100) {
+                isRefresh = true;
+                page = 0;
+                loadData();
             }
         }
     }
@@ -172,6 +175,7 @@ public class ExchangeAreaFragment extends Fragment {
         view.setEnabled(false);
         switch (view.getId()){
             case R.id.issue:
+                startActivityForResult(new Intent(getActivity(),IssueMessageActivity.class),100);
                 break;
         }
         view.setEnabled(true);

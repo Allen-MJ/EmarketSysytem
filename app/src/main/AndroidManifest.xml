@@ -17,11 +17,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Exchange.IssueMessageActivity"
+        <activity android:name=".show.IssueMessageActivity"
             android:label="@string/issue_message"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Exchange.IssuePhotoActivity"
+            android:name=".show.IssuePhotoActivity"
             android:label="@string/issue_photo"
             android:screenOrientation="portrait" />
 

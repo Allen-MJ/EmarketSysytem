@@ -1,4 +1,4 @@
-package cn.allen.ems.Exchange;
+package cn.allen.ems.show;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
