@@ -22,6 +22,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+
 import allen.frame.adapter.CommonAdapter;
 import allen.frame.adapter.ViewHolder;
 import allen.frame.tools.MsgUtils;
@@ -63,14 +66,14 @@ public class HomeFragment extends Fragment {
     private int uid;
     private ActivityHelper actHelper;
     private List<Notice> list;
-    private GameAdapter adapter;
-//    private CommonAdapter<NineGrid> adapter;
+//    private GameAdapter adapter;
+    private CommonAdapter<NineGrid> adapter;
     private List<NineGrid> nineGrids;
     private String city="重庆";
     private List<QrCode> qrCodes;
     private ShareAdapter shareAdapter;
     private Drill drill;
-    private int clickPosition;
+    private int clickPosition=-1;
 
     public static HomeFragment init() {
         HomeFragment fragment = new HomeFragment();
@@ -110,10 +113,8 @@ public class HomeFragment extends Fragment {
         shared = AllenManager.getInstance().getStoragePreference();
         uid = shared.getInt(Constants.User_Id, -1);
         city = shared.getString(Constants.User_City, "重庆");
-        GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
-        gameRv.setLayoutManager(manager);
-        adapter = new GameAdapter();
-        gameRv.setAdapter(adapter);
+        initAdapter();
+
         GridLayoutManager smanager = new GridLayoutManager(getActivity(), 2);
         sharedRv.setLayoutManager(smanager);
         shareAdapter = new ShareAdapter();
@@ -123,12 +124,45 @@ public class HomeFragment extends Fragment {
         getQrCodes();
     }
 
-    private void addEvent(View view) {
-        adapter.setOnItemClickListener(new GameAdapter.OnItemClickListener() {
+    private void initAdapter() {
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
+        gameRv.setLayoutManager(manager);
+//        adapter = new GameAdapter();
+        adapter=new CommonAdapter<NineGrid>(getContext(),R.layout.item_ninegrid) {
             @Override
-            public void itemClick(View v, int index) {
-                clickPosition=index;
+            public void convert(ViewHolder holder, NineGrid entity, int position) {
+                AppCompatImageView view=holder.getView(R.id.nine_item_icon);
+                if (position==clickPosition){
+                    Glide.with(getActivity()).load(R.mipmap.dankai).into(new GlideDrawableImageViewTarget(view, 1));
+                }else {
+                    Glide.with(getActivity()).load(R.mipmap.ic_logo_42).into(view);
+                }
 
+            }
+        };
+        gameRv.setAdapter(adapter);
+    }
+
+    private void addEvent(View view) {
+//        adapter.setOnItemClickListener(new GameAdapter.OnItemClickListener() {
+//            @Override
+//            public void itemClick(View v, int index) {
+//                clickPosition=index;
+//
+//            }
+//        });
+        adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                clickPosition=position;
+                adapter.notifyItemChanged(position);
+//                adapter.notifyDataSetChanged();
+                getSmashEgg(nineGrids.get(position).getPalacesid());
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
             }
         });
         shareAdapter.setOnItemClickListener(new ShareAdapter.OnItemClickListener() {
@@ -164,7 +198,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void run() {
                 WebHelper.init().smashEgg(handler,uid,id);
-                handler.sendEmptyMessage(1);
             }
         }).start();
     }
@@ -214,7 +247,8 @@ public class HomeFragment extends Fragment {
                     postDelayed(runnable, 3000);
                     break;
                 case 102:
-                    adapter.setList(nineGrids);
+//                    adapter.setList(nineGrids);
+                    adapter.setDatas(nineGrids);
                     break;
                 case 103:
                     shareAdapter.setList(qrCodes);
@@ -226,12 +260,11 @@ public class HomeFragment extends Fragment {
                     break;
                 case 10:
                     MsgUtils.showLongToast(getContext(),(String)msg.obj);
-                    nineGrids.get(clickPosition).setIsclick(2);
+                    getGameFirst();
 
                     break;
                 case 11:
                     MsgUtils.showLongToast(getContext(),(String)msg.obj);
-                    nineGrids.get(clickPosition).setIsclick(2);
 
                     break;
                 case -20:

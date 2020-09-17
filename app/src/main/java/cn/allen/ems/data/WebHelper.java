@@ -63,7 +63,7 @@ public class WebHelper {
                 .putInt(Constants.User_Sex,user.getSex())
                 .putInt(Constants.User_LoginCount,user.getLogincount())
                 .putString(Constants.User_PassWord,user.getPassWord())
-                .putString(Constants.User_City,user.getCity())
+//                .putString(Constants.User_City,user.getCity())
                 .putString(Constants.User_Invitation,user.getInvitationcode())
                 .putFloat(Constants.User_ChangeScore,user.getCurrency1())
                 .putFloat(Constants.User_Gold,user.getCurrency2())
@@ -456,6 +456,7 @@ public class WebHelper {
         };
         List<NineGrid> list = new ArrayList<>();
         Response response = service.getWebservice(Api.GetNineGame,objects,Constants.RequestType);
+        Logger.e(Api.GetNineGame,response.getData());
         if(response.isSuccess("200")){
             list = gson.fromJson(response.getData(), new TypeToken<List<NineGrid>>(){}.getType());
         }

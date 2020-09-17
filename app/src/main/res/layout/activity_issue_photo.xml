@@ -16,7 +16,6 @@
         android:textSize="@dimen/frame_text_normal_size"
         />
     <androidx.cardview.widget.CardView
-        android:id="@+id/issue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/frame_edge_distance"
