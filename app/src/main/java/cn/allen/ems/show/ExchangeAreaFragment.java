@@ -10,12 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
 import allen.frame.ActivityHelper;
@@ -24,8 +18,15 @@ import allen.frame.adapter.CommonAdapter;
 import allen.frame.adapter.ViewHolder;
 import allen.frame.widget.MaterialRefreshLayout;
 import allen.frame.widget.MaterialRefreshListener;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.allen.ems.R;
 import cn.allen.ems.data.WebHelper;
@@ -38,11 +39,13 @@ public class ExchangeAreaFragment extends Fragment {
     RecyclerView recyclerview;
     @BindView(R.id.refreshLayout)
     MaterialRefreshLayout refreshLayout;
+    @BindView(R.id.issue)
+    CardView issue;
     private SharedPreferences shared;
     private boolean isRefresh = false;
     private int uid;
     private ActivityHelper actHelper;
-    private List<MessageShow> list,sublist;
+    private List<MessageShow> list, sublist;
     private CommonAdapter<MessageShow> adapter;
     private int page = 0;
     private int pagesize = 10;
@@ -93,13 +96,13 @@ public class ExchangeAreaFragment extends Fragment {
     private void initAdapter() {
         LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(getContext(),
-                        LinearLayoutManager.VERTICAL,false);
+                        LinearLayoutManager.VERTICAL, false);
         recyclerview.setLayoutManager(linearLayoutManager);
-        adapter=new CommonAdapter<MessageShow>(getContext(),R.layout.exchange_area_item_layout) {
+        adapter = new CommonAdapter<MessageShow>(getContext(), R.layout.exchange_area_item_layout) {
             @Override
             public void convert(ViewHolder holder, MessageShow entity, int position) {
-                holder.setText(R.id.tv_photo_text,entity.getShowcontent());
-                holder.setText(R.id.tv_date,entity.getCreatetime());
+                holder.setText(R.id.tv_photo_text, entity.getShowcontent());
+                holder.setText(R.id.tv_date, entity.getCreatetime());
             }
         };
         recyclerview.setAdapter(adapter);
@@ -108,6 +111,7 @@ public class ExchangeAreaFragment extends Fragment {
     private void addEvent(View view) {
         refreshLayout.setMaterialRefreshListener(materListener);
     }
+
     private MaterialRefreshListener materListener = new MaterialRefreshListener() {
         @Override
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
@@ -162,4 +166,14 @@ public class ExchangeAreaFragment extends Fragment {
             }
         }
     };
+
+    @OnClick(R.id.issue)
+    public void onViewClicked(View view) {
+        view.setEnabled(false);
+        switch (view.getId()){
+            case R.id.issue:
+                break;
+        }
+        view.setEnabled(true);
+    }
 }

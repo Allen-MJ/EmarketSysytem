@@ -27,6 +27,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/frame_edge_distance"
+        android:foreground="?attr/selectableItemBackground"
         app:cardBackgroundColor="@color/colorPrimary"
         app:cardElevation="@dimen/frame_two_distance">
         <androidx.appcompat.widget.LinearLayoutCompat
