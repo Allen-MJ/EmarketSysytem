@@ -32,4 +32,6 @@ public class Api {
     public static final String SeenVideo = "SeenVideo";//观看视频完成
     public static final String GetShopByUid = "GetShopByUid";//我的商品
     public static final String GetShowMessageByUid = "GetShowMessageByUid";//我的发布记录
+    public static final String GetMySpread = "GetMySpread";//我的推广类表
+    public static final String SendWaitMessage = "SendWaitMessage";//发送留言
 }

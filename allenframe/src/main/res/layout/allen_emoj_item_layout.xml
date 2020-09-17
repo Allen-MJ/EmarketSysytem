@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/item_layout"
+    android:background="@drawable/icon_bg_selecor"
+    android:padding="@dimen/frame_eight_distance">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/emoj_item_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

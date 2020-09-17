@@ -17,6 +17,7 @@ import java.util.List;
 import allen.frame.AllenManager;
 import allen.frame.tools.Logger;
 import cn.allen.ems.entry.Address;
+import cn.allen.ems.entry.Campaign;
 import cn.allen.ems.entry.Data;
 import cn.allen.ems.entry.Drill;
 import cn.allen.ems.entry.MessageShow;
@@ -845,5 +846,64 @@ public class WebHelper {
         data[0] = object.optInt("m_Item1");
         data[1] = object.getString("m_Item2");
         return data;
+    }
+
+    private String[] getData3FromJson(String json) throws JSONException {
+        String[] data = new String[2];
+        JSONObject object = new JSONObject(json);
+        data[0] = object.optString("m_Item1");
+        data[1] = object.optString("m_Item2");
+        return data;
+    }
+
+    /**
+     * 获取我的推广列表
+     * @param uid
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public Data<Campaign> getMySpread(int uid, int page, int pageSize){
+        Object[] objects = new Object[]{
+                "uid",uid,"page",page,"pagesize",pageSize
+        };
+        Response response = service.getWebservice(Api.GetMySpread,objects,Constants.RequestType);
+        List<Campaign> list = new ArrayList<>();
+        Data<Campaign> data = new Data<>();
+        if(response.isSuccess("200")){
+            try {
+                String[] ob = getData3FromJson(response.getData());
+                list = gson.fromJson(ob[1], new TypeToken<List<Campaign>>(){}.getType());
+                JSONObject object = new JSONObject(ob[0]);
+                data.setCount(object.optInt("spreadCount"));
+                data.setCount2(object.optInt("totalReward"));
+                data.setList(list);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return data;
+    }
+
+    /**
+     * 发送留言
+     * @param handler
+     * @param uid
+     * @param messageContent
+     */
+    public void sendWaitMessage(Handler handler,int uid,String messageContent){
+        Object[] objects = new Object[]{
+                "uid",uid,"messageContent",messageContent
+        };
+        Response response = service.getWebservice(Api.SendWaitMessage,objects,Constants.RequestType);
+        Message msg = new Message();
+        if(response.isSuccess("200")){
+            msg.what = 1;
+        }else {
+            msg.what = -1;
+        }
+        msg.obj = response.getMessage();
+        handler.sendMessage(msg);
     }
 }

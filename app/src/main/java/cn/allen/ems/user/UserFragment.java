@@ -138,6 +138,7 @@ public class UserFragment extends Fragment {
                 startActivity(new Intent(getActivity(), AddressActivity.class));
                 break;
             case R.id.user_about_us:
+                startActivity(new Intent(getActivity(), UserTalkActivity.class));
                 break;
             case R.id.user_version:
                 startActivity(new Intent(getActivity(), VersionActivity.class));

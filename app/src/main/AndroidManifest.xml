@@ -92,6 +92,11 @@
             android:label="@string/user_my_record_hint"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".user.UserTalkActivity"
+            android:label="@string/user_about_us_hint"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".task.WatchActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensor"

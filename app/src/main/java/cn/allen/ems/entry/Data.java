@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Data<T> implements Serializable {
     private int count;
+    private int count2;
     private List<T> list;
 
     public Data() {
@@ -17,6 +18,14 @@ public class Data<T> implements Serializable {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public int getCount2() {
+        return count2;
+    }
+
+    public void setCount2(int count2) {
+        this.count2 = count2;
     }
 
     public List<T> getList() {
