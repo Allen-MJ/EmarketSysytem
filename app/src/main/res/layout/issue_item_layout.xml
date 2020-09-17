@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="@dimen/frame_203_distance"
+        android:layout_height="@dimen/frame_203_distance"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:src="@mipmap/ic_logo_14"
+        />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/frame_text_small_size"
+        android:textColor="@color/text_gray_color"
+        android:padding="@dimen/frame_eight_distance"
+        android:gravity="center"
+        android:layout_gravity="center"
+        />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -7,6 +7,7 @@ public class NineGrid implements Serializable {
     private int shopid;
     private float currency;
     private String city;
+    private int isclick=0;
 
     public NineGrid() {
     }
@@ -19,6 +20,14 @@ public class NineGrid implements Serializable {
                 ", currency=" + currency +
                 ", city='" + city + '\'' +
                 '}';
+    }
+
+    public int getIsclick() {
+        return isclick;
+    }
+
+    public void setIsclick(int isclick) {
+        this.isclick = isclick;
     }
 
     public int getPalacesid() {

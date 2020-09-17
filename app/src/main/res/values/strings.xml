@@ -68,6 +68,8 @@
     <string name="verify_info_hint">描述</string>
 
     <string name="notice_hint">信息公告</string>
+    <string name="issue_photo">发布照片墙</string>
+    <string name="issue_message">发布交易物品</string>
 
 
     <!--个人中心 end-->
@@ -82,6 +84,8 @@
     <!--展示墙 start-->
     <string name="show_issue_hint">发布</string>
     <string name="show_shop_hint">发布商品</string>
+    <string name="show_shop_des">描述文字</string>
+    <string name="show_shop_please_edit">请输入描述文字</string>
     <!--展示墙 end-->
     <!--首页 start-->
     <string name="home_game_hint">游戏规则</string>
