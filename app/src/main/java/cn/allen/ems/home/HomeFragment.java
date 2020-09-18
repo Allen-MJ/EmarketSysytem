@@ -10,10 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
-import allen.frame.ActivityHelper;
-import allen.frame.AllenManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -25,16 +21,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+import allen.frame.ActivityHelper;
+import allen.frame.AllenManager;
 import allen.frame.adapter.CommonAdapter;
 import allen.frame.adapter.ViewHolder;
+import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
+import allen.frame.tools.TimeMeter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.allen.ems.NoticeActivity;
 import cn.allen.ems.R;
-import cn.allen.ems.adapter.GameAdapter;
 import cn.allen.ems.adapter.ShareAdapter;
 import cn.allen.ems.data.WebHelper;
 import cn.allen.ems.entry.Drill;
@@ -55,25 +58,29 @@ public class HomeFragment extends Fragment {
     AppCompatTextView time;
     @BindView(R.id.score)
     AppCompatImageView score;
-    @BindView(R.id.speed_score)
-    AppCompatTextView speedScore;
     @BindView(R.id.speed)
     AppCompatTextView speed;
     @BindView(R.id.shared_rv)
     RecyclerView sharedRv;
+    @BindView(R.id.speed_time)
+    AppCompatTextView speedTime;
     private SharedPreferences shared;
     private boolean isRefresh = false;
     private int uid;
     private ActivityHelper actHelper;
     private List<Notice> list;
-//    private GameAdapter adapter;
+    //    private GameAdapter adapter;
     private CommonAdapter<NineGrid> adapter;
     private List<NineGrid> nineGrids;
-    private String city="重庆";
+    private String city = "重庆";
     private List<QrCode> qrCodes;
     private ShareAdapter shareAdapter;
     private Drill drill;
-    private int clickPosition=-1;
+    private int clickPosition = -1;
+    private int surplustime;
+    private int muin;
+    private int seconds;
+    private TimeMeter timeMeter = TimeMeter.getInstance();
 
     public static HomeFragment init() {
         HomeFragment fragment = new HomeFragment();
@@ -106,13 +113,19 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getSpeed();
+        getDrill();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        timeMeter.stop();
     }
 
     private void initUI(View view) {
         shared = AllenManager.getInstance().getStoragePreference();
         uid = shared.getInt(Constants.User_Id, -1);
-        city = shared.getString(Constants.User_City, "重庆");
+//        city = shared.getString(Constants.User_City, "重庆");
         initAdapter();
 
         GridLayoutManager smanager = new GridLayoutManager(getActivity(), 2);
@@ -128,13 +141,13 @@ public class HomeFragment extends Fragment {
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
         gameRv.setLayoutManager(manager);
 //        adapter = new GameAdapter();
-        adapter=new CommonAdapter<NineGrid>(getContext(),R.layout.item_ninegrid) {
+        adapter = new CommonAdapter<NineGrid>(getContext(), R.layout.item_ninegrid) {
             @Override
             public void convert(ViewHolder holder, NineGrid entity, int position) {
-                AppCompatImageView view=holder.getView(R.id.nine_item_icon);
-                if (position==clickPosition){
+                AppCompatImageView view = holder.getView(R.id.nine_item_icon);
+                if (position == clickPosition) {
                     Glide.with(getActivity()).load(R.mipmap.dankai).into(new GlideDrawableImageViewTarget(view, 1));
-                }else {
+                } else {
                     Glide.with(getActivity()).load(R.mipmap.ic_logo_42).into(view);
                 }
 
@@ -154,9 +167,10 @@ public class HomeFragment extends Fragment {
         adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                clickPosition=position;
+                clickPosition = position;
                 adapter.notifyItemChanged(position);
 //                adapter.notifyDataSetChanged();
+                gameRv.setEnabled(false);
                 getSmashEgg(nineGrids.get(position).getPalacesid());
             }
 
@@ -197,12 +211,12 @@ public class HomeFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                WebHelper.init().smashEgg(handler,uid,id);
+                WebHelper.init().smashEgg(handler, uid, id);
             }
         }).start();
     }
 
-    private void getQrCodes(){
+    private void getQrCodes() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -212,11 +226,20 @@ public class HomeFragment extends Fragment {
         }).start();
     }
 
-    private void getSpeed(){
+    private void getDrill() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                drill = WebHelper.init().beginDrill(handler,uid);
+                drill = WebHelper.init().beginDrill(handler, uid);
+            }
+        }).start();
+    }
+
+    private void getSpeed() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                drill = WebHelper.init().quickenDrill(handler, uid, drill.getDrillid(), drill.getQuickentime());
             }
         }).start();
     }
@@ -228,6 +251,36 @@ public class HomeFragment extends Fragment {
             handler.sendEmptyMessage(101);
         }
     };
+
+
+    TimeMeter.OnTimerLisener timeListener = new TimeMeter.OnTimerLisener() {
+
+        @Override
+        public void onStart() {
+            // TODO Auto-generated method stub
+        }
+
+        @SuppressWarnings("static-access")
+        @Override
+        public void onInTime(long inTime) {
+            // TODO Auto-generated method stub
+            time.setText(timeMeter.getCountdown(inTime));
+            if (surplustime > 0) {
+                muin = (int) ((surplustime - inTime) / 60);
+                seconds = (int) ((surplustime - inTime) % 60);
+            } else {
+                muin = (int) (inTime / 60);
+                seconds = (int) (inTime % 60);
+            }
+        }
+
+        @Override
+        public void onEnd() {
+            Logger.e("onEnd", "onend");
+        }
+    };
+
+
     private int index = 0;
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -248,23 +301,35 @@ public class HomeFragment extends Fragment {
                     break;
                 case 102:
 //                    adapter.setList(nineGrids);
+                    gameRv.setEnabled(true);
                     adapter.setDatas(nineGrids);
                     break;
                 case 103:
                     shareAdapter.setList(qrCodes);
                     break;
                 case 20:
-                    time.setText(drill.getSurplustime());
-                    speedScore.setText(drill.getQuickentime());
-                    speed.setText(getString(R.string.game_speed_hint) +"  "+ drill.getQuickencount());
+                    String time =drill.getSurplustime();
+                    String[] my =time.split(":");
+                    int hour =Integer.parseInt(my[0]);
+                    int min =Integer.parseInt(my[1]);
+                    int sec =Integer.parseInt(my[2]);
+                    surplustime =hour*3600+min*60+sec;
+                    timeMeter.start();
+                    timeMeter.setMaxTime(surplustime);
+                    timeMeter.setTimerLisener(timeListener);
+                    speedTime.setText(drill.getQuickentime()+"");
+                    speed.setText(getString(R.string.game_speed_hint) + "  " + drill.getQuickencount());
                     break;
                 case 10:
-                    MsgUtils.showLongToast(getContext(),(String)msg.obj);
+                    MsgUtils.showMDMessage(getContext(), (String) msg.obj);
+                    clickPosition = -1;
                     getGameFirst();
 
                     break;
                 case 11:
-                    MsgUtils.showLongToast(getContext(),(String)msg.obj);
+                    MsgUtils.showLongToast(getContext(), (String) msg.obj);
+                    clickPosition = -1;
+                    getGameFirst();
 
                     break;
                 case -20:
@@ -283,7 +348,14 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(getActivity(), NoticeActivity.class));
                 break;
             case R.id.speed:
-
+                if (drill.getQuickencount()==0){
+                    MsgUtils.showLongToast(getContext(),"您没有加速次数！");
+                    return;
+                }else if (drill.getQuickentime()==0){
+                    MsgUtils.showLongToast(getContext(),"您没有加速时间!");
+                    return;
+                }
+                getSpeed();
                 break;
         }
     }
