@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -59,6 +60,21 @@ public class UserVerifyActivity extends AllenBaseActivity {
     @Override
     protected int getLayoutResID() {
         return R.layout.activity_verify;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(RESULT_OK==resultCode){
+            if(requestCode==11){
+                String type = data.getStringExtra(CameraActivity.KEY_CONTENT_TYPE);
+                if(type.equals(CameraActivity.CONTENT_TYPE_ID_CARD_FRONT)){
+                    verifyIdFont.setImageURI(Uri.fromFile(utils.creatNewFile("ids","front.jpg")));
+                }else if(type.equals(CameraActivity.CONTENT_TYPE_ID_CARD_BACK)){
+                    verifyIdBack.setImageURI(Uri.fromFile(utils.creatNewFile("ids","back.jpg")));
+                }
+            }
+        }
     }
 
     @Override
