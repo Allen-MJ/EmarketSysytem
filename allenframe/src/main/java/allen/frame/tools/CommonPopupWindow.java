@@ -85,6 +85,18 @@ public class CommonPopupWindow extends PopupWindow {
         }
 
         /**
+         * 设置宽度和高度 如果不设置 默认是wrap_content
+         *
+         * @param width 宽
+         * @return Builder
+         */
+        public Builder setWidthAndHeight(int width, int height) {
+            params.mWidth = width;
+            params.mHeight = height;
+            return this;
+        }
+
+        /**
          * 设置背景灰色程度
          *
          * @param level 0.0f-1.0f

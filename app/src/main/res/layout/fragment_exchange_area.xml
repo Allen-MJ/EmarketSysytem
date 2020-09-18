@@ -26,7 +26,6 @@
         android:layout_height="wrap_content"
         android:minWidth="@dimen/frame_photo_icon_size"
         android:layout_alignParentEnd="true"
-        android:clickable="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/frame_edge_distance"
         app:cardBackgroundColor="@color/colorPrimary"
