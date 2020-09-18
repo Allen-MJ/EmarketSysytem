@@ -892,18 +892,21 @@ public class WebHelper {
      * @param uid
      * @param messageContent
      */
-    public void sendWaitMessage(Handler handler,int uid,String messageContent){
+    public String sendWaitMessage(Handler handler,int uid,String messageContent){
         Object[] objects = new Object[]{
                 "uid",uid,"messageContent",messageContent
         };
+        String mes = "";
         Response response = service.getWebservice(Api.SendWaitMessage,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
             msg.what = 1;
+            mes = messageContent;
         }else {
             msg.what = -1;
         }
         msg.obj = response.getMessage();
         handler.sendMessage(msg);
+        return mes;
     }
 }

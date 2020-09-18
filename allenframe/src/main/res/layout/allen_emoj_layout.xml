@@ -42,7 +42,8 @@
     <RelativeLayout
         android:id="@+id/emoj_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/emoj_rv"
             android:layout_width="match_parent"
@@ -68,7 +69,6 @@
             android:background="@drawable/icon_bg_selecor"
             android:src="@drawable/compose_emotion_delete"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
             android:layout_toStartOf="@id/send_bt"/>
     </RelativeLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -88,10 +88,10 @@ public class LoginActivity extends AllenIMBaseActivity {
     protected void initUI(@Nullable Bundle savedInstanceState) {
         loginPhone.setText(shared.getString(Constants.User_Phone,""));
         loginPsw.setText("qwe!123");
-        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE) !=PERMISSION_GRANTED||
+        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.CAMERA) !=PERMISSION_GRANTED||ActivityCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE) !=PERMISSION_GRANTED||
                 ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_WIFI_STATE) !=PERMISSION_GRANTED||
                 ActivityCompat.checkSelfPermission(this,Manifest.permission.READ_PHONE_STATE) !=PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.ACCESS_WIFI_STATE,Manifest.permission.READ_PHONE_STATE}, REQUEST_CAMERA_PERMISSION);
             return;
         }

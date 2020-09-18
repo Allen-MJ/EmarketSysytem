@@ -9,8 +9,19 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
-    <FrameLayout
-        android:id="@+id/emoj_layout"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/gray_line_color"
+        android:gravity="center"
+        android:padding="@dimen/frame_eight_distance">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/talk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/frame_text_small_size"
+            android:padding="@dimen/frame_eight_distance"
+            android:background="@drawable/emoj_input_bg"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.appcompat.widget.LinearLayoutCompat>

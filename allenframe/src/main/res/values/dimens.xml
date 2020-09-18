@@ -41,4 +41,8 @@
     <dimen name="design_bottom_navigation_margin" tools:override="true">@dimen/frame_eight_distance</dimen>//icon与文本之间的间距
     <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/frame_photo_icon_size</dimen>//高度
 
+    <dimen name="camera_left_margin">@dimen/frame_edge_distance</dimen>
+    <dimen name="camera_right_margin">@dimen/frame_edge_distance</dimen>
+    <dimen name="camera_bottom_margin">@dimen/frame_edge_distance</dimen>
+    <dimen name="camera_top_margin">@dimen/frame_edge_distance</dimen>
 </resources>

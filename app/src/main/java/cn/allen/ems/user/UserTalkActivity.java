@@ -1,21 +1,30 @@
 package cn.allen.ems.user;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 
-import allen.emoj.EmotionMainFragment;
 import allen.frame.AllenBaseActivity;
 import allen.frame.AllenManager;
-import allen.frame.EmojFragment;
+import allen.frame.tools.MsgUtils;
+import allen.frame.tools.StringUtils;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.allen.ems.R;
+import cn.allen.ems.adapter.TalkAdapter;
+import cn.allen.ems.data.WebHelper;
+import cn.allen.ems.entry.TalkMsg;
+import cn.allen.ems.utils.Constants;
 
 public class UserTalkActivity extends AllenBaseActivity {
 
@@ -23,10 +32,12 @@ public class UserTalkActivity extends AllenBaseActivity {
     Toolbar bar;
     @BindView(R.id.rv)
     RecyclerView rv;
-    @BindView(R.id.emoj_layout)
-    FrameLayout emojLayout;
+    @BindView(R.id.talk)
+    AppCompatEditText talk;
     private SharedPreferences shared;
-    private EmojFragment fragment;
+    private int uid;
+    private String messege,url;
+    private TalkAdapter adapter;
 
     @Override
     protected boolean isStatusBarColorWhite() {
@@ -48,7 +59,13 @@ public class UserTalkActivity extends AllenBaseActivity {
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
-        initEmotionMainFragment();
+        uid = shared.getInt(Constants.User_Id,-1);
+        url = shared.getString(Constants.User_HeadImage_Url,"");
+        LinearLayoutManager manager = new LinearLayoutManager(context);
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        rv.setLayoutManager(manager);
+        adapter = new TalkAdapter(uid);
+        rv.setAdapter(adapter);
     }
 
     @Override
@@ -61,37 +78,68 @@ public class UserTalkActivity extends AllenBaseActivity {
                 view.setEnabled(true);
             }
         });
+        talk.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+                    view.setEnabled(false);
+                    if(checkIsOk()){
+                        sendMsg(messege);
+                    }
+                    view.setEnabled(true);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
-    /**
-     * 初始化表情面板
-     */
-    public void initEmotionMainFragment(){
-        //构建传递参数
-        Bundle bundle = new Bundle();
-        //绑定主内容编辑框
-        bundle.putBoolean(EmotionMainFragment.BIND_TO_EDITTEXT,true);
-        //隐藏控件
-        bundle.putBoolean(EmotionMainFragment.HIDE_BAR_EDITTEXT_AND_BTN,false);
-        //替换fragment
-        //创建修改实例
-        fragment = EmojFragment.instance();
-        FragmentTransaction transaction =getSupportFragmentManager().beginTransaction();
-        // Replace whatever is in thefragment_container view with this fragment,
-        // and add the transaction to the backstack
-        transaction.replace(R.id.emoj_layout,fragment);
-        transaction.addToBackStack(null);
-        //提交修改
-        transaction.commit();
+    private boolean checkIsOk(){
+        messege = talk.getText().toString().trim();
+        if(StringUtils.empty(messege)){
+            MsgUtils.showShortToast(context,"请输入内容!");
+            return false;
+        }
+        return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        /**
-         * 判断是否拦截返回键操作
-         */
-//        if (!emotionMainFragment.isInterceptBackPress()) {
-//            super.onBackPressed();
-//        }
+    private void sendMsg(String msg){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String mess = WebHelper.init().sendWaitMessage(handler,uid,msg);
+                if(StringUtils.notEmpty(mess)){
+                    Message message = new Message();
+                    message.what = 0;
+                    message.obj = msg;
+                    handler.sendMessage(message);
+                }
+            }
+        }).start();
     }
+
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            switch (msg.what){
+                case 0:
+                    adapter.addMsg(new TalkMsg(uid,messege,url));
+                    postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rv.scrollToPosition(adapter.getItemCount()-1);
+                        }
+                    },200);
+                    break;
+                case 1:
+                    talk.setText("");
+                    break;
+                case -1:
+                    MsgUtils.showShortToast(context, (String) msg.obj);
+                    break;
+            }
+        }
+    };
+
 }

@@ -17,7 +17,7 @@
         android:adjustViewBounds="true"/>
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/qr_item_name"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/text_yellow_color"
         android:textSize="@dimen/frame_text_normal_size"

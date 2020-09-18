@@ -66,6 +66,7 @@
     <string name="verify_id_font_hint">点击上传身份证正面照片</string>
     <string name="verify_id_back_hint">点击上传身份证反面照片</string>
     <string name="verify_info_hint">描述</string>
+    <string name="verify_take_hint">身份证拍照</string>
 
     <string name="notice_hint">信息公告</string>
     <string name="issue_photo">发布照片墙</string>

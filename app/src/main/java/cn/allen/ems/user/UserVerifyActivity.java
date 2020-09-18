@@ -2,6 +2,7 @@ package cn.allen.ems.user;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +13,9 @@ import com.bumptech.glide.Glide;
 
 import allen.frame.AllenBaseActivity;
 import allen.frame.AllenManager;
+import allen.frame.CameraActivity;
 import allen.frame.tools.CheckUtils;
+import allen.frame.tools.FileUtils;
 import allen.frame.tools.MsgUtils;
 import allen.frame.tools.StringUtils;
 import androidx.annotation.NonNull;
@@ -46,6 +49,7 @@ public class UserVerifyActivity extends AllenBaseActivity {
     private String name,idno,idbg1,idbg2,desc;
     private int uid;
     private SharedPreferences shared;
+    private FileUtils utils;
 
     @Override
     protected boolean isStatusBarColorWhite() {
@@ -67,6 +71,7 @@ public class UserVerifyActivity extends AllenBaseActivity {
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
+        utils = FileUtils.getInstance();
         uid = shared.getInt(Constants.User_Id,-1);
         Glide.with(context).load(shared.getString(Constants.User_Id_Front_Url,"")).into(verifyIdFont);
         Glide.with(context).load(shared.getString(Constants.User_Id_Back_Url,"")).into(verifyIdBack);
@@ -123,8 +128,16 @@ public class UserVerifyActivity extends AllenBaseActivity {
         view.setEnabled(false);
         switch (view.getId()) {
             case R.id.verify_id_font:
+                Intent fintent = new Intent(context, CameraActivity.class);
+                fintent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,utils.creatNewFile("ids","front.jpg").getAbsolutePath());
+                fintent.putExtra(CameraActivity.KEY_CONTENT_TYPE, CameraActivity.CONTENT_TYPE_ID_CARD_FRONT);
+                startActivityForResult(fintent, 11);
                 break;
             case R.id.verify_id_back:
+                Intent bintent = new Intent(context, CameraActivity.class);
+                bintent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,utils.creatNewFile("ids","back.jpg").getAbsolutePath());
+                bintent.putExtra(CameraActivity.KEY_CONTENT_TYPE, CameraActivity.CONTENT_TYPE_ID_CARD_BACK);
+                startActivityForResult(bintent, 11);
                 break;
             case R.id.commit_bt:
                 if(checkIsOk()){
