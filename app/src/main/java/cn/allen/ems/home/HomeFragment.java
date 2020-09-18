@@ -167,11 +167,12 @@ public class HomeFragment extends Fragment {
         adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                clickPosition = position;
-                adapter.notifyItemChanged(position);
-//                adapter.notifyDataSetChanged();
-                gameRv.setEnabled(false);
-                getSmashEgg(nineGrids.get(position).getPalacesid());
+                if (clickPosition==-1) {
+                    clickPosition = position;
+                    adapter.notifyItemChanged(position);
+                    gameRv.setEnabled(false);
+                    getSmashEgg(nineGrids.get(position).getPalacesid());
+                }
             }
 
             @Override
@@ -302,7 +303,12 @@ public class HomeFragment extends Fragment {
                 case 102:
 //                    adapter.setList(nineGrids);
                     gameRv.setEnabled(true);
-                    adapter.setDatas(nineGrids);
+                    if (clickPosition!=-1){
+                        adapter.notifyItemChanged(clickPosition);
+                        clickPosition=-1;
+                    }else {
+                        adapter.setDatas(nineGrids);
+                    }
                     break;
                 case 103:
                     shareAdapter.setList(qrCodes);
@@ -322,13 +328,11 @@ public class HomeFragment extends Fragment {
                     break;
                 case 10:
                     MsgUtils.showMDMessage(getContext(), (String) msg.obj);
-                    clickPosition = -1;
                     getGameFirst();
 
                     break;
                 case 11:
                     MsgUtils.showLongToast(getContext(), (String) msg.obj);
-                    clickPosition = -1;
                     getGameFirst();
 
                     break;
