@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2017 Baidu, Inc. All Rights Reserved.
   -->
-<com.gamerole.orcameralib.OCRCameraLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<allen.frame.widget.OCRCameraLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,4 +36,4 @@
         android:padding="12dp"
         android:src="@drawable/bd_ocr_confirm" />
 
-</com.gamerole.orcameralib.OCRCameraLayout>
+</allen.frame.widget.OCRCameraLayout>

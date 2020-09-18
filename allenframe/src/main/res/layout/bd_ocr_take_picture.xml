@@ -2,7 +2,7 @@
 <!--
   ~ Copyright (C) 2017 Baidu, Inc. All Rights Reserved.
   -->
-<com.gamerole.orcameralib.OCRCameraLayout
+<allen.frame.widget.OCRCameraLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
         app:centerView="@+id/take_photo_button"
         app:rightUpView="@+id/light_button">
 
-    <com.gamerole.orcameralib.CameraView
+    <allen.frame.widget.CameraView
             android:id="@+id/camera_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
@@ -59,4 +59,4 @@
             android:src="@drawable/bd_ocr_light_off"
             />
 
-</com.gamerole.orcameralib.OCRCameraLayout>
+</allen.frame.widget.OCRCameraLayout>

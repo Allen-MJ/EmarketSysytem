@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2017 Baidu, Inc. All Rights Reserved.
   -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <include
-        android:id="@+id/take_picture_container"
-        layout="@layout/bd_ocr_take_picture"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/alen_toolbar_layout"/>
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/crop_container"
-        layout="@layout/bd_ocr_crop"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+        <include
+            android:id="@+id/take_picture_container"
+            layout="@layout/bd_ocr_take_picture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-    <include
-        android:id="@+id/confirm_result_container"
-        layout="@layout/bd_ocr_confirm_result"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+        <include
+            android:id="@+id/crop_container"
+            layout="@layout/bd_ocr_crop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
-</RelativeLayout>
+        <include
+            android:id="@+id/confirm_result_container"
+            layout="@layout/bd_ocr_confirm_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>
