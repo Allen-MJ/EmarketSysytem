@@ -40,16 +40,16 @@ public class TimeMeter {
 			long s = (time%3600)%60;
 			if(h>0){
 				sb.append(getTwoNumber(h));
-				sb.append("时");
+				sb.append(":");
 			}
 			if(m>0){
 				sb.append(getTwoNumber(m));
 			}else{
 				sb.append("00");
 			}
-			sb.append("分");
+			sb.append(":");
 			sb.append(getTwoNumber(s));
-			sb.append("秒");
+			sb.append("");
 			return sb.toString();
 		}
 		return countdown;
