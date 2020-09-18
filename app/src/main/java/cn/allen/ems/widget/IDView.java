@@ -1,9 +1,11 @@
 package cn.allen.ems.widget;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 
+import allen.frame.tools.Logger;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -40,5 +42,12 @@ public class IDView extends AppCompatImageView {
         }else{
             setMeasuredDimension(widthSize, height);
         }
+    }
+
+    @Override
+    public void setImageURI(@Nullable Uri uri) {
+        super.setImageURI(uri);
+        Logger.e("debug","urix:"+(uri==null));
+        Logger.e("debug","uri:"+uri.getPath());
     }
 }

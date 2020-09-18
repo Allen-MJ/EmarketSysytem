@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +18,8 @@ import allen.frame.AllenManager;
 import allen.frame.CameraActivity;
 import allen.frame.tools.CheckUtils;
 import allen.frame.tools.FileUtils;
+import allen.frame.tools.ImageUtil;
+import allen.frame.tools.ImageUtils;
 import allen.frame.tools.MsgUtils;
 import allen.frame.tools.StringUtils;
 import androidx.annotation.NonNull;
@@ -69,9 +72,23 @@ public class UserVerifyActivity extends AllenBaseActivity {
             if(requestCode==11){
                 String type = data.getStringExtra(CameraActivity.KEY_CONTENT_TYPE);
                 if(type.equals(CameraActivity.CONTENT_TYPE_ID_CARD_FRONT)){
-                    verifyIdFont.setImageURI(Uri.fromFile(utils.creatNewFile("ids","front.jpg")));
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Bitmap bitmap = ImageUtils.getimage(utils.creatNewFile("ids","front.jpg").getAbsolutePath());
+                            idbg1 = ImageUtils.getImgeData(bitmap);
+//                            verifyIdFont.setImageURI(Uri.fromFile(utils.creatNewFile("ids","front.jpg")));
+                            verifyIdFont.setImageBitmap(bitmap);
+                        }
+                    },200);
                 }else if(type.equals(CameraActivity.CONTENT_TYPE_ID_CARD_BACK)){
-                    verifyIdBack.setImageURI(Uri.fromFile(utils.creatNewFile("ids","back.jpg")));
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            idbg2 = ImageUtils.getImgeData(ImageUtils.getimage(utils.creatNewFile("ids","back.jpg").getAbsolutePath()));
+                            verifyIdBack.setImageURI(Uri.fromFile(utils.creatNewFile("ids","back.jpg")));
+                        }
+                    },200);
                 }
             }
         }
@@ -102,12 +119,16 @@ public class UserVerifyActivity extends AllenBaseActivity {
             }else{
                 MsgUtils.showMDMessage(context,"已审核!");
             }
+            verifyIdFont.setEnabled(false);
+            verifyIdBack.setEnabled(false);
             commitBt.setVisibility(View.GONE);
         }else if(shared.getInt(Constants.User_Auth,-1)==3){
             MsgUtils.showMDMessage(context,"审核未通过,请重新上传!");
             commitBt.setVisibility(View.VISIBLE);
         }else{
             MsgUtils.showMDMessage(context,"未知状态,请联系客服!");
+            verifyIdFont.setEnabled(false);
+            verifyIdBack.setEnabled(false);
             commitBt.setVisibility(View.GONE);
         }
     }

@@ -80,10 +80,10 @@ public class RegistActivity extends AllenIMBaseActivity {
             MsgUtils.showMDMessage(context,"请输入用户昵称!");
             return false;
         }
-        if(StringUtils.empty(invitationcode)){
+        /*if(StringUtils.empty(invitationcode)){
             MsgUtils.showMDMessage(context,"请输入邀请码!");
             return false;
-        }
+        }*/
         return true;
     }
 

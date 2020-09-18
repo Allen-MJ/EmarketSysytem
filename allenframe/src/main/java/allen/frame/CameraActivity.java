@@ -35,6 +35,7 @@ import allen.frame.widget.MaskView;
 import allen.frame.widget.OCRCameraLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 
@@ -52,6 +53,7 @@ public class CameraActivity extends AllenBaseActivity {
     private static final int PERMISSIONS_REQUEST_CAMERA = 800;
     private static final int PERMISSIONS_EXTERNAL_STORAGE = 801;
 
+    Toolbar bar;
     private File outputFile;
     private String contentType;
     private Handler handler = new Handler();
@@ -87,7 +89,9 @@ public class CameraActivity extends AllenBaseActivity {
 
     @Override
     protected void initBar() {
-
+        bar = findViewById(R.id.toolbar);
+        setSupportActionBar(bar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -110,6 +114,14 @@ public class CameraActivity extends AllenBaseActivity {
 
     @Override
     protected void addEvent() {
+        bar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setEnabled(false);
+                finish();
+                view.setEnabled(true);
+            }
+        });
         lightButton.setOnClickListener(lightButtonOnClickListener);
         findViewById(R.id.album_button).setOnClickListener(albumButtonOnClickListener);
         findViewById(R.id.take_photo_button).setOnClickListener(takeButtonOnClickListener);
@@ -326,6 +338,9 @@ public class CameraActivity extends AllenBaseActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                Intent sintent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                sintent.setData(Uri.fromFile(outputFile));
+                sendBroadcast(sintent);
 
                 Intent intent = new Intent();
                 intent.putExtra(CameraActivity.KEY_CONTENT_TYPE, contentType);
