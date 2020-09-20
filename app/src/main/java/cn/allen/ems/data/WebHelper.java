@@ -480,6 +480,17 @@ public class WebHelper {
             msg.what = 10;
         }else if(response.isSuccess("500")){
             msg.what = 11;
+            if (response.getMessage().equals("金币不足")){
+                try {
+                    JSONObject object=new JSONObject(response.getData());
+                    int id=object.optInt("taskid");
+                    Logger.e("what=11",id+"");
+                    msg.arg1=id;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
         }else {
             msg.what = -10;
         }
@@ -769,7 +780,7 @@ public class WebHelper {
         Response response = service.getWebservice(Api.PreOrder,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
-            msg.what = 0;
+            msg.what = 1;
         }else {
             msg.what = -1;
         }

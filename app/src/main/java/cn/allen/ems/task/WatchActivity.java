@@ -16,6 +16,7 @@ import com.baidu.cloud.media.player.IMediaPlayer;
 
 import allen.frame.AllenIMBaseActivity;
 import allen.frame.AllenManager;
+import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -70,6 +71,7 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
         shared = AllenManager.getInstance().getStoragePreference();
         uid = shared.getInt(Constants.User_Id, -1);
         taskid = getIntent().getIntExtra(Constants.Entry_Flag, -1);
+        Logger.e("taskid",taskid+"");
     }
 
     boolean isPausedByOnPause = false;

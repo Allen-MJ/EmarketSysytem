@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import allen.frame.ActivityHelper;
+import allen.frame.AllenManager;
+import allen.frame.adapter.CommonAdapter;
+import allen.frame.adapter.ViewHolder;
 import allen.frame.entry.City;
 import allen.frame.tools.ChoiceTypeDialog;
 import allen.frame.tools.CityUtil;
@@ -26,6 +29,9 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,11 +40,12 @@ import cn.allen.ems.R;
 import cn.allen.ems.adapter.OrderAdapter;
 import cn.allen.ems.data.WebHelper;
 import cn.allen.ems.entry.Order;
+import cn.allen.ems.utils.Constants;
 
 public class OrderFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.rv)
-    RecyclerView rv;
+    RecyclerView recyclerView;
     @BindView(R.id.refreshLayout)
     MaterialRefreshLayout mater;
     @BindView(R.id.choice_area)
@@ -54,7 +61,8 @@ public class OrderFragment extends Fragment {
     private int uid;
     private ActivityHelper actHelper;
     private List<Order> list, sublist;
-    private OrderAdapter adapter;
+//    private OrderAdapter adapter;
+    private CommonAdapter<Order> adapter;
     private String mcity;
     private List<City> first, secound, third;
 
@@ -86,17 +94,53 @@ public class OrderFragment extends Fragment {
     }
 
     private void initUI(View view) {
-        adapter = new OrderAdapter();
-        GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
-        rv.setLayoutManager(manager);
-        rv.setAdapter(adapter);
+        shared = AllenManager.getInstance().getStoragePreference();
+        uid = shared.getInt(Constants.User_Id, -1);
+        initAdapter();
         actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START, "");
         loadData();
     }
 
+    private void initAdapter() {
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
+        recyclerView.setLayoutManager(manager);
+        adapter=new CommonAdapter<Order>(getContext(),R.layout.item_order) {
+            @Override
+            public void convert(ViewHolder holder, Order entry, int position) {
+                holder.setText(R.id.order_item_title,entry.getShopname());
+                holder.setText(R.id.order_item_date,"使用时间:"+entry.getUsetimestart().substring(0,7).replaceAll("-",".")+"-"+entry.getUsetimeend().substring(0,7).replaceAll("-","."));
+                holder.setText(R.id.order_item_count,"库存剩余:"+entry.getShopstock());
+                holder.setText(R.id.order_item_change,""+entry.getCurrency1());
+                holder.setText(R.id.order_item_gold,""+entry.getCurrency2());
+                holder.setText(R.id.order_item_diamond,""+entry.getCurrency3());
+                holder.setImageByUrl(R.id.order_item_icon,entry.getShoppicurl(),R.drawable.mis_default_error);
+                holder.setOnClickListener(R.id.order_item_redeem, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+            }
+        };
+        recyclerView.setAdapter(adapter);
+    }
+
     private void addEvent(View view) {
         mater.setMaterialRefreshListener(materListener);
-        adapter.setOnItemClickListener(listener);
+        adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                Logger.e("order"," 11111");
+                actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
+                perOrder(list.get(position).getShopid());
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+//        adapter.setOnItemClickListener(listener);
     }
 
     private MaterialRefreshListener materListener = new MaterialRefreshListener() {
@@ -114,12 +158,14 @@ public class OrderFragment extends Fragment {
         }
     };
 
-    private OrderAdapter.OnItemClickListener listener = new OrderAdapter.OnItemClickListener() {
-        @Override
-        public void itemClick(View v, Order entry) {
-
-        }
-    };
+//    private OrderAdapter.OnItemClickListener listener = new OrderAdapter.OnItemClickListener() {
+//        @Override
+//        public void itemClick(View v, Order entry) {
+//            Logger.e("order",entry.getShopname());
+//            actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
+//            perOrder(entry.getShopid());
+//        }
+//    };
 
     private void loadData() {
         new Thread(new Runnable() {
@@ -127,6 +173,15 @@ public class OrderFragment extends Fragment {
             public void run() {
                 sublist = WebHelper.init().getMerchantOrder(page++, pagesize, mcity).getList();
                 handler.sendEmptyMessage(0);
+            }
+        }).start();
+    }
+
+    private void perOrder(int shopId) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                WebHelper.init().preOrder(handler,uid,shopId);
             }
         }).start();
     }
@@ -153,7 +208,12 @@ public class OrderFragment extends Fragment {
                         actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL, "");
                     }
                     actHelper.setCanLoadMore(mater, pagesize, list);
-                    adapter.setList(list);
+                    adapter.setDatas(list);
+                    break;
+                case 1:
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
+                    MsgUtils.showMDMessage(getContext(),(String)msg.obj);
+                    loadData();
                     break;
                 case 2:
                     actHelper.dismissProgressDialog();
@@ -199,6 +259,10 @@ public class OrderFragment extends Fragment {
                         }
                     });
                     tdialog.showCityDialog("请选择区县", choiceCountry, third);
+                    break;
+                case -1:
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
+                    MsgUtils.showMDMessage(getContext(),(String)msg.obj);
                     break;
             }
         }

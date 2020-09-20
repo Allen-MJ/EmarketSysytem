@@ -1,6 +1,8 @@
 package cn.allen.ems.home;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -44,7 +46,9 @@ import cn.allen.ems.entry.Drill;
 import cn.allen.ems.entry.NineGrid;
 import cn.allen.ems.entry.Notice;
 import cn.allen.ems.entry.QrCode;
+import cn.allen.ems.task.WatchActivity;
 import cn.allen.ems.utils.Constants;
+import cn.allen.ems.utils.LoadingDialog;
 
 public class HomeFragment extends Fragment {
     Unbinder unbinder;
@@ -113,7 +117,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getDrill();
     }
 
     @Override
@@ -147,6 +150,7 @@ public class HomeFragment extends Fragment {
                 AppCompatImageView view = holder.getView(R.id.nine_item_icon);
                 if (position == clickPosition) {
                     Glide.with(getActivity()).load(R.mipmap.dankai).into(new GlideDrawableImageViewTarget(view, 1));
+//                    Glide.with(getActivity()).load(R.mipmap.dan).asGif().into(view);
                 } else {
                     Glide.with(getActivity()).load(R.mipmap.ic_logo_42).into(view);
                 }
@@ -171,6 +175,7 @@ public class HomeFragment extends Fragment {
                     clickPosition = position;
                     adapter.notifyItemChanged(position);
                     gameRv.setEnabled(false);
+                    showGifdialog("");
                     getSmashEgg(nineGrids.get(position).getPalacesid());
                 }
             }
@@ -188,6 +193,18 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    private LoadingDialog dialog;
+    public void showGifdialog(String content){
+        if (dialog==null) {
+            dialog = new LoadingDialog(getContext(), content, R.mipmap.dankai, LoadingDialog.Type_GIF);
+        }
+        dialog.show();
+    }
+    public void dismissGifDialog(){
+        if (dialog!=null){
+            dialog.dismiss();
+        }
+    }
     private void getNiticeTop5() {
         new Thread(new Runnable() {
             @Override
@@ -282,6 +299,23 @@ public class HomeFragment extends Fragment {
     };
 
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode== Activity.RESULT_OK){
+            switch (requestCode){
+                case 11:
+                    actHelper.showProgressDialog("挖钻开始...");
+                    getSpeed();
+                    break;
+                case 12:
+                    actHelper.showProgressDialog("正在刷新,请稍候...");
+                    getGameFirst();
+                    break;
+            }
+        }
+    }
+
     private int index = 0;
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -302,6 +336,7 @@ public class HomeFragment extends Fragment {
                     break;
                 case 102:
 //                    adapter.setList(nineGrids);
+                    actHelper.dismissProgressDialog();
                     gameRv.setEnabled(true);
                     if (clickPosition!=-1){
                         adapter.notifyItemChanged(clickPosition);
@@ -314,52 +349,90 @@ public class HomeFragment extends Fragment {
                     shareAdapter.setList(qrCodes);
                     break;
                 case 20:
-                    String time =drill.getSurplustime();
-                    String[] my =time.split(":");
+                    actHelper.dismissProgressDialog();
+                    String timeString =drill.getSurplustime();
+                    String[] my =timeString.split(":");
                     int hour =Integer.parseInt(my[0]);
                     int min =Integer.parseInt(my[1]);
                     int sec =Integer.parseInt(my[2]);
                     surplustime =hour*3600+min*60+sec;
-                    timeMeter.start();
-                    timeMeter.setMaxTime(surplustime);
-                    timeMeter.setTimerLisener(timeListener);
-                    speedTime.setText(drill.getQuickentime()+"");
+                    if (surplustime==0){
+                        MsgUtils.showMDMessage(getContext(),"您今天已经完成挖钻任务,24点后再来!");
+                        time.setText("完成");
+                    }else {
+                        timeMeter.start();
+                        timeMeter.setMaxTime(surplustime);
+                        timeMeter.setTimerLisener(timeListener);
+                        speedTime.setText(drill.getQuickentime() + "");
+                    }
                     speed.setText(getString(R.string.game_speed_hint) + "  " + drill.getQuickencount());
+
                     break;
                 case 10:
+                    dismissGifDialog();
                     MsgUtils.showMDMessage(getContext(), (String) msg.obj);
                     getGameFirst();
 
                     break;
                 case 11:
+                    dismissGifDialog();
+                    String message=(String)msg.obj;
+                    if (message.equals("金币不足")){
+                        int taskid=msg.arg1;
+                        MsgUtils.showMDMessage(getContext(), "金币不足！是否看视频赚取金币？", "是", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent=new Intent(getContext(), WatchActivity.class);
+                                intent.putExtra(Constants.Entry_Flag,taskid);
+                                startActivityForResult(intent,12);
+                            }
+                        }, "否", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+                    }
                     MsgUtils.showLongToast(getContext(), (String) msg.obj);
-                    getGameFirst();
+//                    getGameFirst();
 
                     break;
                 case -20:
-
+                case -10:
+                    actHelper.dismissProgressDialog();
+                    MsgUtils.showLongToast(getContext(), (String) msg.obj);
                     break;
             }
         }
     };
 
-    @OnClick({R.id.play, R.id.notice, R.id.speed})
+    @OnClick({R.id.play, R.id.notice, R.id.speed,R.id.score})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.score:
+                getDrill();
+                break;
             case R.id.play:
                 break;
             case R.id.notice:
                 startActivity(new Intent(getActivity(), NoticeActivity.class));
                 break;
             case R.id.speed:
-                if (drill.getQuickencount()==0){
-                    MsgUtils.showLongToast(getContext(),"您没有加速次数！");
-                    return;
-                }else if (drill.getQuickentime()==0){
-                    MsgUtils.showLongToast(getContext(),"您没有加速时间!");
+                if (drill==null){
+                    MsgUtils.showLongToast(getContext(),"您还没有开始挖砖!请开始后再加速!");
                     return;
                 }
-                getSpeed();
+                Intent intent=new Intent(getContext(), WatchActivity.class);
+                intent.putExtra(Constants.Entry_Flag,drill.getDrillid());
+                startActivityForResult(intent,11);
+//                if (drill.getQuickencount()==0){
+//                    MsgUtils.showLongToast(getContext(),"您没有加速次数！");
+//                    return;
+//                }else if (drill.getQuickentime()==0){
+//                    MsgUtils.showLongToast(getContext(),"您没有加速时间!");
+//                    return;
+//                }
+//                getSpeed();
                 break;
         }
     }

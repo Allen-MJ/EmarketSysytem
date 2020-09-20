@@ -72,10 +72,10 @@ public class RegistActivity extends AllenIMBaseActivity {
             MsgUtils.showMDMessage(context,"请输入用户密码!");
             return false;
         }
-        if(!CheckUtils.passWordIsNotEasy(psw)){
-            MsgUtils.showMDMessage(context,"用户密码过于简单!");
-            return false;
-        }
+//        if(!CheckUtils.passWordIsNotEasy(psw)){
+//            MsgUtils.showMDMessage(context,"用户密码过于简单!");
+//            return false;
+//        }
         if(StringUtils.empty(username)){
             MsgUtils.showMDMessage(context,"请输入用户昵称!");
             return false;
@@ -93,7 +93,7 @@ public class RegistActivity extends AllenIMBaseActivity {
         switch (v.getId()){
             case R.id.regist_bt:
                 if(checkIsOk()){
-                    showProgressDialog("");
+                    showProgressDialog("正在注册!请稍候...");
                     regist();
                 }
                 break;

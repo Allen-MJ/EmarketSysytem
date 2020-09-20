@@ -12,6 +12,11 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import allen.frame.ActivityHelper;
+import allen.frame.AllenManager;
+import allen.frame.adapter.CommonAdapter;
+import allen.frame.adapter.ViewHolder;
+import allen.frame.tools.Logger;
+import allen.frame.tools.MsgUtils;
 import allen.frame.widget.MaterialRefreshLayout;
 import allen.frame.widget.MaterialRefreshListener;
 import androidx.annotation.NonNull;
@@ -26,11 +31,12 @@ import cn.allen.ems.R;
 import cn.allen.ems.adapter.OrderAdapter;
 import cn.allen.ems.data.WebHelper;
 import cn.allen.ems.entry.Order;
+import cn.allen.ems.utils.Constants;
 
 public class PointFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.rv)
-    RecyclerView rv;
+    RecyclerView recyclerView;
     @BindView(R.id.refreshLayout)
     MaterialRefreshLayout mater;
     private SharedPreferences shared;
@@ -40,7 +46,8 @@ public class PointFragment extends Fragment {
     private int uid;
     private ActivityHelper actHelper;
     private List<Order> list,sublist;
-    private OrderAdapter adapter;
+//    private OrderAdapter adapter;
+    private CommonAdapter<Order> adapter;
 
     public static PointFragment init() {
         PointFragment fragment = new PointFragment();
@@ -70,17 +77,51 @@ public class PointFragment extends Fragment {
     }
 
     private void initUI(View view) {
-        adapter = new OrderAdapter();
-        GridLayoutManager manager = new GridLayoutManager(getActivity(),2);
-        rv.setLayoutManager(manager);
-        rv.setAdapter(adapter);
+        shared = AllenManager.getInstance().getStoragePreference();
+        uid = shared.getInt(Constants.User_Id, -1);
+        initAdapter();
         actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
         loadData();
     }
-
+    private void initAdapter() {
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
+        recyclerView.setLayoutManager(manager);
+        adapter=new CommonAdapter<Order>(getContext(),R.layout.item_order) {
+            @Override
+            public void convert(ViewHolder holder, Order entry, int position) {
+                holder.setText(R.id.order_item_title,entry.getShopname());
+                holder.setText(R.id.order_item_date,"使用时间:"+entry.getUsetimestart().substring(0,7).replaceAll("-",".")+"-"+entry.getUsetimeend().substring(0,7).replaceAll("-","."));
+                holder.setText(R.id.order_item_count,"库存剩余:"+entry.getShopstock());
+                holder.setText(R.id.order_item_change,""+entry.getCurrency1());
+                holder.setText(R.id.order_item_gold,""+entry.getCurrency2());
+                holder.setText(R.id.order_item_diamond,""+entry.getCurrency3());
+                holder.setImageByUrl(R.id.order_item_icon,entry.getShoppicurl(),R.drawable.mis_default_error);
+                holder.setOnClickListener(R.id.order_item_redeem, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Logger.e("order",entry.getShopname());
+                        actHelper.showProgressDialog("");
+                        perOrder(entry.getShopid());
+                    }
+                });
+            }
+        };
+        recyclerView.setAdapter(adapter);
+    }
     private void addEvent(View view){
         mater.setMaterialRefreshListener(materListener);
-        adapter.setOnItemClickListener(listener);
+        adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+//        adapter.setOnItemClickListener(listener);
     }
 
     private MaterialRefreshListener materListener = new MaterialRefreshListener() {
@@ -114,6 +155,15 @@ public class PointFragment extends Fragment {
             }
         }).start();
     }
+
+    private void perOrder(int shopId) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                WebHelper.init().preOrder(handler,uid,shopId);
+            }
+        }).start();
+    }
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler(){
         @Override
@@ -136,7 +186,17 @@ public class PointFragment extends Fragment {
                         actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL,"");
                     }
                     actHelper.setCanLoadMore(mater,pagesize,list);
-                    adapter.setList(list);
+                    adapter.setDatas(list);
+                    break;
+                case 1:
+                    actHelper.dismissProgressDialog();
+                    MsgUtils.showMDMessage(getContext(),(String)msg.obj);
+                    loadData();
+                    break;
+                case -1:
+                    actHelper.dismissProgressDialog();
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
+                    MsgUtils.showMDMessage(getContext(),(String)msg.obj);
                     break;
             }
         }
