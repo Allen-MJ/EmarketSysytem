@@ -22,9 +22,9 @@ public class LoadingDialog extends Dialog {
     private ImageView mImageView;
     // 提示的文字
     private String mLoadingTip;
-    private TextView mLoadingTv;
+    private TextView mLoadingTv,loadingText;
     private int mResid;
-    private LinearLayout load_layout;
+    private LinearLayout load_layout,load_layout_gif;
     // GIF动态图片
     private ImageView load_gifv;
     // 加载框显示类型
@@ -67,8 +67,10 @@ public class LoadingDialog extends Dialog {
      */
     private void initView() {
         mLoadingTv = (TextView) findViewById(R.id.load_tetv);
+        loadingText = (TextView) findViewById(R.id.load_text);
         mImageView = (ImageView) findViewById(R.id.load_imgv);
         load_layout = (LinearLayout) findViewById(R.id.load_layout);
+        load_layout_gif = (LinearLayout) findViewById(R.id.load_layout_gif);
         load_gifv = (ImageView) findViewById(R.id.load_gifv);
     }
 
@@ -78,11 +80,12 @@ public class LoadingDialog extends Dialog {
     private void initData() {
         if(showType.equals(Type_GIF)){
 //            load_gifv.setMovieResource(mResid);
-            load_gifv.setVisibility(View.VISIBLE);
             load_layout.setVisibility(View.GONE);
+            load_layout_gif.setVisibility(View.VISIBLE);
             Glide.with(mContext).load(mResid).asGif().into(load_gifv);
+            loadingText.setText(mLoadingTip);
         }else if(showType.equals(Type_IMG)){
-            load_gifv.setVisibility(View.GONE);
+            load_layout_gif.setVisibility(View.GONE);
             load_layout.setVisibility(View.VISIBLE);
             mImageView.setBackgroundResource(mResid);
             // 通过ImageView对象拿到背景显示的AnimationDrawable

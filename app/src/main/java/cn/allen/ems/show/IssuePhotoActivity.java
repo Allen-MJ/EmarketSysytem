@@ -322,7 +322,7 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
     private void takePhone() {
         // 要保存的文件名
         String time = new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA).format(new Date());
-        String fileName = "edu_" + time;
+        String fileName = "market_" + time;
         // 创建一个文件夹
         // 要保存的图片文件
         imgFile = FileUtils.getInstance().creatNewFile("take_photo", fileName + ".jpg");
@@ -346,7 +346,7 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
         }
         Uri uri;
         if (Build.VERSION.SDK_INT >= 24) {
-            uri = FileProvider.getUriForFile(context.getApplicationContext(), "cn.wangan.face" +
+            uri = FileProvider.getUriForFile(context.getApplicationContext(), "cn.allen.ems" +
                     ".provider", file);
         } else {
             uri = Uri.fromFile(file);
@@ -355,10 +355,4 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
     }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

@@ -141,6 +141,8 @@
                         android:id="@+id/game_rv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/frame_eight_distance"
+                        android:layout_marginLeft="@dimen/frame_eight_distance"
                         android:layout_weight="5" />
 
                     <androidx.appcompat.widget.LinearLayoutCompat
@@ -148,6 +150,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:gravity="center"
+                        android:layout_marginLeft="@dimen/frame_four_distance"
+                        android:layout_marginRight="@dimen/frame_four_distance"
                         android:orientation="vertical">
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -189,7 +193,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/frame_32_distance"
                                     android:gravity="center"
-                                    android:text="10"
+                                    android:text="开始"
                                     android:textColor="@color/text_white_color"
                                     android:textSize="@dimen/frame_text_middle_size"
                                     android:textStyle="bold" />

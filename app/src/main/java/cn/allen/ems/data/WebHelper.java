@@ -63,7 +63,7 @@ public class WebHelper {
                 .putString(Constants.User_RealName,user.getRealName())
                 .putInt(Constants.User_Sex,user.getSex())
                 .putInt(Constants.User_LoginCount,user.getLogincount())
-                .putString(Constants.User_PassWord,user.getPassWord())
+//                .putString(Constants.User_PassWord,user.getPassWord())
 //                .putString(Constants.User_City,user.getCity())
                 .putString(Constants.User_Invitation,user.getInvitationcode())
                 .putFloat(Constants.User_ChangeScore,user.getCurrency1())
@@ -95,6 +95,9 @@ public class WebHelper {
         Response response = service.getWebservice(Api.Login,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
+            AllenManager.getInstance().getStoragePreference().edit()
+                    .putString(Constants.User_PassWord,psw)
+                    .apply();
             User user = gson.fromJson(response.getData(),User.class);
             if(user!=null){
                 if(user.getEnable()==1){
