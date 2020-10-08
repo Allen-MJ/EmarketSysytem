@@ -567,6 +567,33 @@ public class WebHelper {
         return null;
     }
 
+    public Drill drillStatus(Handler handler,int uid){
+        Object[] objects = new Object[]{
+                "uid",uid
+        };
+        Response response = service.getWebservice(Api.DrillStatus,objects,Constants.RequestType);
+        Message msg = new Message();
+        if(response.isSuccess("200")){
+            Drill drill = gson.fromJson(response.getData(),Drill.class);
+            if(drill!=null){
+                msg.what = 20;
+                msg.obj = response.getMessage();
+                handler.sendMessage(msg);
+                return drill;
+            }else{
+                msg.what = -20;
+                msg.obj = response.getMessage();
+                handler.sendMessage(msg);
+            }
+        }else {
+            msg.what = -20;
+            msg.obj = response.getMessage();
+            handler.sendMessage(msg);
+        }
+        return null;
+    }
+
+
     /**
      * 获取照片墙
      * @param page 0开始

@@ -20,6 +20,7 @@ public class Api {
     public static final String SmashEgg = "SmashEgg";//砸蛋
     public static final String BeginDrill = "BeginDrill";//开始挖钻/查询挖钻情况
     public static final String QuickenDrill = "QuickenDrill";//挖钻加速
+    public static final String DrillStatus = "DrillStatus";//挖钻状态
     public static final String GetshowPhoto = "GetshowPhoto";//获取照片墙
     public static final String PutshowPhoto = "PutshowPhoto";//发布照片墙
     public static final String GetshowMessage = "GetshowMessage";//获取交换区信息

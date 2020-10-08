@@ -117,6 +117,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getDrillStatus();
     }
 
     @Override
@@ -257,6 +258,17 @@ public class HomeFragment extends Fragment {
         }).start();
     }
 
+    /**
+     * 今天是否挖钻
+     */
+    private void getDrillStatus() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                drill = WebHelper.init().drillStatus(handler, uid);
+            }
+        }).start();
+    }
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -361,7 +373,7 @@ public class HomeFragment extends Fragment {
                         timeMeter.setTimerLisener(timeListener);
                         speedTime.setText("");
                     }
-                    speed.setText(getString(R.string.game_speed_hint) + "  " + drill.getQuickencount());
+//                    speed.setText(getString(R.string.game_speed_hint) + "  " + drill.getQuickencount());
 
                     break;
                 case 10:
