@@ -117,7 +117,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getDrillStatus();
+
     }
 
     @Override
@@ -136,6 +136,7 @@ public class HomeFragment extends Fragment {
         sharedRv.setLayoutManager(smanager);
         shareAdapter = new ShareAdapter();
         sharedRv.setAdapter(shareAdapter);
+        getDrillStatus();
         getNiticeTop5();
         getGameFirst();
         getQrCodes();
@@ -269,6 +270,7 @@ public class HomeFragment extends Fragment {
             }
         }).start();
     }
+
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -309,18 +311,19 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case 11:
+
+        switch (requestCode) {
+            case 11:
+                if (resultCode == Activity.RESULT_OK) {
                     actHelper.showProgressDialog("挖钻开始...");
                     getSpeed();
-                    break;
-                case 12:
-                    int pos = clickPosition;
-                    clickPosition = -1;
-                    adapter.notifyItemChanged(pos);
-                    break;
-            }
+                }
+                break;
+            case 12:
+                int pos = clickPosition;
+                clickPosition = -1;
+                adapter.notifyItemChanged(pos);
+                break;
         }
     }
 
@@ -397,8 +400,8 @@ public class HomeFragment extends Fragment {
                         }, "否", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                int pos=clickPosition;
-                                clickPosition=-1;
+                                int pos = clickPosition;
+                                clickPosition = -1;
                                 adapter.notifyItemChanged(pos);
                             }
                         });

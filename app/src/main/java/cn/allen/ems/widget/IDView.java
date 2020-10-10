@@ -26,7 +26,7 @@ public class IDView extends AppCompatImageView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        /*int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int mWidth = 856;
         int mHeight = 540;
@@ -41,13 +41,10 @@ public class IDView extends AppCompatImageView {
             setMeasuredDimension(widthSize, height);
         }else{
             setMeasuredDimension(widthSize, height);
-        }
-    }
-
-    @Override
-    public void setImageURI(@Nullable Uri uri) {
-        super.setImageURI(uri);
-        Logger.e("debug","urix:"+(uri==null));
-        Logger.e("debug","uri:"+uri.getPath());
+        }*/
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+        float height = width / 1.58f;
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec((int) height, MeasureSpec.EXACTLY);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 }

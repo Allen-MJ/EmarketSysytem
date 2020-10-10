@@ -188,6 +188,7 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     dialogInterface.dismiss();
+                    setResult(RESULT_CANCELED);
                     finish();
                 }
             },"取消", new DialogInterface.OnClickListener() {
@@ -211,6 +212,7 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
+                            setResult(RESULT_CANCELED);
                             finish();
                         }
                     },"取消", new DialogInterface.OnClickListener() {

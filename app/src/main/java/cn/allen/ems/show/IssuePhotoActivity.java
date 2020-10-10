@@ -3,6 +3,7 @@ package cn.allen.ems.show;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -135,7 +136,11 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
                 // 拍照
                 case REQUEST_TAKE_PHOTO:
                     Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                    intent.setData(Uri.fromFile(imgFile));
+                    if (isAndroidQ) {
+                        intent.setData(imgUri);
+                    } else {
+                        intent.setData(Uri.fromFile(imgFile));
+                    }
                     sendBroadcast(intent);
                     isCropDialog(imgUri, true);
                     break;
@@ -160,7 +165,7 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
 
 
     private void isCropDialog(Uri uri, boolean fromCapture) {
-        if (fromCapture) {
+        if (fromCapture && !isAndroidQ) {
             commitFile(Uri.fromFile(imgFile));
         } else {
             commitFile(uri);
@@ -221,7 +226,7 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
         if (StringUtils.empty(des)) {
             MsgUtils.showMDMessage(context, "请输入描述文字!");
             return false;
-        }else if (file==null){
+        } else if (file == null) {
             MsgUtils.showMDMessage(context, "请输入选择上传图片!");
             return false;
         }
@@ -318,6 +323,10 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
     private static final int REQUEST_TAKE_PHOTO = 0;// 拍照
     private static final int REQUEST_CROP = 1;// 裁剪
     private static final int SCAN_OPEN_PHONE = 2;// 相册
+    /**
+     * 是否是Android 10以上手机
+     */
+    private boolean isAndroidQ = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
 
     private void takePhone() {
         // 要保存的文件名
@@ -327,8 +336,13 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
         // 要保存的图片文件
         imgFile = FileUtils.getInstance().creatNewFile("take_photo", fileName + ".jpg");
         // 将file转换成uri
-        // 注意7.0及以上与之前获取的uri不一样了，返回的是provider路径
-        imgUri = getUriForFile(context, imgFile);
+        if (isAndroidQ) {
+            // 适配android 10
+            imgUri = createImageUri();
+        } else {
+            // 注意7.0及以上与之前获取的uri不一样了，返回的是provider路径
+            imgUri = getUriForFile(context, imgFile);
+        }
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 添加Uri读取权限
         intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
@@ -338,6 +352,31 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
         // 添加图片保存位置
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
         startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+    }
+
+    /**
+     * 创建图片地址uri,用于保存拍照后的照片 Android 10以后使用这种方法
+     *
+     * @return 图片的uri
+     */
+    private Uri createImageUri() {
+        //设置保存参数到ContentValues中
+        ContentValues contentValues = new ContentValues();
+        //设置文件名
+        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, System.currentTimeMillis() + "");
+        //兼容Android Q和以下版本
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            //android Q中不再使用DATA字段，而用RELATIVE_PATH代替
+            //TODO RELATIVE_PATH是相对路径不是绝对路径;照片存储的地方为：内部存储/Pictures/preventpro
+            contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/marketCache");
+        }
+        //设置文件类型
+        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/JPEG");
+        //执行insert操作，向系统文件夹中添加文件
+        //EXTERNAL_CONTENT_URI代表外部存储器，该值不变
+        Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+        return uri;
+
     }
 
     private Uri getUriForFile(Context context, File file) {
