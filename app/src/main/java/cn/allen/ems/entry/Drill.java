@@ -9,8 +9,17 @@ public class Drill implements Serializable {
     private int quickentime;
     private int quickencount;
     private String surplustime;
+    private int taskid;
 
     public Drill() {
+    }
+
+    public int getTaskid() {
+        return taskid;
+    }
+
+    public void setTaskid(int taskid) {
+        this.taskid = taskid;
     }
 
     public int getDrillid() {

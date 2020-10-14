@@ -315,7 +315,7 @@ public class HomeFragment extends Fragment {
         switch (requestCode) {
             case 11:
                 if (resultCode == Activity.RESULT_OK) {
-                    actHelper.showProgressDialog("挖钻开始...");
+                    actHelper.showProgressDialog("挖钻加速...");
                     getSpeed();
                 }
                 break;
@@ -405,9 +405,11 @@ public class HomeFragment extends Fragment {
                                 adapter.notifyItemChanged(pos);
                             }
                         });
+                    }else {
+                        adapter.notifyItemChanged(clickPosition);
+                        clickPosition=-1;
+                        MsgUtils.showLongToast(getContext(), (String) msg.obj);
                     }
-                    MsgUtils.showLongToast(getContext(), (String) msg.obj);
-
                     break;
                 case -20:
                 case -10:
@@ -435,7 +437,7 @@ public class HomeFragment extends Fragment {
                     return;
                 }
                 Intent intent = new Intent(getContext(), WatchActivity.class);
-                intent.putExtra(Constants.Entry_Flag, drill.getDrillid());
+                intent.putExtra(Constants.Entry_Flag, drill.getTaskid());
                 startActivityForResult(intent, 11);
 //                if (drill.getQuickencount()==0){
 //                    MsgUtils.showLongToast(getContext(),"您没有加速次数！");
