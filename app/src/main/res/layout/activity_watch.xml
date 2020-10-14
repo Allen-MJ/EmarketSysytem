@@ -1,56 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center"
     android:keepScreenOn="true"
     android:background="@color/watch_bg_color"
     android:fitsSystemWindows="true">
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/top"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="bottom">
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/watch_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_white_color"
-            android:textSize="@dimen/frame_text_normal_size"
-            android:gravity="center"
-            android:padding="@dimen/frame_four_distance"/>
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/watch_dec"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_white_color"
-            android:textSize="@dimen/frame_text_small_size"
-            android:gravity="center"
-            android:padding="@dimen/frame_four_distance"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
     <RelativeLayout
-        android:id="@+id/watch_video"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/text_black_color">
-    </RelativeLayout>
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/bottom"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center_horizontal|top">
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/close"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/watch_video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/text_black_color">
+        </RelativeLayout>
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            android:src="@mipmap/ic_logo_40"
-            android:layout_margin="@dimen/frame_edge_distance"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            app:cardBackgroundColor="#B23C3C3C"
+            app:cardCornerRadius="@dimen/frame_eight_distance"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/frame_eight_distance">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/time_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/frame_text_small_size"
+                android:drawableEnd="@mipmap/ic_logo_40"
+                android:gravity="center"
+                android:textColor="@color/text_white_color"
+                android:padding="@dimen/frame_eight_distance"/>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

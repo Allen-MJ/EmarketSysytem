@@ -3,8 +3,6 @@ package cn.allen.ems.task;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,9 +18,7 @@ import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -33,18 +29,10 @@ import cn.allen.ems.utils.Constants;
 import cn.allen.ems.widget.BDCloudVideoView;
 
 public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.OnPreparedListener, IMediaPlayer.OnCompletionListener, IMediaPlayer.OnErrorListener, IMediaPlayer.OnInfoListener, IMediaPlayer.OnBufferingUpdateListener {
-    @BindView(R.id.watch_title)
-    AppCompatTextView watchTitle;
-    @BindView(R.id.watch_dec)
-    AppCompatTextView watchDec;
-    @BindView(R.id.close)
-    AppCompatImageView close;
     @BindView(R.id.watch_video)
     RelativeLayout watchVideo;
-    @BindView(R.id.top)
-    LinearLayoutCompat top;
-    @BindView(R.id.bottom)
-    LinearLayoutCompat bottom;
+    @BindView(R.id.time_close)
+    AppCompatTextView timeClose;
 
     private SharedPreferences shared;
     private int taskid, uid;
@@ -71,7 +59,7 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
         shared = AllenManager.getInstance().getStoragePreference();
         uid = shared.getInt(Constants.User_Id, -1);
         taskid = getIntent().getIntExtra(Constants.Entry_Flag, -1);
-        Logger.e("taskid",taskid+"");
+        Logger.e("taskid", taskid + "");
     }
 
     boolean isPausedByOnPause = false;
@@ -135,21 +123,6 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        // TODO Auto-generated method stub
-        super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-            isFullScreen = false;
-            top.setVisibility(View.VISIBLE);
-            bottom.setVisibility(View.VISIBLE);
-        } else {
-            isFullScreen = true;
-            top.setVisibility(View.GONE);
-            bottom.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         /**
          * 设置ak
@@ -180,10 +153,10 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
 
     @Override
     public void onBackPressed() {
-        if(isEnd){
-            setResult(RESULT_OK,getIntent());
+        if (isEnd) {
+            setResult(RESULT_OK, getIntent());
             finish();
-        }else{
+        } else {
             MsgUtils.showMDMessage(context, "还未看完视频完成任务!", "退出", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -191,7 +164,7 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
                     setResult(RESULT_CANCELED);
                     finish();
                 }
-            },"取消", new DialogInterface.OnClickListener() {
+            }, "取消", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     dialogInterface.dismiss();
@@ -200,14 +173,14 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
         }
     }
 
-    @OnClick(R.id.close)
+    @OnClick(R.id.time_close)
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.close:
-                if(isEnd){
-                    setResult(RESULT_OK,getIntent());
+            case R.id.time_close:
+                if (isEnd) {
+                    setResult(RESULT_OK, getIntent());
                     finish();
-                }else{
+                } else {
                     MsgUtils.showMDMessage(context, "还未看完视频完成任务!", "退出", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -215,7 +188,7 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
                             setResult(RESULT_CANCELED);
                             finish();
                         }
-                    },"取消", new DialogInterface.OnClickListener() {
+                    }, "取消", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
@@ -238,11 +211,11 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
         }).start();
     }
 
-    private void watch(){
+    private void watch() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                WebHelper.init().seenVideo(handler,uid,taskid);
+                WebHelper.init().seenVideo(handler, uid, taskid);
             }
         }).start();
     }
@@ -253,7 +226,7 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
                 case 0:
-                    watchTitle.setText(entry.getVideoname());
+                    timeClose.setText(entry.getWatchtime()+"");
                     mVV.setVideoPath(entry.getVideourl());
                     mVV.start();
                     break;
@@ -291,5 +264,12 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
     @Override
     public void onBufferingUpdate(IMediaPlayer iMediaPlayer, int i) {
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

@@ -77,8 +77,8 @@ public class UserVerifyActivity extends AllenBaseActivity {
                         public void run() {
                             Bitmap bitmap = ImageUtils.getimage(utils.creatNewFile("ids","front.jpg").getAbsolutePath());
                             idbg1 = ImageUtils.getImgeData(bitmap);
-//                            verifyIdFont.setImageURI(Uri.fromFile(utils.creatNewFile("ids","front.jpg")));
-                            verifyIdFont.setImageBitmap(bitmap);
+                            verifyIdFont.setImageURI(Uri.fromFile(utils.creatNewFile("ids","front.jpg")));
+//                            verifyIdFont.setImageBitmap(bitmap);
                         }
                     },200);
                 }else if(type.equals(CameraActivity.CONTENT_TYPE_ID_CARD_BACK)){
