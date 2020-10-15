@@ -14,7 +14,10 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/frame_edge_distance">
+            android:paddingTop="@dimen/frame_four_distance"
+            android:paddingBottom="@dimen/frame_four_distance"
+            android:paddingStart="@dimen/frame_edge_distance"
+            android:paddingEnd="@dimen/frame_edge_distance">
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/campaingn_item_phone"
                 android:layout_width="match_parent"
@@ -42,7 +45,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/gray_line_color"
+        android:background="@color/light_gray"
         android:layout_marginStart="@dimen/frame_eight_distance"
         android:layout_marginEnd="@dimen/frame_eight_distance"/>
 </androidx.appcompat.widget.LinearLayoutCompat>

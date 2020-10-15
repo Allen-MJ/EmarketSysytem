@@ -16,6 +16,7 @@ import allen.frame.AllenIMBaseActivity;
 import allen.frame.AllenManager;
 import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
+import allen.frame.tools.TimeMeter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -42,6 +43,8 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
     private BDCloudVideoView mVV;
     private boolean isFullScreen = false;
     private boolean isEnd = false;
+    private TimeMeter meter;
+    private boolean isPlayEnd = false;
 
     @Override
     protected boolean isStatusBarColorWhite() {
@@ -75,6 +78,9 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
             isPausedByOnPause = true;
             mVV.pause();
         }
+        if(meter.isWorking()){
+            meter.pause();
+        }
 
     }
 
@@ -89,6 +95,7 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
             isPausedByOnPause = false;
             mVV.start();
         }
+        meter.pause();
 
     }
 
@@ -124,6 +131,7 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
+        meter = TimeMeter.getInstance();
         /**
          * 设置ak
          */
@@ -148,7 +156,22 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
 
     @Override
     protected void addEvent() {
+        meter.setTimerLisener(new TimeMeter.OnTimerLisener() {
+            @Override
+            public void onStart() {
+                isEnd = false;
+            }
 
+            @Override
+            public void onInTime(long inTime) {
+
+            }
+
+            @Override
+            public void onEnd() {
+                isEnd = true;
+            }
+        });
     }
 
     @Override
@@ -237,6 +260,7 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
                 case 0:
                     timeClose.setText(entry.getWatchtime()+"");
                     mVV.setVideoPath(entry.getVideourl());
+                    meter.setMaxTime(entry.getWatchtime());
                     mVV.start();
                     break;
                 case -1:
@@ -244,7 +268,7 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
                     break;
                 case 1:
                     currency();
-                    MsgUtils.showMDMessage(context, "任务完成!");
+//                    MsgUtils.showMDMessage(context, "任务完成!");
                     isEnd = true;
                     break;
             }
@@ -253,12 +277,16 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
 
     @Override
     public void onPrepared(IMediaPlayer iMediaPlayer) {
-        isEnd = false;
+        meter.start();
     }
 
     @Override
     public void onCompletion(IMediaPlayer iMediaPlayer) {
-        watch();
+        if(!isPlayEnd){
+            watch();
+        }
+        isPlayEnd = true;
+        mVV.start();
     }
 
     @Override

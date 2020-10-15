@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:gravity="center"
     android:keepScreenOn="true"
     android:background="@color/watch_bg_color"
     android:fitsSystemWindows="true">
     <RelativeLayout
+        android:id="@+id/watch_video"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <RelativeLayout
-            android:id="@+id/watch_video"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/text_black_color">
-        </RelativeLayout>
-        <androidx.cardview.widget.CardView
+        android:layout_height="match_parent"
+        android:background="@color/text_black_color"
+        android:layout_centerInParent="true">
+    </RelativeLayout>
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#B23C3C3C"
+        app:cardCornerRadius="@dimen/frame_eight_distance"
+        app:cardElevation="1dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/frame_eight_distance">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/time_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="#B23C3C3C"
-            app:cardCornerRadius="@dimen/frame_eight_distance"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="@dimen/frame_eight_distance">
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/time_close"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/frame_text_small_size"
-                android:drawableEnd="@mipmap/ic_logo_40"
-                android:gravity="center"
-                android:textColor="@color/text_white_color"
-                android:drawablePadding="@dimen/frame_eight_distance"
-                android:padding="@dimen/frame_eight_distance"/>
-        </androidx.cardview.widget.CardView>
-    </RelativeLayout>
-</androidx.appcompat.widget.LinearLayoutCompat>
+            android:textSize="@dimen/frame_text_small_size"
+            android:drawableEnd="@drawable/search_clear"
+            android:gravity="center"
+            android:textColor="@color/text_white_color"
+            android:drawablePadding="@dimen/frame_eight_distance"
+            android:paddingStart="@dimen/frame_edge_distance"
+            android:paddingEnd="@dimen/frame_edge_distance"
+            android:paddingTop="@dimen/frame_four_distance"
+            android:paddingBottom="@dimen/frame_four_distance"
+            android:background="@android:color/transparent"/>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

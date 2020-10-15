@@ -98,7 +98,29 @@ public class TimeMeter {
 		handler.sendEmptyMessage(0);
 		return meter;
 	};
-	
+
+	public TimeMeter resume(){
+		if(timer==null){
+			timer = new Timer();
+		}
+		if(task!=null){
+			task.cancel();
+		}
+		startTask();
+		return meter;
+	}
+
+	public TimeMeter pause(){
+		if(timer!=null){
+			timer.cancel();
+		}
+		if(task!=null){
+			task.cancel();
+		}
+		timer = null;
+		return meter;
+	}
+
 	public TimeMeter stop(){
 		if(timer!=null){
 			timer.cancel();
