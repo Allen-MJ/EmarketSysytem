@@ -319,6 +319,8 @@ public class WebHelper {
         Response response = service.getWebservice(Api.VerifiedRealName,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
+            User user = gson.fromJson(response.getData(),User.class);
+            saveToLoacal(user);
             msg.what = 0;
         }else{
             msg.what = -1;

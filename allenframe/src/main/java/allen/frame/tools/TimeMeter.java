@@ -106,6 +106,7 @@ public class TimeMeter {
 		if(task!=null){
 			task.cancel();
 		}
+		isWorking = true;
 		startTask();
 		return meter;
 	}
@@ -117,6 +118,7 @@ public class TimeMeter {
 		if(task!=null){
 			task.cancel();
 		}
+		isWorking = false;
 		timer = null;
 		return meter;
 	}

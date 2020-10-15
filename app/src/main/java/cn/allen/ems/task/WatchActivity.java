@@ -95,7 +95,9 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
             isPausedByOnPause = false;
             mVV.start();
         }
-        meter.pause();
+        if(!meter.isWorking()){
+            meter.resume();
+        }
 
     }
 
@@ -169,6 +171,7 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
 
             @Override
             public void onEnd() {
+                watch();
                 isEnd = true;
                 timeClose.setText("关闭");
             }
@@ -283,10 +286,6 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
 
     @Override
     public void onCompletion(IMediaPlayer iMediaPlayer) {
-        if(!isPlayEnd){
-            watch();
-        }
-        isPlayEnd = true;
         mVV.start();
     }
 
