@@ -164,12 +164,13 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
 
             @Override
             public void onInTime(long inTime) {
-
+                timeClose.setText(inTime+"");
             }
 
             @Override
             public void onEnd() {
                 isEnd = true;
+                timeClose.setText("关闭");
             }
         });
     }

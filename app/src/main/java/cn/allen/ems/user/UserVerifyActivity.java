@@ -20,6 +20,7 @@ import allen.frame.tools.CheckUtils;
 import allen.frame.tools.FileUtils;
 import allen.frame.tools.ImageUtil;
 import allen.frame.tools.ImageUtils;
+import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
 import allen.frame.tools.StringUtils;
 import androidx.annotation.NonNull;
@@ -71,14 +72,12 @@ public class UserVerifyActivity extends AllenBaseActivity {
         if(RESULT_OK==resultCode){
             if(requestCode==11){
                 String type = data.getStringExtra(CameraActivity.KEY_CONTENT_TYPE);
+                Logger.e("debug","CameraActivity->"+type);
                 if(type.equals(CameraActivity.CONTENT_TYPE_ID_CARD_FRONT)){
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Bitmap bitmap = ImageUtils.getimage(utils.creatNewFile("ids","front.jpg").getAbsolutePath());
-                            idbg1 = ImageUtils.getImgeData(bitmap);
-                            verifyIdFont.setImageURI(Uri.fromFile(utils.creatNewFile("ids","front.jpg")));
-//                            verifyIdFont.setImageBitmap(bitmap);
+                            idbg1 = ImageUtils.getImgeData(ImageUtils.getimage(utils.creatNewFile("ids","front.jpg").getAbsolutePath()));
                         }
                     },200);
                 }else if(type.equals(CameraActivity.CONTENT_TYPE_ID_CARD_BACK)){
@@ -86,10 +85,16 @@ public class UserVerifyActivity extends AllenBaseActivity {
                         @Override
                         public void run() {
                             idbg2 = ImageUtils.getImgeData(ImageUtils.getimage(utils.creatNewFile("ids","back.jpg").getAbsolutePath()));
-                            verifyIdBack.setImageURI(Uri.fromFile(utils.creatNewFile("ids","back.jpg")));
                         }
                     },200);
                 }
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        verifyIdFont.setImageURI(Uri.fromFile(utils.creatNewFile("ids","front.jpg")));
+                        verifyIdBack.setImageURI(Uri.fromFile(utils.creatNewFile("ids","back.jpg")));
+                    }
+                },200);
             }
         }
     }
@@ -206,9 +211,11 @@ public class UserVerifyActivity extends AllenBaseActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
+                            utils.creatNewFile("ids","front.jpg").delete();
+                            utils.creatNewFile("ids","back.jpg").delete();
                             finish();
                         }
-                    });
+                    },false);
                     break;
                 case -1:
                     dismissProgressDialog();
