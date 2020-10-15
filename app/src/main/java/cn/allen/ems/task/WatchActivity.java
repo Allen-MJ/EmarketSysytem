@@ -211,6 +211,15 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
         }).start();
     }
 
+    private void currency(){
+        new Thread(){
+            @Override
+            public void run() {
+                WebHelper.init().currency(handler,uid);
+            }
+        }.start();
+    }
+
     private void watch() {
         new Thread(new Runnable() {
             @Override
@@ -234,6 +243,7 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
                     MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
                 case 1:
+                    currency();
                     MsgUtils.showMDMessage(context, "任务完成!");
                     isEnd = true;
                     break;
@@ -266,10 +276,4 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

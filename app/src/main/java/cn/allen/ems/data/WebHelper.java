@@ -120,6 +120,38 @@ public class WebHelper {
     }
 
     /**
+     *
+     * @param handler
+     * @param uid
+     */
+    public void currency(Handler handler, int uid){
+        Object[] objects = new Object[]{
+                "uid",uid
+        };
+        Response response = service.getWebservice(Api.GetCurrency,objects,WebService.Get);
+        Message msg = new Message();
+        if(response.isSuccess("200")){
+            try {
+                JSONObject object=new JSONObject(response.getData());
+                float changeScore= (float) object.optDouble("currency1");
+                float gold= (float) object.optDouble("currency2");
+                float diamond= (float) object.optDouble("currency3");
+                AllenManager.getInstance().getStoragePreference().edit()
+                        .putFloat(Constants.User_ChangeScore,changeScore)
+                        .putFloat(Constants.User_Gold,gold)
+                        .putFloat(Constants.User_Diamond,diamond)
+                        .apply();
+                msg.what=2;
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            handler.sendMessage(msg);
+        }
+
+    }
+
+    /**
      * 注册
      * @param handler
      * @param phone
