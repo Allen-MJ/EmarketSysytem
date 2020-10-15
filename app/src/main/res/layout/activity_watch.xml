@@ -33,6 +33,7 @@
                 android:drawableEnd="@mipmap/ic_logo_40"
                 android:gravity="center"
                 android:textColor="@color/text_white_color"
+                android:drawablePadding="@dimen/frame_eight_distance"
                 android:padding="@dimen/frame_eight_distance"/>
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
