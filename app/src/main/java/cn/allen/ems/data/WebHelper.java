@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import allen.frame.AllenManager;
@@ -30,6 +31,7 @@ import cn.allen.ems.entry.Response;
 import cn.allen.ems.entry.Task;
 import cn.allen.ems.entry.User;
 import cn.allen.ems.entry.Vcode;
+import cn.allen.ems.entry.Version;
 import cn.allen.ems.entry.VideoTask;
 import cn.allen.ems.utils.Constants;
 import cn.allen.ems.utils.NullStringEmptyTypeAdapterFactory;
@@ -975,5 +977,26 @@ public class WebHelper {
         msg.obj = response.getMessage();
         handler.sendMessage(msg);
         return mes;
+    }
+
+    /**
+     * 获取版本
+     * @return
+     */
+    public HashMap<String, String> getVersion(){
+        HashMap<String, String> map = new HashMap<>();
+        Object[] objects = new Object[]{
+        };
+        Response response = service.getWebservice(Api.GetVersion,objects,Constants.RequestType);
+        if(response.isSuccess("200")){
+            Version task = gson.fromJson(response.getData(), Version.class);
+            if(task!=null){
+                map.put("version", task.getVersionsno());
+                map.put("url", task.getUpdateurl());
+                map.put("info", task.getVersionscontent());
+                return map;
+            }
+        }
+        return null;
     }
 }

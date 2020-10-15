@@ -10,7 +10,8 @@
         android:layout_weight="1"
         android:gravity="bottom|center_horizontal"
         android:padding="@dimen/frame_edge_distance"
-        android:background="@color/gray_line_color">
+        android:background="@color/gray_line_color"
+        android:orientation="vertical">
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="@dimen/frame_photo_big_size"
             android:layout_height="@dimen/frame_photo_big_size"
@@ -22,6 +23,13 @@
                 android:src="@mipmap/ic_launcher"
                 android:scaleType="fitCenter"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/version_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/frame_text_normal_size"
+            android:textColor="@color/text_gray_color"
+            android:gravity="center"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -37,4 +45,14 @@
             android:textSize="@dimen/frame_text_small_size"
             android:lineSpacingMultiplier="1.5"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dark_bt_bg"
+        android:textColor="@color/text_white_color"
+        android:textSize="@dimen/frame_text_normal_size"
+        android:text="@string/update_hint"
+        android:layout_margin="@dimen/frame_32_distance"
+        android:padding="@dimen/frame_eight_distance"/>
 </androidx.appcompat.widget.LinearLayoutCompat>
