@@ -62,6 +62,7 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
         shared = AllenManager.getInstance().getStoragePreference();
         uid = shared.getInt(Constants.User_Id, -1);
         taskid = getIntent().getIntExtra(Constants.Entry_Flag, -1);
+        entry= (VideoTask) getIntent().getSerializableExtra(Constants.Video_Flag);
         Logger.e("taskid", taskid + "");
     }
 
@@ -151,7 +152,11 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
         rllp.addRule(RelativeLayout.CENTER_IN_PARENT);
         watchVideo.addView(mVV, rllp);
         mVV.setLogEnabled(false);
-        getVideoInfo();
+        if (entry!=null){
+            handler.sendEmptyMessage(0);
+        }else {
+            getVideoInfo();
+        }
     }
 
     @Override

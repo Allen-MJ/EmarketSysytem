@@ -14,14 +14,17 @@ import java.util.List;
 
 import allen.frame.ActivityHelper;
 import allen.frame.AllenManager;
+import allen.frame.tools.MsgUtils;
 import allen.frame.widget.MaterialRefreshLayout;
 import allen.frame.widget.MaterialRefreshListener;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -59,7 +62,7 @@ public class TaskFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_task, container, false);
-        actHelper = new ActivityHelper(getActivity(),v);
+        actHelper = new ActivityHelper(getActivity(), v);
         unbinder = ButterKnife.bind(this, v);
         return v;
     }
@@ -80,20 +83,23 @@ public class TaskFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==getActivity().RESULT_OK){
-            if(requestCode==11){
+        if (resultCode == getActivity().RESULT_OK) {
+            if (requestCode == 11) {
+                userChange.setText("" + shared.getFloat(Constants.User_ChangeScore, 0f));
+                userGold.setText("" + shared.getFloat(Constants.User_Gold, 0f));
+                userDiamond.setText("" + shared.getFloat(Constants.User_Diamond, 0f));
                 actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START, "");
                 loadData();
             }
         }
     }
 
-    private void initUI(View view){
+    private void initUI(View view) {
         shared = AllenManager.getInstance().getStoragePreference();
         uid = shared.getInt(Constants.User_Id, -1);
-        userChange.setText(""+shared.getFloat(Constants.User_ChangeScore,0f));
-        userGold.setText(""+shared.getFloat(Constants.User_Gold,0f));
-        userDiamond.setText(""+shared.getFloat(Constants.User_Diamond,0f));
+        userChange.setText("" + shared.getFloat(Constants.User_ChangeScore, 0f));
+        userGold.setText("" + shared.getFloat(Constants.User_Gold, 0f));
+        userDiamond.setText("" + shared.getFloat(Constants.User_Diamond, 0f));
         mater.setLoadMore(false);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -104,7 +110,7 @@ public class TaskFragment extends Fragment {
         loadData();
     }
 
-    private void addEvent(View view){
+    private void addEvent(View view) {
         mater.setMaterialRefreshListener(materListener);
         adapter.setOnItemClickListener(listener);
     }
@@ -125,11 +131,15 @@ public class TaskFragment extends Fragment {
 
         @Override
         public void getClick(View v, Task entry) {
-            startActivityForResult(new Intent(getActivity(),WatchActivity.class).putExtra(Constants.Entry_Flag,entry.getTaskid()),11);
+            if (entry.getSeencount() >= entry.getWatchcount()) {
+                MsgUtils.showMDMessage(getContext(), "您今天该任务已经达到上限！");
+            } else {
+                startActivityForResult(new Intent(getActivity(), WatchActivity.class).putExtra(Constants.Entry_Flag, entry.getTaskid()), 11);
+            }
         }
     };
 
-    private void loadData(){
+    private void loadData() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -140,12 +150,12 @@ public class TaskFragment extends Fragment {
     }
 
     @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
-                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES, "");
                     if (isRefresh) {
                         mater.finishRefresh();
                     }

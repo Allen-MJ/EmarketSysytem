@@ -82,6 +82,14 @@ public class WebHelper {
                 .apply();
     }
 
+    private void saveAccount(float changeScore,float gold,float diamond){
+        AllenManager.getInstance().getStoragePreference().edit()
+                .putFloat(Constants.User_ChangeScore,changeScore)
+                .putFloat(Constants.User_Gold,gold)
+                .putFloat(Constants.User_Diamond,diamond)
+                .apply();
+    }
+
     /**
      * 登录
      * @param handler
@@ -136,11 +144,7 @@ public class WebHelper {
                 float changeScore= (float) object.optDouble("currency1");
                 float gold= (float) object.optDouble("currency2");
                 float diamond= (float) object.optDouble("currency3");
-                AllenManager.getInstance().getStoragePreference().edit()
-                        .putFloat(Constants.User_ChangeScore,changeScore)
-                        .putFloat(Constants.User_Gold,gold)
-                        .putFloat(Constants.User_Diamond,diamond)
-                        .apply();
+                saveAccount(changeScore,gold,diamond);
                 msg.what=2;
 
             } catch (JSONException e) {
@@ -568,35 +572,22 @@ public class WebHelper {
     /**
      * 挖钻加速
      * @param handler
-     * @param uid
-     * @param drillId
-     * @param qtime
      * @return
      */
-    public Drill quickenDrill(Handler handler,int uid,int drillId,int qtime){
+    public VideoTask quickenDrill(Handler handler){
+        VideoTask videoTask = null;
         Object[] objects = new Object[]{
-                "uid",uid,"drillId",drillId,"qtime",qtime
         };
         Response response = service.getWebservice(Api.QuickenDrill,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
-            Drill drill = gson.fromJson(response.getData(),Drill.class);
-            if(drill!=null){
-                msg.what = 20;
-                msg.obj = response.getMessage();
-                handler.sendMessage(msg);
-                return drill;
-            }else{
-                msg.what = -20;
-                msg.obj = "数据异常!";
-                handler.sendMessage(msg);
-            }
+            videoTask = gson.fromJson(response.getData(),VideoTask.class);
         }else {
             msg.what = -20;
             msg.obj = response.getMessage();
             handler.sendMessage(msg);
         }
-        return null;
+        return videoTask;
     }
 
     public Drill drillStatus(Handler handler,int uid){

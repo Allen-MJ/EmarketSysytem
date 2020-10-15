@@ -40,12 +40,14 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.allen.ems.NoticeActivity;
 import cn.allen.ems.R;
+import cn.allen.ems.ShowPicActivity;
 import cn.allen.ems.adapter.ShareAdapter;
 import cn.allen.ems.data.WebHelper;
 import cn.allen.ems.entry.Drill;
 import cn.allen.ems.entry.NineGrid;
 import cn.allen.ems.entry.Notice;
 import cn.allen.ems.entry.QrCode;
+import cn.allen.ems.entry.VideoTask;
 import cn.allen.ems.task.WatchActivity;
 import cn.allen.ems.utils.Constants;
 import cn.allen.ems.utils.LoadingDialog;
@@ -80,6 +82,7 @@ public class HomeFragment extends Fragment {
     private List<QrCode> qrCodes;
     private ShareAdapter shareAdapter;
     private Drill drill;
+    private VideoTask videoTask;
     private int clickPosition = -1;
     private int surplustime;
     private int muin;
@@ -182,6 +185,10 @@ public class HomeFragment extends Fragment {
         shareAdapter.setOnItemClickListener(new ShareAdapter.OnItemClickListener() {
             @Override
             public void itemClick(View v, QrCode entry) {
+                Intent intent=new Intent(getActivity(), ShowPicActivity.class);
+                intent.putExtra("url",entry.getQrcodeurl());
+                intent.putExtra("title",entry.getQrcodename());
+                startActivity(intent);
 
             }
         });
@@ -254,7 +261,10 @@ public class HomeFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                drill = WebHelper.init().quickenDrill(handler, uid, drill.getDrillid(), drill.getQuickentime());
+                videoTask = WebHelper.init().quickenDrill(handler);
+                if (videoTask!=null){
+                    handler.sendEmptyMessage(0);
+                }
             }
         }).start();
     }
@@ -315,8 +325,7 @@ public class HomeFragment extends Fragment {
         switch (requestCode) {
             case 11:
                 if (resultCode == Activity.RESULT_OK) {
-                    actHelper.showProgressDialog("挖钻加速...");
-                    getSpeed();
+                    getDrill();
                 }
                 break;
             case 12:
@@ -333,6 +342,13 @@ public class HomeFragment extends Fragment {
         @Override
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
+                case 0:
+                    actHelper.dismissProgressDialog();
+                    Intent intent=new Intent(getActivity(),WatchActivity.class);
+                    intent.putExtra(Constants.Video_Flag,videoTask);
+                    intent.putExtra(Constants.Entry_Flag,drill.getTaskid());
+                    startActivityForResult(intent,11);
+                    break;
                 case 100:
                     if (list.size() > 0) {
                         notice.setText(list.get(index).getTipcontent());
@@ -408,7 +424,7 @@ public class HomeFragment extends Fragment {
                     }else {
                         adapter.notifyItemChanged(clickPosition);
                         clickPosition=-1;
-                        MsgUtils.showLongToast(getContext(), (String) msg.obj);
+                        MsgUtils.showMDMessage(getContext(), (String) msg.obj);
                     }
                     break;
                 case -20:
@@ -434,19 +450,10 @@ public class HomeFragment extends Fragment {
             case R.id.speed:
                 if (drill == null) {
                     MsgUtils.showLongToast(getContext(), "您还没有开始挖砖!请开始后再加速!");
-                    return;
+                }else {
+                    actHelper.showProgressDialog("挖钻加速...");
+                    getSpeed();
                 }
-                Intent intent = new Intent(getContext(), WatchActivity.class);
-                intent.putExtra(Constants.Entry_Flag, drill.getTaskid());
-                startActivityForResult(intent, 11);
-//                if (drill.getQuickencount()==0){
-//                    MsgUtils.showLongToast(getContext(),"您没有加速次数！");
-//                    return;
-//                }else if (drill.getQuickentime()==0){
-//                    MsgUtils.showLongToast(getContext(),"您没有加速时间!");
-//                    return;
-//                }
-//                getSpeed();
                 break;
         }
     }

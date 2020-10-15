@@ -23,4 +23,10 @@
         <item name="android:backgroundDimAmount">0.42</item>
 
     </style>
+    <style name="fulltrans" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/colorbtm</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
 </resources>
