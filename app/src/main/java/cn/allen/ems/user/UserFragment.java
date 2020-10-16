@@ -1,6 +1,9 @@
 package cn.allen.ems.user;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -113,6 +116,13 @@ public class UserFragment extends Fragment {
         userChange.setText("" + shared.getFloat(Constants.User_ChangeScore, 0f));
         userGold.setText("" + shared.getFloat(Constants.User_Gold, 0f));
         userDiamond.setText("" + shared.getFloat(Constants.User_Diamond, 0f));
+        registerBoradcastReceiver();
+    }
+    public void registerBoradcastReceiver() {
+        IntentFilter myIntentFilter = new IntentFilter();
+        myIntentFilter.addAction("update");
+        //注册广播
+        getActivity().registerReceiver(mBroadcastReceiver, myIntentFilter);
     }
 
     @OnClick({R.id.user_campaign, R.id.user_my_shop, R.id.user_my_record, R.id.user_my_real, R.id.user_my_info, R.id.user_my_address, R.id.user_about_us, R.id.user_version, R.id.exit})
@@ -149,4 +159,16 @@ public class UserFragment extends Fragment {
         }
         view.setEnabled(true);
     }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("update")) {
+                userChange.setText("" + shared.getFloat(Constants.User_ChangeScore, 0f));
+                userGold.setText("" + shared.getFloat(Constants.User_Gold, 0f));
+                userDiamond.setText("" + shared.getFloat(Constants.User_Diamond, 0f));
+            }
+        }
+
+    };
 }

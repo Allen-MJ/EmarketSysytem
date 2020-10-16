@@ -142,6 +142,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onResume() {
+        Logger.e("HomeFragment:","onResume");
         banner.onResume();
         super.onResume();
 
@@ -149,20 +150,27 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onPause() {
+        Logger.e("HomeFragment:","onPause");
         banner.onPause();
         super.onPause();
     }
 
     @Override
     public void onStop() {
+        Logger.e("HomeFragment:","onStop");
         banner.onStop();
         super.onStop();
     }
 
     @Override
     public void onDestroy() {
+        Logger.e("HomeFragment:","onDestroy");
         super.onDestroy();
         timeMeter.stop();
+    }
+
+    public HBanner getBanner(){
+        return banner;
     }
 
     private void initUI(View view) {
@@ -357,7 +365,14 @@ public class HomeFragment extends Fragment {
             }
         }).start();
     }
-
+    private void currency(){
+        new Thread(){
+            @Override
+            public void run() {
+                WebHelper.init().currency(handler,uid);
+            }
+        }.start();
+    }
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -436,6 +451,11 @@ public class HomeFragment extends Fragment {
                     }
                     banner.update(bannerViewList);
                     break;
+                case 120:
+                    Intent mIntent = new Intent("update");
+                    //发送广播
+                    getActivity().sendBroadcast(mIntent);
+                    break;
                 case 100:
                     if (list.size() > 0) {
                         notice.setText(list.get(index).getTipcontent());
@@ -491,6 +511,7 @@ public class HomeFragment extends Fragment {
                 case 11:
                     dismissGifDialog();
                     String message = (String) msg.obj;
+                    currency();
                     if (message.equals("金币不足")) {
                         int taskid = msg.arg1;
                         MsgUtils.showMDMessage(getContext(), "金币不足！是否看视频赚取金币？", "是", new DialogInterface.OnClickListener() {

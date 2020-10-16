@@ -1,7 +1,10 @@
 package cn.allen.ems.task;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -108,6 +111,14 @@ public class TaskFragment extends Fragment {
         rv.setAdapter(adapter);
         actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START, "");
         loadData();
+        registerBoradcastReceiver();
+    }
+
+    public void registerBoradcastReceiver() {
+        IntentFilter myIntentFilter = new IntentFilter();
+        myIntentFilter.addAction("update");
+        //注册广播
+        getActivity().registerReceiver(mBroadcastReceiver, myIntentFilter);
     }
 
     private void addEvent(View view) {
@@ -163,5 +174,16 @@ public class TaskFragment extends Fragment {
                     break;
             }
         }
+    };
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("update")) {
+                userChange.setText("" + shared.getFloat(Constants.User_ChangeScore, 0f));
+                userGold.setText("" + shared.getFloat(Constants.User_Gold, 0f));
+                userDiamond.setText("" + shared.getFloat(Constants.User_Diamond, 0f));
+            }
+        }
+
     };
 }

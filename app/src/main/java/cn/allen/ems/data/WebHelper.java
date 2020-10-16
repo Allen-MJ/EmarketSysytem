@@ -147,7 +147,7 @@ public class WebHelper {
                 float gold= (float) object.optDouble("currency2");
                 float diamond= (float) object.optDouble("currency3");
                 saveAccount(changeScore,gold,diamond);
-                msg.what=2;
+                msg.what=120;
 
             } catch (JSONException e) {
                 e.printStackTrace();

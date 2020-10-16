@@ -1,6 +1,7 @@
 package cn.allen.ems.shop;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -185,6 +186,14 @@ public class OrderFragment extends Fragment {
             }
         }).start();
     }
+    private void currency(){
+        new Thread(){
+            @Override
+            public void run() {
+                WebHelper.init().currency(handler,uid);
+            }
+        }.start();
+    }
 
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -214,6 +223,7 @@ public class OrderFragment extends Fragment {
                     actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
                     MsgUtils.showMDMessage(getContext(),(String)msg.obj);
                     loadData();
+                    currency();
                     break;
                 case 2:
                     actHelper.dismissProgressDialog();
@@ -259,6 +269,11 @@ public class OrderFragment extends Fragment {
                         }
                     });
                     tdialog.showCityDialog("请选择区县", choiceCountry, third);
+                    break;
+                case 120:
+                    Intent mIntent = new Intent("update");
+                    //发送广播
+                    getActivity().sendBroadcast(mIntent);
                     break;
                 case -1:
                     actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
