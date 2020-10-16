@@ -726,6 +726,26 @@ public class WebHelper {
     }
 
     /**
+     * 删除我的发布记录
+     * @param handler
+     * @param showid
+     */
+    public void deleteShowMessageById(Handler handler,int showid){
+        Object[] objects = new Object[]{
+                "showid",showid
+        };
+        Response response = service.getWebservice(Api.DeleteShowMessageById,objects,Constants.RequestType);
+        Message msg = new Message();
+        if(response.isSuccess("200")){
+            msg.what = 1;
+        }else {
+            msg.what = -1;
+        }
+        msg.obj = response.getMessage();
+        handler.sendMessage(msg);
+    }
+
+    /**
      * 发布图片墙
      * @param handler
      * @param uid
