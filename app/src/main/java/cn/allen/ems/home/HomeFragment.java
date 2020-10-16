@@ -2,18 +2,25 @@ package cn.allen.ems.home;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
@@ -22,9 +29,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.lake.banner.BannerStyle;
+import com.lake.banner.HBanner;
+import com.lake.banner.ImageGravityType;
+import com.lake.banner.Transformer;
+import com.lake.banner.VideoGravityType;
+import com.lake.banner.listener.OnBannerListener;
+import com.lake.banner.loader.ViewItemBean;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import allen.frame.ActivityHelper;
@@ -52,6 +66,8 @@ import cn.allen.ems.task.WatchActivity;
 import cn.allen.ems.utils.Constants;
 import cn.allen.ems.utils.LoadingDialog;
 
+import static com.lake.banner.BannerConfig.VIDEO;
+
 public class HomeFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.play)
@@ -70,6 +86,10 @@ public class HomeFragment extends Fragment {
     RecyclerView sharedRv;
     @BindView(R.id.speed_time)
     AppCompatTextView speedTime;
+    @BindView(R.id.banner)
+    HBanner banner;
+    @BindView(R.id.image_vol)
+    ImageView imageVol;
     private SharedPreferences shared;
     private boolean isRefresh = false;
     private int uid;
@@ -83,11 +103,14 @@ public class HomeFragment extends Fragment {
     private ShareAdapter shareAdapter;
     private Drill drill;
     private VideoTask videoTask;
+    private List<VideoTask> bannerList;
+    private List<ViewItemBean> bannerViewList = new ArrayList<>();
     private int clickPosition = -1;
     private int surplustime;
     private int muin;
     private int seconds;
     private TimeMeter timeMeter = TimeMeter.getInstance();
+    private AudioManager audioManager;
 
     public static HomeFragment init() {
         HomeFragment fragment = new HomeFragment();
@@ -119,8 +142,21 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onResume() {
+        banner.onResume();
         super.onResume();
 
+    }
+
+    @Override
+    public void onPause() {
+        banner.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        banner.onStop();
+        super.onStop();
     }
 
     @Override
@@ -130,10 +166,13 @@ public class HomeFragment extends Fragment {
     }
 
     private void initUI(View view) {
+        audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_MUTE, 0);//设为静音
         shared = AllenManager.getInstance().getStoragePreference();
         uid = shared.getInt(Constants.User_Id, -1);
 //        city = shared.getString(Constants.User_City, "重庆");
         initAdapter();
+        initBanner();
 
         GridLayoutManager smanager = new GridLayoutManager(getActivity(), 2);
         sharedRv.setLayoutManager(smanager);
@@ -143,6 +182,21 @@ public class HomeFragment extends Fragment {
         getNiticeTop5();
         getGameFirst();
         getQrCodes();
+        getBannerVideo();
+    }
+
+    private void initBanner() {
+        banner.setViews(bannerViewList)
+                .setBannerAnimation(Transformer.Default)//换场方式
+                .setBannerStyle(BannerStyle.CIRCLE_INDICATOR_TITLE)//指示器模式
+                .setCache(true)//可以不用设置，默认为true
+                .setCachePath(getActivity().getExternalFilesDir(Environment.DIRECTORY_MOVIES).getAbsolutePath() + File.separator + "hbanner")
+                .setVideoGravity(VideoGravityType.CENTER)//视频布局方式
+                .setImageGravity(ImageGravityType.FIT_XY)//图片布局方式
+                .setPageBackgroundColor(Color.TRANSPARENT)//设置背景
+                .setShowTitle(true)//是否显示标题
+                .setViewPagerIsScroll(true)//是否支持手滑
+                .start();
     }
 
     private void initAdapter() {
@@ -165,6 +219,15 @@ public class HomeFragment extends Fragment {
     }
 
     private void addEvent(View view) {
+        banner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                VideoTask video = bannerList.get(position);
+                Intent videoIntent = new Intent(getActivity(), WatchActivity.class);
+                videoIntent.putExtra(Constants.Video_Flag, video);
+                startActivityForResult(videoIntent, 13);
+            }
+        });
         adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -185,9 +248,9 @@ public class HomeFragment extends Fragment {
         shareAdapter.setOnItemClickListener(new ShareAdapter.OnItemClickListener() {
             @Override
             public void itemClick(View v, QrCode entry) {
-                Intent intent=new Intent(getActivity(), ShowPicActivity.class);
-                intent.putExtra("url",entry.getQrcodeurl());
-                intent.putExtra("title",entry.getQrcodename());
+                Intent intent = new Intent(getActivity(), ShowPicActivity.class);
+                intent.putExtra("url", entry.getQrcodeurl());
+                intent.putExtra("title", entry.getQrcodename());
                 startActivity(intent);
 
             }
@@ -262,12 +325,26 @@ public class HomeFragment extends Fragment {
             @Override
             public void run() {
                 videoTask = WebHelper.init().quickenDrill(handler);
-                if (videoTask!=null){
+                if (videoTask != null) {
                     handler.sendEmptyMessage(0);
                 }
             }
         }).start();
     }
+
+    private void getBannerVideo() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                bannerList = WebHelper.init().bannerVideo(handler);
+                int len = bannerList == null ? 0 : bannerList.size();
+                if (len > 0) {
+                    handler.sendEmptyMessage(1);
+                }
+            }
+        }).start();
+    }
+
 
     /**
      * 今天是否挖钻
@@ -333,6 +410,9 @@ public class HomeFragment extends Fragment {
                 clickPosition = -1;
                 adapter.notifyItemChanged(pos);
                 break;
+            case 13:
+
+                break;
         }
     }
 
@@ -344,10 +424,17 @@ public class HomeFragment extends Fragment {
             switch (msg.what) {
                 case 0:
                     actHelper.dismissProgressDialog();
-                    Intent intent=new Intent(getActivity(),WatchActivity.class);
-                    intent.putExtra(Constants.Video_Flag,videoTask);
-                    intent.putExtra(Constants.Entry_Flag,drill.getTaskid());
-                    startActivityForResult(intent,11);
+                    Intent intent = new Intent(getActivity(), WatchActivity.class);
+                    intent.putExtra(Constants.Video_Flag, videoTask);
+                    intent.putExtra(Constants.Entry_Flag, drill.getTaskid());
+                    startActivityForResult(intent, 11);
+                    break;
+                case 1:
+                    actHelper.dismissProgressDialog();
+                    for (VideoTask video : bannerList) {
+                        bannerViewList.add(new ViewItemBean(VIDEO, video.getVideoname(), video.getVideourl(), 15 * 1000));
+                    }
+                    banner.update(bannerViewList);
                     break;
                 case 100:
                     if (list.size() > 0) {
@@ -421,9 +508,9 @@ public class HomeFragment extends Fragment {
                                 adapter.notifyItemChanged(pos);
                             }
                         });
-                    }else {
+                    } else {
                         adapter.notifyItemChanged(clickPosition);
-                        clickPosition=-1;
+                        clickPosition = -1;
                         MsgUtils.showMDMessage(getContext(), (String) msg.obj);
                     }
                     break;
@@ -436,9 +523,20 @@ public class HomeFragment extends Fragment {
         }
     };
 
-    @OnClick({R.id.play, R.id.notice, R.id.speed, R.id.score})
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @OnClick({R.id.play, R.id.notice, R.id.speed, R.id.score, R.id.image_vol})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.image_vol:
+                boolean muteFlag = audioManager.isStreamMute(AudioManager.STREAM_MUSIC);//获取当前音乐多媒体是否静音
+                if (muteFlag) {
+                    audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_UNMUTE, 0);//取消静音
+                    imageVol.setImageDrawable(getActivity().getDrawable(R.drawable.ic_baseline_volume_up_24));
+                } else {
+                    audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_MUTE, 0);//设为静音
+                    imageVol.setImageDrawable(getActivity().getDrawable(R.drawable.ic_baseline_volume_off_24));
+                }
+                break;
             case R.id.score:
                 getDrill();
                 break;
@@ -450,7 +548,7 @@ public class HomeFragment extends Fragment {
             case R.id.speed:
                 if (drill == null) {
                     MsgUtils.showLongToast(getContext(), "您还没有开始挖砖!请开始后再加速!");
-                }else {
+                } else {
                     actHelper.showProgressDialog("挖钻加速...");
                     getSpeed();
                 }

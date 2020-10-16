@@ -592,6 +592,28 @@ public class WebHelper {
         return videoTask;
     }
 
+    /**
+     * 获取banner视频信息
+     * @param handler
+     * @return
+     */
+    public List<VideoTask> bannerVideo(Handler handler){
+        List<VideoTask> list = new ArrayList<>();
+        Object[] objects = new Object[]{
+        };
+        Response response = service.getWebservice(Api.GetBannerVideo,objects,Constants.RequestType);
+        Message msg = new Message();
+        if(response.isSuccess("200")){
+            list = gson.fromJson(response.getData(),new TypeToken<List<VideoTask>>(){}.getType());
+        }else {
+            msg.what = -20;
+            msg.obj = response.getMessage();
+            handler.sendMessage(msg);
+        }
+        return list;
+    }
+
+
     public Drill drillStatus(Handler handler,int uid){
         Object[] objects = new Object[]{
                 "uid",uid

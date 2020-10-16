@@ -25,12 +25,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <androidx.appcompat.widget.AppCompatImageView
+                    <com.lake.banner.HBanner
+                        android:id="@+id/banner"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/frame_photo_icon_biger_height"
                         android:layout_centerInParent="true"
                         android:adjustViewBounds="true"
-                        android:scaleType="fitXY" />
+                        />
+                    <ImageView
+                        android:id="@+id/image_vol"
+                        android:layout_width="@dimen/frame_minus_24_distance"
+                        android:layout_height="@dimen/frame_minus_24_distance"
+                        android:layout_alignParentRight="true"
+                        android:padding="@dimen/frame_eight_distance"
+                        android:src="@drawable/ic_baseline_volume_off_24"/>
+                   <!-- <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/frame_photo_icon_biger_height"
+                        android:layout_centerInParent="true"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY" />-->
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/play"
@@ -38,6 +52,7 @@
                         android:layout_height="@dimen/frame_title_height"
                         android:layout_centerInParent="true"
                         android:scaleType="fitCenter"
+                        android:visibility="gone"
                         android:src="@mipmap/ic_logo_44" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>

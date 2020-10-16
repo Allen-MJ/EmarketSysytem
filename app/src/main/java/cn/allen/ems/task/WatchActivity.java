@@ -176,7 +176,9 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
 
             @Override
             public void onEnd() {
-                watch();
+                if (taskid!=-1) {
+                    watch();
+                }
                 isEnd = true;
                 timeClose.setText("关闭");
             }

@@ -19,6 +19,7 @@ public class Api {
     public static final String GetNineGame = "GetNineGame";//获取九宫格游戏布局数据
     public static final String SmashEgg = "SmashEgg";//砸蛋
     public static final String BeginDrill = "BeginDrill";//开始挖钻/查询挖钻情况
+    public static final String GetBannerVideo = "GetBannerVideo";//获取banner视频信息
     public static final String QuickenDrill = "QuickenDrill";//挖钻加速
     public static final String DrillStatus = "DrillStatus";//挖钻状态
     public static final String GetshowPhoto = "GetshowPhoto";//获取照片墙
