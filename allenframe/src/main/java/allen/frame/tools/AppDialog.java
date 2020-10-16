@@ -89,7 +89,7 @@ public class AppDialog {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				AllenManager.getInstance().exitApp();
+				/*AllenManager.getInstance().exitApp();*/
 			}
 		}).create();
 		dialog.show();

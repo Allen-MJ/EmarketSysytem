@@ -288,7 +288,9 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
 
     @Override
     public void onPrepared(IMediaPlayer iMediaPlayer) {
-        meter.start();
+        if(!isEnd){
+            meter.start();
+        }
     }
 
     @Override

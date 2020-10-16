@@ -37,4 +37,5 @@ public class Api {
     public static final String GetMySpread = "GetMySpread";//我的推广类表
     public static final String SendWaitMessage = "SendWaitMessage";//发送留言
     public static final String GetCurrency = "GetCurrency";//获取用户余额
+    public static final String GetVersion = "GetVersion";//获取版本号
 }

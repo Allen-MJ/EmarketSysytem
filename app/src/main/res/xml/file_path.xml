@@ -8,6 +8,12 @@
             name="download_root"
             path="marketCache/download/"/>
         <external-path
+            name="mfiles_root"
+            path="yxCache/"/>
+        <external-path
+            name="mdownload_root"
+            path="yxCache/download/"/>
+        <external-path
             name="external_storage_root"
             path="."/>
         <!--代表外部存储区域的根目录下的文件 Environment.getExternalStorageDirectory()/DCIM/camerademo目录-->

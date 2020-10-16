@@ -102,5 +102,6 @@
     <string name="init_bt_hint">设为默认</string>
     <string name="init_hint">默认</string>
     <string name="save_hint">保存</string>
+    <string name="update_hint">更新</string>
     <!--通用 end-->
 </resources>
