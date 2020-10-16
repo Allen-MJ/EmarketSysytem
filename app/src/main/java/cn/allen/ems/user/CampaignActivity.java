@@ -166,9 +166,6 @@ public class CampaignActivity extends AllenBaseActivity {
                         }
                         mater.finishRefreshLoadMore();
                     }
-                    if (list.size() == 0) {
-                        actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL, "");
-                    }
                     actHelper.setCanLoadMore(mater, pagesize, list);
                     adapter.setList(list);
                     break;
