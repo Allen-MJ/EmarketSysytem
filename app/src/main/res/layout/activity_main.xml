@@ -65,8 +65,8 @@
         app:menu="@menu/menu_main_bottom_navigation"
         android:background="@android:color/transparent"
         app:labelVisibilityMode="labeled"
-        app:itemIconSize="@dimen/frame_edge_distance"
         app:itemTextColor="@color/bottom_navigation_selector"
         app:itemIconTint="@drawable/bottom_navigation_selector"
         app:itemBackground="@android:color/transparent"/>
+    <!--app:itemIconSize="@dimen/frame_edge_distance"-->
 </androidx.appcompat.widget.LinearLayoutCompat>

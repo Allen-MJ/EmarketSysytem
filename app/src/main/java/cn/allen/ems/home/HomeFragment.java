@@ -18,15 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.lake.banner.BannerStyle;
@@ -48,6 +39,14 @@ import allen.frame.adapter.ViewHolder;
 import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
 import allen.frame.tools.TimeMeter;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -90,6 +89,8 @@ public class HomeFragment extends Fragment {
     HBanner banner;
     @BindView(R.id.image_vol)
     ImageView imageVol;
+    @BindView(R.id.game_rule)
+    AppCompatTextView gameRule;
     private SharedPreferences shared;
     private boolean isRefresh = false;
     private int uid;
@@ -143,7 +144,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Logger.e("HomeFragment:","onResume");
+        Logger.e("HomeFragment:", "onResume");
         banner.onResume();
         super.onResume();
 
@@ -151,26 +152,26 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onPause() {
-        Logger.e("HomeFragment:","onPause");
+        Logger.e("HomeFragment:", "onPause");
         banner.onPause();
         super.onPause();
     }
 
     @Override
     public void onStop() {
-        Logger.e("HomeFragment:","onStop");
+        Logger.e("HomeFragment:", "onStop");
         banner.onStop();
         super.onStop();
     }
 
     @Override
     public void onDestroy() {
-        Logger.e("HomeFragment:","onDestroy");
+        Logger.e("HomeFragment:", "onDestroy");
         super.onDestroy();
         timeMeter.stop();
     }
 
-    public HBanner getBanner(){
+    public HBanner getBanner() {
         return banner;
     }
 
@@ -240,8 +241,8 @@ public class HomeFragment extends Fragment {
         adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                float glod=shared.getFloat(Constants.User_Gold,0);
-                if (nineGrids.get(position).getCurrency()>glod){
+                float glod = shared.getFloat(Constants.User_Gold, 0);
+                if (nineGrids.get(position).getCurrency() > glod) {
                     MsgUtils.showMDMessage(getContext(), "金币不足！是否看视频赚取金币？", "是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -257,7 +258,7 @@ public class HomeFragment extends Fragment {
                             adapter.notifyItemChanged(pos);
                         }
                     });
-                }else {
+                } else {
                     if (clickPosition == -1) {
                         clickPosition = position;
                         adapter.notifyItemChanged(position);
@@ -314,7 +315,7 @@ public class HomeFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                nineGrids = WebHelper.init().getNineGame(handler,city);
+                nineGrids = WebHelper.init().getNineGame(handler, city);
                 handler.sendEmptyMessage(102);
             }
         }).start();
@@ -385,14 +386,16 @@ public class HomeFragment extends Fragment {
             }
         }).start();
     }
-    private void currency(){
-        new Thread(){
+
+    private void currency() {
+        new Thread() {
             @Override
             public void run() {
-                WebHelper.init().currency(handler,uid);
+                WebHelper.init().currency(handler, uid);
             }
         }.start();
     }
+
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -503,7 +506,7 @@ public class HomeFragment extends Fragment {
                     shareAdapter.setList(qrCodes);
                     break;
                 case 104:
-                    nineTaskID=(String) msg.obj;
+                    nineTaskID = (String) msg.obj;
                     break;
                 case 20:
                     actHelper.dismissProgressDialog();
@@ -568,7 +571,7 @@ public class HomeFragment extends Fragment {
     };
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    @OnClick({R.id.play, R.id.notice, R.id.speed, R.id.score, R.id.image_vol})
+    @OnClick({R.id.play, R.id.notice, R.id.speed, R.id.score, R.id.image_vol, R.id.game_rule})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.image_vol:
@@ -597,7 +600,9 @@ public class HomeFragment extends Fragment {
                     getSpeed();
                 }
                 break;
+            case R.id.game_rule:
+                startActivity(new Intent(getActivity(),GameRuleActivity.class));
+                break;
         }
     }
-
 }

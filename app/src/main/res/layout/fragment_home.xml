@@ -65,12 +65,13 @@
                 android:background="@drawable/light_trans_bg"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="@dimen/frame_eight_distance">
+                android:padding="@dimen/frame_four_distance">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="@dimen/frame_edge_distance"
                     android:layout_height="@dimen/frame_edge_distance"
                     android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
                     android:src="@mipmap/ic_logo_33" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -98,6 +99,7 @@
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/game_rule"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/red_init_bg"

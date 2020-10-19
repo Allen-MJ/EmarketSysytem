@@ -23,6 +23,7 @@
     <dimen name="frame_title_icon_height">64dp</dimen>
     <dimen name="frame_photo_icon_size">48dp</dimen>
     <dimen name="frame_minus_24_distance">-24dp</dimen>
+    <dimen name="frame_minus_48_distance">-48dp</dimen>
     <dimen name="frame_photo_icon_big_size">96dp</dimen>
     <dimen name="frame_photo_icon_big_height">134dp</dimen>
     <dimen name="frame_photo_icon_biger_height">269dp</dimen>
@@ -38,8 +39,8 @@
     <dimen name="mis_folder_cover_size">@dimen/frame_photo_big_size</dimen>
     <dimen name="frame_edit_min_size">100dp</dimen>
 
-    <dimen name="design_bottom_navigation_margin" tools:override="true">@dimen/frame_eight_distance</dimen>//icon与文本之间的间距
-    <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/frame_photo_icon_size</dimen>//高度
+    <!--<dimen name="design_bottom_navigation_margin" tools:override="true">@dimen/frame_eight_distance</dimen>//icon与文本之间的间距
+    <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/frame_photo_icon_size</dimen>//高度-->
 
     <dimen name="camera_left_margin">@dimen/frame_edge_distance</dimen>
     <dimen name="camera_right_margin">@dimen/frame_edge_distance</dimen>

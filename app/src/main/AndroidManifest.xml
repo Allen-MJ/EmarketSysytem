@@ -56,6 +56,10 @@
             android:name=".ForgetPswActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".home.GameRuleActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/home_game_hint"/>
+        <activity
             android:name=".user.ChangePswActivity"
             android:label="@string/change_psw_label"
             android:screenOrientation="portrait" />

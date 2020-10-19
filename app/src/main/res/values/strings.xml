@@ -90,6 +90,7 @@
     <!--展示墙 end-->
     <!--首页 start-->
     <string name="home_game_hint">游戏规则</string>
+    <string name="game_rule_hint">规则描述</string>
     <string name="game_one_hint">九宫格</string>
     <string name="game_two_hint">挖钻机</string>
     <string name="game_speed_hint">加速</string>
