@@ -5,19 +5,19 @@
     android:background="@color/transparent"
     android:gravity="center">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/load_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/load_imgv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/frame"
+            android:background="@mipmap/ic_logo_61"
             android:scaleType="center" />
 
         <TextView
@@ -26,7 +26,11 @@
             android:layout_height="wrap_content"
             android:text="正在加载中.."
             android:textSize="20sp" />
-    </LinearLayout>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/frame_title_height"
+            android:layout_height="@dimen/frame_title_height"
+            android:src="@mipmap/ic_logo_40"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <LinearLayout
         android:id="@+id/load_layout_gif"

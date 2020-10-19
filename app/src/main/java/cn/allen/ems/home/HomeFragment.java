@@ -98,6 +98,7 @@ public class HomeFragment extends Fragment {
     //    private GameAdapter adapter;
     private CommonAdapter<NineGrid> adapter;
     private List<NineGrid> nineGrids;
+    private String nineTaskID;
     private String city = "重庆";
     private List<QrCode> qrCodes;
     private ShareAdapter shareAdapter;
@@ -239,12 +240,31 @@ public class HomeFragment extends Fragment {
         adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (clickPosition == -1) {
-                    clickPosition = position;
-                    adapter.notifyItemChanged(position);
-                    gameRv.setEnabled(false);
-                    showGifdialog("请稍候...");
-                    getSmashEgg(nineGrids.get(position).getPalacesid());
+                float glod=shared.getFloat(Constants.User_Gold,0);
+                if (nineGrids.get(position).getCurrency()>glod){
+                    MsgUtils.showMDMessage(getContext(), "金币不足！是否看视频赚取金币？", "是", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(getContext(), WatchActivity.class);
+                            intent.putExtra(Constants.Entry_Flag, nineTaskID);
+                            startActivityForResult(intent, 12);
+                        }
+                    }, "否", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            int pos = clickPosition;
+                            clickPosition = -1;
+                            adapter.notifyItemChanged(pos);
+                        }
+                    });
+                }else {
+                    if (clickPosition == -1) {
+                        clickPosition = position;
+                        adapter.notifyItemChanged(position);
+                        gameRv.setEnabled(false);
+                        showGifdialog("请稍候...");
+                        getSmashEgg(nineGrids.get(position).getPalacesid());
+                    }
                 }
             }
 
@@ -294,7 +314,7 @@ public class HomeFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                nineGrids = WebHelper.init().getNineGame(city);
+                nineGrids = WebHelper.init().getNineGame(handler,city);
                 handler.sendEmptyMessage(102);
             }
         }).start();
@@ -481,6 +501,9 @@ public class HomeFragment extends Fragment {
                     break;
                 case 103:
                     shareAdapter.setList(qrCodes);
+                    break;
+                case 104:
+                    nineTaskID=(String) msg.obj;
                     break;
                 case 20:
                     actHelper.dismissProgressDialog();

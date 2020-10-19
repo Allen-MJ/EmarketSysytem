@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -494,7 +495,7 @@ public class WebHelper {
      * @param city
      * @return
      */
-    public List<NineGrid> getNineGame(String city){
+    public List<NineGrid> getNineGame(Handler handler,String city){
         Object[] objects = new Object[]{
                 "city",city
         };
@@ -502,7 +503,18 @@ public class WebHelper {
         Response response = service.getWebservice(Api.GetNineGame,objects,Constants.RequestType);
         Logger.e(Api.GetNineGame,response.getData());
         if(response.isSuccess("200")){
-            list = gson.fromJson(response.getData(), new TypeToken<List<NineGrid>>(){}.getType());
+            try {
+                JSONObject object=new JSONObject(response.getData());
+                String taskID=object.optString("taskid","");
+                list = gson.fromJson(object.optString("returnList",""), new TypeToken<List<NineGrid>>(){}.getType());
+                Message msg=new Message();
+                msg.what=104;
+                msg.obj=taskID;
+                handler.sendMessage(msg);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
         return list;
     }
