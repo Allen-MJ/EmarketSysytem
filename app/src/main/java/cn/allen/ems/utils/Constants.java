@@ -11,6 +11,12 @@ public class Constants {
     public static final String Entry_Flag = "_Entry_Flag";
     public static final String Video_Flag = "_Video_Flag";
 
+
+    public static final String Nine_Yes = "_Nine_Yes";//砸蛋中奖
+    public static final String Nine_No = "_Nine_No";//砸蛋未中奖
+    public static final String Nine_No_Gold = "_Nine_No_Gold";//砸蛋金币不足
+
+
     public static final String User_Id = "_User_Id";
     public static final String User_Name = "_User_Name";
     public static final String User_Sex = "_User_Sex";

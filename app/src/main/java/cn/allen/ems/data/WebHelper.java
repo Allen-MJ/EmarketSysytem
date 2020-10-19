@@ -519,6 +519,22 @@ public class WebHelper {
         return list;
     }
 
+    public void getRules(Handler handler){
+        Object[] objects = new Object[]{
+        };
+        List<NineGrid> list = new ArrayList<>();
+        Response response = service.getWebservice(Api.GetGameRules,objects,Constants.RequestType);
+        Logger.e(Api.GetNineGame,response.getData());
+        if(response.isSuccess("200")){
+                Message msg=new Message();
+                msg.what=0;
+                msg.obj=response.getData();
+                handler.sendMessage(msg);
+
+        }
+    }
+
+
     /**
      * 砸蛋游戏
      * @param handler

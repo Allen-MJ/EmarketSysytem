@@ -62,6 +62,7 @@ import cn.allen.ems.entry.Notice;
 import cn.allen.ems.entry.QrCode;
 import cn.allen.ems.entry.VideoTask;
 import cn.allen.ems.task.WatchActivity;
+import cn.allen.ems.user.UserTicketActivity;
 import cn.allen.ems.utils.Constants;
 import cn.allen.ems.utils.LoadingDialog;
 
@@ -243,28 +244,20 @@ public class HomeFragment extends Fragment {
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 float glod = shared.getFloat(Constants.User_Gold, 0);
                 if (nineGrids.get(position).getCurrency() > glod) {
-                    MsgUtils.showMDMessage(getContext(), "金币不足！是否看视频赚取金币？", "是", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(getContext(), WatchActivity.class);
-                            intent.putExtra(Constants.Entry_Flag, nineTaskID);
-                            startActivityForResult(intent, 12);
-                        }
-                    }, "否", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            int pos = clickPosition;
-                            clickPosition = -1;
-                            adapter.notifyItemChanged(pos);
-                        }
-                    });
+                    showGifdialog(LoadingDialog.Type_IMG,Constants.Nine_No_Gold);
                 } else {
                     if (clickPosition == -1) {
                         clickPosition = position;
                         adapter.notifyItemChanged(position);
                         gameRv.setEnabled(false);
-                        showGifdialog("请稍候...");
-                        getSmashEgg(nineGrids.get(position).getPalacesid());
+                        showGifdialog(LoadingDialog.Type_GIF, "请稍候...");
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                getSmashEgg(nineGrids.get(position).getPalacesid());
+                            }
+                        }, 2000);
+
                     }
                 }
             }
@@ -288,9 +281,22 @@ public class HomeFragment extends Fragment {
 
     private LoadingDialog dialog;
 
-    public void showGifdialog(String content) {
-        if (dialog == null) {
-            dialog = new LoadingDialog(getContext(), content, R.mipmap.dankai, LoadingDialog.Type_GIF);
+    public void showGifdialog(String type, String content) {
+        if (type.equals(LoadingDialog.Type_GIF)) {
+            dialog = new LoadingDialog(getContext(), content, R.mipmap.ic_logo_73, type,handler);
+        } else {
+            switch (content){
+                case Constants.Nine_Yes:
+                    dialog = new LoadingDialog(getContext(), content,R.mipmap.ic_logo_61, type,handler);
+                    break;
+                case Constants.Nine_No:
+                    dialog = new LoadingDialog(getContext(), content,R.mipmap.ic_logo_71, type,handler);
+                    break;
+                case Constants.Nine_No_Gold:
+                    dialog = new LoadingDialog(getContext(), content,R.mipmap.ic_logo_72, type,handler);
+                    break;
+            }
+
         }
         dialog.show();
     }
@@ -507,6 +513,30 @@ public class HomeFragment extends Fragment {
                     break;
                 case 104:
                     nineTaskID = (String) msg.obj;
+                    Logger.e("taskID",nineTaskID);
+                    break;
+                case 105:
+                    gameRv.setEnabled(true);
+                    if (clickPosition != -1) {
+                        adapter.notifyItemChanged(clickPosition);
+                        clickPosition = -1;
+                    }
+                    break;
+                case 106:
+                    if (clickPosition != -1) {
+                        adapter.notifyItemChanged(clickPosition);
+                        clickPosition = -1;
+                    }
+                    Intent videoIntent= new Intent(getContext(), WatchActivity.class);
+                    videoIntent.putExtra(Constants.Entry_Flag, Integer.valueOf(nineTaskID));
+                    startActivityForResult(videoIntent, 12);
+                    break;
+                case 107:
+                    if (clickPosition != -1) {
+                        adapter.notifyItemChanged(clickPosition);
+                        clickPosition = -1;
+                    }
+                    startActivity(new Intent(getActivity(), UserTicketActivity.class));
                     break;
                 case 20:
                     actHelper.dismissProgressDialog();
@@ -530,7 +560,7 @@ public class HomeFragment extends Fragment {
                     break;
                 case 10:
                     dismissGifDialog();
-                    MsgUtils.showMDMessage(getContext(), (String) msg.obj);
+                    showGifdialog(LoadingDialog.Type_IMG,Constants.Nine_Yes);
                     getGameFirst();
 
                     break;
@@ -540,25 +570,10 @@ public class HomeFragment extends Fragment {
                     currency();
                     if (message.equals("金币不足")) {
                         int taskid = msg.arg1;
-                        MsgUtils.showMDMessage(getContext(), "金币不足！是否看视频赚取金币？", "是", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent(getContext(), WatchActivity.class);
-                                intent.putExtra(Constants.Entry_Flag, taskid);
-                                startActivityForResult(intent, 12);
-                            }
-                        }, "否", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                int pos = clickPosition;
-                                clickPosition = -1;
-                                adapter.notifyItemChanged(pos);
-                            }
-                        });
+                        showGifdialog(LoadingDialog.Type_IMG,Constants.Nine_No_Gold);
                     } else {
-                        adapter.notifyItemChanged(clickPosition);
-                        clickPosition = -1;
-                        MsgUtils.showMDMessage(getContext(), (String) msg.obj);
+
+                        showGifdialog(LoadingDialog.Type_IMG,Constants.Nine_No);
                     }
                     break;
                 case -20:
@@ -605,4 +620,5 @@ public class HomeFragment extends Fragment {
                 break;
         }
     }
+
 }

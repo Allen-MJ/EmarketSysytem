@@ -17,22 +17,38 @@
             android:id="@+id/load_imgv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/ic_logo_61"
+            android:src="@mipmap/ic_logo_61"
             android:scaleType="center" />
-
         <TextView
             android:id="@+id/load_tetv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="正在加载中.."
-            android:textSize="20sp" />
+            android:textSize="@dimen/frame_text_middle_size"
+            android:textColor="@color/white"
+            android:padding="@dimen/frame_eight_distance"
+            android:visibility="visible"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button"
+            android:layout_width="@dimen/frame_photo_icon_biger_height"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/frame_text_middle_size"
+            android:textColor="@color/text_white_color"
+            android:gravity="center"
+            android:text="去看奖品"
+            android:padding="@dimen/frame_eight_distance"
+            android:layout_marginTop="@dimen/frame_eight_distance"
+            android:background="@drawable/dark_bt_bg"/>
+
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/frame_title_height"
-            android:layout_height="@dimen/frame_title_height"
+            android:id="@+id/close_button"
+            android:layout_width="@dimen/frame_45_distance"
+            android:layout_height="@dimen/frame_45_distance"
+            android:layout_margin="@dimen/frame_edge_distance"
             android:src="@mipmap/ic_logo_40"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/load_layout_gif"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,11 +58,10 @@
 
         <ImageView
             android:id="@+id/load_gifv"
-            android:layout_width="@dimen/frame_100_distance"
-            android:layout_height="@dimen/frame_100_distance"
+            android:layout_width="@dimen/frame_203_distance"
+            android:layout_height="@dimen/frame_203_distance"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:background="#00000000"
             android:enabled="false"
             android:visibility="visible" />
 
@@ -59,7 +74,7 @@
             android:padding="@dimen/frame_four_distance"
             android:textColor="@color/white"
             android:text="正在加载中.."
-            android:textSize="@dimen/frame_text_small_size" />
-    </LinearLayout>
+            android:textSize="@dimen/frame_text_normal_size" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </RelativeLayout>

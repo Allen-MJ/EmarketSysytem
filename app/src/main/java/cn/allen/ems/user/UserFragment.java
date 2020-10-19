@@ -1,11 +1,14 @@
 package cn.allen.ems.user;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,14 +162,25 @@ public class UserFragment extends Fragment {
         }
         view.setEnabled(true);
     }
+    @SuppressLint("HandlerLeak")
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            switch (msg.what){
+                case 0:
+                    userChange.setText("" + shared.getFloat(Constants.User_ChangeScore, 0f));
+                    userGold.setText("" + shared.getFloat(Constants.User_Gold, 0f));
+                    userDiamond.setText("" + shared.getFloat(Constants.User_Diamond, 0f));
+                    break;
+            }
+        }
+    };
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals("update")) {
-                userChange.setText("" + shared.getFloat(Constants.User_ChangeScore, 0f));
-                userGold.setText("" + shared.getFloat(Constants.User_Gold, 0f));
-                userDiamond.setText("" + shared.getFloat(Constants.User_Diamond, 0f));
+                handler.sendEmptyMessage(0);
             }
         }
 

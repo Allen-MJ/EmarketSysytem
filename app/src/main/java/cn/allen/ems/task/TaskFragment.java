@@ -172,6 +172,11 @@ public class TaskFragment extends Fragment {
                     }
                     adapter.setList(list);
                     break;
+                case 1:
+                    userChange.setText("" + shared.getFloat(Constants.User_ChangeScore, 0f));
+                    userGold.setText("" + shared.getFloat(Constants.User_Gold, 0f));
+                    userDiamond.setText("" + shared.getFloat(Constants.User_Diamond, 0f));
+                    break;
             }
         }
     };
@@ -179,9 +184,7 @@ public class TaskFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals("update")) {
-                userChange.setText("" + shared.getFloat(Constants.User_ChangeScore, 0f));
-                userGold.setText("" + shared.getFloat(Constants.User_Gold, 0f));
-                userDiamond.setText("" + shared.getFloat(Constants.User_Diamond, 0f));
+                handler.sendEmptyMessage(1);
             }
         }
 
