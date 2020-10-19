@@ -1,6 +1,7 @@
 package cn.allen.ems.user;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import java.util.List;
 import allen.frame.ActivityHelper;
 import allen.frame.AllenBaseActivity;
 import allen.frame.AllenManager;
+import allen.frame.tools.MsgUtils;
 import allen.frame.widget.MaterialRefreshLayout;
 import allen.frame.widget.MaterialRefreshListener;
 import androidx.annotation.NonNull;
@@ -109,7 +111,18 @@ public class UserRecordActivity extends AllenBaseActivity {
 
         @Override
         public void deleteClick(View v, MessageShow entry) {
-
+            MsgUtils.showMDMessage(context, "确认删除？", "确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    dialog.dismiss();
+                    delete(entry.getShowid());
+                }
+            }, "取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    dialog.dismiss();
+                }
+            });
         }
     };
 
@@ -119,6 +132,16 @@ public class UserRecordActivity extends AllenBaseActivity {
             public void run() {
                 sublist = WebHelper.init().getShowMessageByUid(uid, page++, pagesize).getList();
                 handler.sendEmptyMessage(0);
+            }
+        }).start();
+    }
+
+    private void delete(int id){
+        showProgressDialog("正在删除,请稍等...");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                WebHelper.init().deleteShowMessageById(handler,id);
             }
         }).start();
     }
@@ -146,6 +169,17 @@ public class UserRecordActivity extends AllenBaseActivity {
                     }
                     actHelper.setCanLoadMore(mater, pagesize, list);
                     adapter.setList(list);
+                    break;
+                case 1:
+                    dismissProgressDialog();
+                    MsgUtils.showMDMessage(context, (String) msg.obj);
+                    isRefresh = true;
+                    page = 0;
+                    loadData();
+                    break;
+                case -1:
+                    dismissProgressDialog();
+                    MsgUtils.showMDMessage(context, (String) msg.obj);
                     break;
             }
         }
