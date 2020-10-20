@@ -39,6 +39,7 @@ import allen.frame.adapter.ViewHolder;
 import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
 import allen.frame.tools.TimeMeter;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -47,6 +48,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -93,7 +95,7 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.game_rule)
     AppCompatTextView gameRule;
     private SharedPreferences shared;
-    private boolean isRefresh = false;
+    private boolean isFist = false;
     private int uid;
     private ActivityHelper actHelper;
     private List<Notice> list;
@@ -189,6 +191,7 @@ public class HomeFragment extends Fragment {
         sharedRv.setLayoutManager(smanager);
         shareAdapter = new ShareAdapter();
         sharedRv.setAdapter(shareAdapter);
+        firstEgg();
         getDrillStatus();
         getNiticeTop5();
         getGameFirst();
@@ -207,6 +210,7 @@ public class HomeFragment extends Fragment {
                 .setPageBackgroundColor(Color.TRANSPARENT)//设置背景
                 .setShowTitle(true)//是否显示标题
                 .setViewPagerIsScroll(true)//是否支持手滑
+                .isAutoPlay(false)//是否自动播放
                 .start();
     }
 
@@ -243,8 +247,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 float glod = shared.getFloat(Constants.User_Gold, 0);
-                if (nineGrids.get(position).getCurrency() > glod) {
-                    showGifdialog(LoadingDialog.Type_IMG,Constants.Nine_No_Gold);
+                if (nineGrids.get(position).getCurrency() > glod && !isFist) {
+                    showGifdialog(LoadingDialog.Type_IMG, Constants.Nine_No_Gold);
                 } else {
                     if (clickPosition == -1) {
                         clickPosition = position;
@@ -283,17 +287,17 @@ public class HomeFragment extends Fragment {
 
     public void showGifdialog(String type, String content) {
         if (type.equals(LoadingDialog.Type_GIF)) {
-            dialog = new LoadingDialog(getContext(), content, R.mipmap.ic_logo_73, type,handler);
+            dialog = new LoadingDialog(getContext(), content, R.mipmap.ic_logo_73, type, handler);
         } else {
-            switch (content){
+            switch (content) {
                 case Constants.Nine_Yes:
-                    dialog = new LoadingDialog(getContext(), content,R.mipmap.ic_logo_61, type,handler);
+                    dialog = new LoadingDialog(getContext(), content, R.mipmap.ic_logo_61, type, handler);
                     break;
                 case Constants.Nine_No:
-                    dialog = new LoadingDialog(getContext(), content,R.mipmap.ic_logo_71, type,handler);
+                    dialog = new LoadingDialog(getContext(), content, R.mipmap.ic_logo_71, type, handler);
                     break;
                 case Constants.Nine_No_Gold:
-                    dialog = new LoadingDialog(getContext(), content,R.mipmap.ic_logo_72, type,handler);
+                    dialog = new LoadingDialog(getContext(), content, R.mipmap.ic_logo_72, type, handler);
                     break;
             }
 
@@ -401,6 +405,16 @@ public class HomeFragment extends Fragment {
             }
         }.start();
     }
+
+    private void firstEgg() {
+        new Thread() {
+            @Override
+            public void run() {
+                WebHelper.init().firstEgg(handler, uid);
+            }
+        }.start();
+    }
+
 
     private Runnable runnable = new Runnable() {
         @Override
@@ -513,7 +527,7 @@ public class HomeFragment extends Fragment {
                     break;
                 case 104:
                     nineTaskID = (String) msg.obj;
-                    Logger.e("taskID",nineTaskID);
+                    Logger.e("taskID", nineTaskID);
                     break;
                 case 105:
                     gameRv.setEnabled(true);
@@ -527,7 +541,7 @@ public class HomeFragment extends Fragment {
                         adapter.notifyItemChanged(clickPosition);
                         clickPosition = -1;
                     }
-                    Intent videoIntent= new Intent(getContext(), WatchActivity.class);
+                    Intent videoIntent = new Intent(getContext(), WatchActivity.class);
                     videoIntent.putExtra(Constants.Entry_Flag, Integer.valueOf(nineTaskID));
                     startActivityForResult(videoIntent, 12);
                     break;
@@ -560,8 +574,11 @@ public class HomeFragment extends Fragment {
                     break;
                 case 10:
                     dismissGifDialog();
-                    showGifdialog(LoadingDialog.Type_IMG,Constants.Nine_Yes);
+                    showGifdialog(LoadingDialog.Type_IMG, Constants.Nine_Yes);
                     getGameFirst();
+                    if (isFist){
+                        firstEgg();
+                    }
 
                     break;
                 case 11:
@@ -570,11 +587,17 @@ public class HomeFragment extends Fragment {
                     currency();
                     if (message.equals("金币不足")) {
                         int taskid = msg.arg1;
-                        showGifdialog(LoadingDialog.Type_IMG,Constants.Nine_No_Gold);
+                        showGifdialog(LoadingDialog.Type_IMG, Constants.Nine_No_Gold);
                     } else {
 
-                        showGifdialog(LoadingDialog.Type_IMG,Constants.Nine_No);
+                        showGifdialog(LoadingDialog.Type_IMG, Constants.Nine_No);
                     }
+                    if (isFist){
+                        firstEgg();
+                    }
+                    break;
+                case 12:
+                    isFist = (boolean) msg.obj;
                     break;
                 case -20:
                 case -10:
@@ -616,7 +639,7 @@ public class HomeFragment extends Fragment {
                 }
                 break;
             case R.id.game_rule:
-                startActivity(new Intent(getActivity(),GameRuleActivity.class));
+                startActivity(new Intent(getActivity(), GameRuleActivity.class));
                 break;
         }
     }

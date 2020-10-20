@@ -519,6 +519,10 @@ public class WebHelper {
         return list;
     }
 
+    /**
+     * 获取游戏规则
+     * @param handler
+     */
     public void getRules(Handler handler){
         Object[] objects = new Object[]{
         };
@@ -532,6 +536,27 @@ public class WebHelper {
                 handler.sendMessage(msg);
 
         }
+    }
+
+    /**
+     * 是否第一次砸蛋
+     * @param handler
+     * @param uid
+     */
+    public void firstEgg(Handler handler,int uid){
+        Object[] objects = new Object[]{
+                "uid",uid
+        };
+        Response response = service.getWebservice(Api.FirstEgg,objects,Constants.RequestType);
+        Message msg = new Message();
+        if(response.isSuccess("200")){
+            msg.what = 12;
+            msg.obj = Boolean.valueOf(response.getMessage());
+        }else {
+            msg.what=-10;
+            msg.obj=response.getMessage();
+        }
+        handler.sendMessage(msg);
     }
 
 
