@@ -551,12 +551,10 @@ public class WebHelper {
         Message msg = new Message();
         if(response.isSuccess("200")){
             msg.what = 12;
-            msg.obj = Boolean.valueOf(response.getMessage());
-        }else {
-            msg.what=-10;
-            msg.obj=response.getMessage();
+            msg.obj = Boolean.valueOf(response.getData());
+            handler.sendMessage(msg);
         }
-        handler.sendMessage(msg);
+
     }
 
 

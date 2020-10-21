@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -247,7 +248,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 float glod = shared.getFloat(Constants.User_Gold, 0);
-                if (nineGrids.get(position).getCurrency() > glod && !isFist) {
+                boolean canEgg = isFist || nineGrids.get(position).getCurrency() <= glod;
+                Logger.e("isFist",isFist+"");
+                Logger.e("canEgg",canEgg+"");
+                if (!canEgg) {
                     showGifdialog(LoadingDialog.Type_IMG, Constants.Nine_No_Gold);
                 } else {
                     if (clickPosition == -1) {
@@ -576,7 +580,7 @@ public class HomeFragment extends Fragment {
                     dismissGifDialog();
                     showGifdialog(LoadingDialog.Type_IMG, Constants.Nine_Yes);
                     getGameFirst();
-                    if (isFist){
+                    if (isFist) {
                         firstEgg();
                     }
 
@@ -592,12 +596,13 @@ public class HomeFragment extends Fragment {
 
                         showGifdialog(LoadingDialog.Type_IMG, Constants.Nine_No);
                     }
-                    if (isFist){
+                    if (isFist) {
                         firstEgg();
                     }
                     break;
                 case 12:
                     isFist = (boolean) msg.obj;
+                    Logger.e("isFist",isFist+"");
                     break;
                 case -20:
                 case -10:
