@@ -602,7 +602,6 @@ public class HomeFragment extends Fragment {
                     break;
                 case 12:
                     isFist = (boolean) msg.obj;
-                    Logger.e("isFist",isFist+"");
                     break;
                 case -20:
                 case -10:

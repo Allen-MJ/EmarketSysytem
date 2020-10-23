@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -58,6 +59,7 @@ import butterknife.OnClick;
 import cn.allen.ems.R;
 import cn.allen.ems.data.WebHelper;
 import cn.allen.ems.utils.Constants;
+import wseemann.media.FFmpegMediaMetadataRetriever;
 
 public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopupWindow.ViewInterface {
 
@@ -158,6 +160,16 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
                         commitFile(data.getData());
                     }
                     break;
+                case SCAN_OPEN_VIDEO:
+//                    Logger.e(TAG, "onActivityResult: SCAN_OPEN_PHONE:" + data.getData().toString());
+                    String videoPath = FileUtils.getPath(context, data.getData());
+                    file = new File(videoPath);
+                    String videoEnd = file.getName().substring(file.getName().lastIndexOf(".") + 1,
+                            file.getName().length()).toLowerCase();
+                    if ("video".equals(FileUtils.fileType(videoEnd))) {
+                        commitVideo(data.getData());
+                    }
+                    break;
             }
 
         }
@@ -178,6 +190,39 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
         String path = FileUtils.getPath(context, uri);
         file = new File(path);
         Glide.with(context).load(file).into(image);
+    }
+
+    private void commitVideo(Uri uri) {
+        String path = FileUtils.getPath(context, uri);
+//        file = new File(path);
+        Bitmap b = getVideoThumbnail(path);
+        image.setImageBitmap(b);
+    }
+    public Bitmap getVideoThumbnail(String filePath) {
+        Bitmap b=null;
+        //使用MediaMetadataRetriever
+//        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+
+        //FFmpegMediaMetadataRetriever
+        FFmpegMediaMetadataRetriever retriever = new FFmpegMediaMetadataRetriever();
+        file = new File(filePath);
+        try {
+
+            retriever.setDataSource(file.getPath());
+            b=retriever.getFrameAtTime(1000000, FFmpegMediaMetadataRetriever.OPTION_CLOSEST);
+
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                retriever.release();
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            }
+        }
+        return b;
     }
 
 
@@ -265,6 +310,7 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
             case R.layout.popup_up:
                 Button btn_take_photo = view.findViewById(R.id.btn_take_photo);
                 Button btn_select_photo = view.findViewById(R.id.btn_select_photo);
+                Button btn_select_video = view.findViewById(R.id.btn_select_video);
                 Button btn_cancel = view.findViewById(R.id.btn_cancel);
                 btn_take_photo.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -276,6 +322,7 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
                         }
                     }
                 });
+
                 btn_select_photo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -290,6 +337,27 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
                             Intent intentToPickPic = new Intent(Intent.ACTION_PICK, null);
                             intentToPickPic.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                             startActivityForResult(intentToPickPic, SCAN_OPEN_PHONE);
+                        }
+                        if (popupWindow != null) {
+                            popupWindow.dismiss();
+                        }
+                    }
+                });
+
+                btn_select_video.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+//                        ("相册选取");
+                        if (ContextCompat.checkSelfPermission(context, Manifest
+                                .permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            //未授权，申请授权(从相册选择图片需要读取存储卡的权限)
+                            ActivityCompat.requestPermissions(IssuePhotoActivity.this, new
+                                    String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, SCAN_OPEN_VIDEO);
+                        } else {
+                            //已授权，获取照片
+                            Intent intentToPickPic = new Intent(Intent.ACTION_PICK, null);
+                            intentToPickPic.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "video/*");
+                            startActivityForResult(intentToPickPic, SCAN_OPEN_VIDEO);
                         }
                         if (popupWindow != null) {
                             popupWindow.dismiss();
@@ -318,10 +386,9 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
     }
 
     private Uri imgUri; // 拍照时返回的uri
-    private Uri mCutUri;// 图片裁剪时返回的uri
     private File imgFile;// 拍照保存的图片文件
     private static final int REQUEST_TAKE_PHOTO = 0;// 拍照
-    private static final int REQUEST_CROP = 1;// 裁剪
+    private static final int SCAN_OPEN_VIDEO = 1;// 视频
     private static final int SCAN_OPEN_PHONE = 2;// 相册
     /**
      * 是否是Android 10以上手机

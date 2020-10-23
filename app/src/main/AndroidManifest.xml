@@ -109,6 +109,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SwipeBack.Translucent" />
         <activity
+            android:name=".home.VideoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack.Translucent" />
+        <activity
             android:name="allen.frame.CameraActivity"
             android:screenOrientation="portrait"
             android:label="@string/verify_take_hint"/>

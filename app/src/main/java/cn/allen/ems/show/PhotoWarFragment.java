@@ -3,6 +3,7 @@ package cn.allen.ems.show;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.HashMap;
 import java.util.List;
 
 import allen.frame.ActivityHelper;
@@ -18,12 +20,15 @@ import allen.frame.adapter.CommonAdapter;
 import allen.frame.adapter.ViewHolder;
 import allen.frame.widget.MaterialRefreshLayout;
 import allen.frame.widget.MaterialRefreshListener;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,7 +36,10 @@ import butterknife.Unbinder;
 import cn.allen.ems.R;
 import cn.allen.ems.data.WebHelper;
 import cn.allen.ems.entry.PhotoShow;
+import cn.allen.ems.home.VideoActivity;
+import cn.allen.ems.task.WatchActivity;
 import cn.allen.ems.utils.Constants;
+import wseemann.media.FFmpegMediaMetadataRetriever;
 
 public class PhotoWarFragment extends Fragment {
     Unbinder unbinder;
@@ -82,8 +90,8 @@ public class PhotoWarFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == getActivity().RESULT_OK) {
             if (requestCode == 100) {
-                isRefresh=true;
-                page=0;
+                isRefresh = true;
+                page = 0;
                 loadData();
             }
         }
@@ -104,16 +112,60 @@ public class PhotoWarFragment extends Fragment {
         adapter = new CommonAdapter<PhotoShow>(getContext(), R.layout.photo_wall_item_layout) {
             @Override
             public void convert(ViewHolder holder, PhotoShow entity, int position) {
-                holder.setImageByUrl(R.id.iv_photo, entity.getShowpicurl(), R.drawable.mis_default_error);
+                if (entity.getShowpicurl().contains("Videos")) {
+                    Bitmap bitmap=getNetVideoThumbnail(entity.getShowpicurl());
+                    holder.setImageBitmap(R.id.iv_photo, bitmap);
+                } else {
+                    holder.setImageByUrl(R.id.iv_photo, entity.getShowpicurl(), R.drawable.mis_default_error);
+                }
                 holder.setText(R.id.tv_photo_text, entity.getShowcontent());
+
             }
         };
         recyclerview.setAdapter(adapter);
     }
 
+    public Bitmap getNetVideoThumbnail(String url) {
+        Bitmap b = null;
+
+        //FFmpegMediaMetadataRetriever
+        FFmpegMediaMetadataRetriever retriever = new FFmpegMediaMetadataRetriever();
+
+        try {
+            retriever.setDataSource(url, new HashMap<String, String>());
+            b = retriever.getFrameAtTime(1000000, FFmpegMediaMetadataRetriever.OPTION_CLOSEST);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+
+        } finally {
+            try {
+                retriever.release();
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            }
+        }
+        return b;
+    }
+
     private void addEvent(View view) {
         refreshLayout.setMaterialRefreshListener(materListener);
+        adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                Intent intent = new Intent(getActivity(), VideoActivity.class);
+                intent.putExtra(Constants.Video_Url, list.get(position).getShowpicurl());
+                startActivityForResult(intent, 11);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
     }
+
 
     private MaterialRefreshListener materListener = new MaterialRefreshListener() {
         @Override
@@ -171,10 +223,10 @@ public class PhotoWarFragment extends Fragment {
     @OnClick(R.id.issue)
     public void onViewClicked(View view) {
         view.setEnabled(false);
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.issue:
-                Intent intent=new Intent(getActivity(), IssuePhotoActivity.class);
-                startActivityForResult(intent,100);
+                Intent intent = new Intent(getActivity(), IssuePhotoActivity.class);
+                startActivityForResult(intent, 100);
                 break;
         }
         view.setEnabled(true);
