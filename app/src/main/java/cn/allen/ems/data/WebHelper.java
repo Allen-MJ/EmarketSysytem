@@ -803,9 +803,9 @@ public class WebHelper {
      * @param content
      * @param photoBase64
      */
-    public void putshowPhoto(Handler handler,int uid,String content,String photoBase64){
+    public void putshowPhoto(Handler handler,int uid,String content,String suffix,int type,String photoBase64){
         Object[] objects = new Object[]{
-                "uid",uid,"content",content,"photoBase64",photoBase64
+                "uid",uid,"content",content,"suffix",suffix,"type",type,"photoBase64",photoBase64
         };
         Response response = service.getWebservice(Api.PutshowPhoto,objects,Constants.RequestType);
         Message msg = new Message();

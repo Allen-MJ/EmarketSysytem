@@ -132,7 +132,7 @@ public class PhotoWarFragment extends Fragment {
         FFmpegMediaMetadataRetriever retriever = new FFmpegMediaMetadataRetriever();
 
         try {
-            retriever.setDataSource(url, new HashMap<String, String>());
+            retriever.setDataSource(url);
             b = retriever.getFrameAtTime(1000000, FFmpegMediaMetadataRetriever.OPTION_CLOSEST);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -154,9 +154,11 @@ public class PhotoWarFragment extends Fragment {
         adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                Intent intent = new Intent(getActivity(), VideoActivity.class);
-                intent.putExtra(Constants.Video_Url, list.get(position).getShowpicurl());
-                startActivityForResult(intent, 11);
+                if (list.get(position).getShowpicurl().contains("Videos")) {
+                    Intent intent = new Intent(getActivity(), VideoActivity.class);
+                    intent.putExtra(Constants.Video_Url, list.get(position).getShowpicurl());
+                    startActivityForResult(intent, 11);
+                }
             }
 
             @Override

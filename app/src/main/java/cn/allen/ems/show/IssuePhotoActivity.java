@@ -198,8 +198,9 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
         Bitmap b = getVideoThumbnail(path);
         image.setImageBitmap(b);
     }
+
     public Bitmap getVideoThumbnail(String filePath) {
-        Bitmap b=null;
+        Bitmap b = null;
         //使用MediaMetadataRetriever
 //        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
 
@@ -209,7 +210,7 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
         try {
 
             retriever.setDataSource(file.getPath());
-            b=retriever.getFrameAtTime(1000000, FFmpegMediaMetadataRetriever.OPTION_CLOSEST);
+            b = retriever.getFrameAtTime(1000000, FFmpegMediaMetadataRetriever.OPTION_CLOSEST);
 
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -287,19 +288,27 @@ public class IssuePhotoActivity extends AllenBaseActivity implements CommonPopup
                 break;
             case R.id.regist_bt:
                 if (checkIsOk()) {
-                    submit();
+                    int type = 1;
+                    String fileName = file.getName();
+                    String prefix = fileName.substring(fileName.lastIndexOf(".") + 1);
+                    if (FileUtils.fileType(prefix).equals("image")) {
+                        type = 1;
+                    } else if (FileUtils.fileType(prefix).equals("video")) {
+                        type = 2;
+                    }
+                    submit(prefix, type);
                 }
                 break;
         }
         view.setEnabled(true);
     }
 
-    private void submit() {
+    private void submit(String suffix, int type) {
         showProgressDialog("");
         new Thread(new Runnable() {
             @Override
             public void run() {
-                WebHelper.init().putshowPhoto(handler, uid, des, file2byte(file));
+                WebHelper.init().putshowPhoto(handler, uid, des, suffix, type, file2byte(file));
             }
         }).start();
     }
