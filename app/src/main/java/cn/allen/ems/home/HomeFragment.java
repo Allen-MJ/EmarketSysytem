@@ -211,7 +211,7 @@ public class HomeFragment extends Fragment {
                 .setPageBackgroundColor(Color.TRANSPARENT)//设置背景
                 .setShowTitle(true)//是否显示标题
                 .setViewPagerIsScroll(true)//是否支持手滑
-                .isAutoPlay(false)//是否自动播放
+                .isAutoPlay(true)//是否自动播放
                 .start();
     }
 

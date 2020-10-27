@@ -873,7 +873,7 @@ public class WebHelper {
      */
     public Data<Order> getShopByUid(int uid,int type,int page,int pagesize){
         Object[] objects = new Object[]{
-                "uid",uid,"page",page,"pagesize",pagesize
+                "uid",uid,"status",type,"page",page,"pagesize",pagesize
         };
         Response response = service.getWebservice(Api.GetShopByUid,objects,Constants.RequestType);
         Data<Order> data = new Data<>();

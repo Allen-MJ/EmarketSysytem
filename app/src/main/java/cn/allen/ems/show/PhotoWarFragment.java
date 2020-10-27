@@ -39,6 +39,7 @@ import cn.allen.ems.entry.PhotoShow;
 import cn.allen.ems.home.VideoActivity;
 import cn.allen.ems.task.WatchActivity;
 import cn.allen.ems.utils.Constants;
+import cn.allen.ems.utils.MyTask;
 import wseemann.media.FFmpegMediaMetadataRetriever;
 
 public class PhotoWarFragment extends Fragment {
@@ -112,13 +113,13 @@ public class PhotoWarFragment extends Fragment {
         adapter = new CommonAdapter<PhotoShow>(getContext(), R.layout.photo_wall_item_layout) {
             @Override
             public void convert(ViewHolder holder, PhotoShow entity, int position) {
-              /*  if (entity.getShowpicurl().contains("Videos")) {
-                    Bitmap bitmap=getNetVideoThumbnail(entity.getShowpicurl());
-                    holder.setImageBitmap(R.id.iv_photo, bitmap);
+
+                if (entity.getShowpicurl().contains("Videos")) {
+                    AppCompatImageView imageView = holder.getView(R.id.iv_photo);
+                    new MyTask(imageView).execute(entity.getShowpicurl());
                 } else {
                     holder.setImageByUrl(R.id.iv_photo, entity.getShowpicurl(), R.drawable.mis_default_error);
-                }*/
-                holder.setImageByUrl(R.id.iv_photo, entity.getShowpicurl(), R.drawable.mis_default_error);
+                }
                 holder.setText(R.id.tv_photo_text, entity.getShowcontent());
 
             }
@@ -126,29 +127,6 @@ public class PhotoWarFragment extends Fragment {
         recyclerview.setAdapter(adapter);
     }
 
-    public Bitmap getNetVideoThumbnail(String url) {
-        Bitmap b = null;
-
-        //FFmpegMediaMetadataRetriever
-        FFmpegMediaMetadataRetriever retriever = new FFmpegMediaMetadataRetriever();
-
-        try {
-            retriever.setDataSource(url);
-            b = retriever.getFrameAtTime(1000000, FFmpegMediaMetadataRetriever.OPTION_CLOSEST);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-
-        } finally {
-            try {
-                retriever.release();
-            } catch (RuntimeException e) {
-                e.printStackTrace();
-            }
-        }
-        return b;
-    }
 
     private void addEvent(View view) {
         refreshLayout.setMaterialRefreshListener(materListener);
