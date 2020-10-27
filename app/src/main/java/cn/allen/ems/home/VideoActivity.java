@@ -192,24 +192,6 @@ public class VideoActivity extends AllenIMBaseActivity implements IMediaPlayer.O
         }
     }
 
-//
-//    private void currency() {
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                WebHelper.init().currency(handler, uid);
-//            }
-//        }.start();
-//    }
-//
-//    private void watch() {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                WebHelper.init().seenVideo(handler, uid, taskid);
-//            }
-//        }).start();
-//    }
 
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -220,9 +202,6 @@ public class VideoActivity extends AllenIMBaseActivity implements IMediaPlayer.O
                     break;
                 case -1:
                     MsgUtils.showMDMessage(context, (String) msg.obj);
-                    break;
-                case 1:
-//                    currency();
                     break;
             }
         }
@@ -235,7 +214,7 @@ public class VideoActivity extends AllenIMBaseActivity implements IMediaPlayer.O
 
     @Override
     public void onCompletion(IMediaPlayer iMediaPlayer) {
-        mVV.start();
+//        mVV.start();
     }
 
     @Override

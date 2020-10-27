@@ -112,12 +112,13 @@ public class PhotoWarFragment extends Fragment {
         adapter = new CommonAdapter<PhotoShow>(getContext(), R.layout.photo_wall_item_layout) {
             @Override
             public void convert(ViewHolder holder, PhotoShow entity, int position) {
-                if (entity.getShowpicurl().contains("Videos")) {
+              /*  if (entity.getShowpicurl().contains("Videos")) {
                     Bitmap bitmap=getNetVideoThumbnail(entity.getShowpicurl());
                     holder.setImageBitmap(R.id.iv_photo, bitmap);
                 } else {
                     holder.setImageByUrl(R.id.iv_photo, entity.getShowpicurl(), R.drawable.mis_default_error);
-                }
+                }*/
+                holder.setImageByUrl(R.id.iv_photo, entity.getShowpicurl(), R.drawable.mis_default_error);
                 holder.setText(R.id.tv_photo_text, entity.getShowcontent());
 
             }
