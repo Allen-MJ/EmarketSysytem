@@ -57,7 +57,7 @@ public class OrderFragment extends Fragment {
     AppCompatTextView choiceCountry;
     private SharedPreferences shared;
     private boolean isRefresh = false;
-    private int page = 0;
+    private int page = 1;
     private int pagesize = 10;
     private int uid;
     private ActivityHelper actHelper;
@@ -148,7 +148,7 @@ public class OrderFragment extends Fragment {
         @Override
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = true;
-            page = 0;
+            page = 1;
             loadData();
         }
 
@@ -206,7 +206,7 @@ public class OrderFragment extends Fragment {
                         list = sublist;
                         mater.finishRefresh();
                     } else {
-                        if (page == 1) {
+                        if (page == 2) {
                             list = sublist;
                         } else {
                             list.addAll(sublist);
@@ -236,7 +236,7 @@ public class OrderFragment extends Fragment {
                             choiceCountry.setText("");
                             mcity = city.getName();
                             actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
-                            page = 0;
+                            page = 1;
                             loadData();
                         }
                     });
@@ -251,7 +251,7 @@ public class OrderFragment extends Fragment {
                             choiceCountry.setText("");
                             mcity = city.getName();
                             actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
-                            page = 0;
+                            page = 1;
                             loadData();
                         }
                     });
@@ -264,7 +264,7 @@ public class OrderFragment extends Fragment {
                         public void choiceCity(City city) {
                             mcity = city.getName();
                             actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
-                            page = 0;
+                            page = 1;
                             loadData();
                         }
                     });
@@ -307,7 +307,7 @@ public class OrderFragment extends Fragment {
                             choiceCountry.setText("");
                             mcity = city.getName();
                             actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
-                            page = 0;
+                            page = 1;
                             loadData();
                         }
                     });
@@ -337,7 +337,7 @@ public class OrderFragment extends Fragment {
                         public void choiceCity(City city) {
                             mcity = city.getName();
                             actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
-                            page = 0;
+                            page = 1;
                             loadData();
                         }
                     });

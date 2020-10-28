@@ -39,7 +39,7 @@ public class UserRecordActivity extends AllenBaseActivity {
     private ShowMsgAdapter adapter;
     private SharedPreferences shared;
     private boolean isRefresh = false;
-    private int page = 0;
+    private int page = 1;
     private int pagesize = 10;
     private int uid;
     private List<MessageShow> list, sublist;
@@ -92,7 +92,7 @@ public class UserRecordActivity extends AllenBaseActivity {
         @Override
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = true;
-            page = 0;
+            page = 1;
             loadData();
         }
 
@@ -157,7 +157,7 @@ public class UserRecordActivity extends AllenBaseActivity {
                         list = sublist;
                         mater.finishRefresh();
                     } else {
-                        if (page == 1) {
+                        if (page == 2) {
                             list = sublist;
                         } else {
                             list.addAll(sublist);
@@ -174,7 +174,7 @@ public class UserRecordActivity extends AllenBaseActivity {
                     dismissProgressDialog();
                     MsgUtils.showMDMessage(context, (String) msg.obj);
                     isRefresh = true;
-                    page = 0;
+                    page = 1;
                     loadData();
                     break;
                 case -1:

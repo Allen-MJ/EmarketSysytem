@@ -55,7 +55,7 @@ public class CampaignActivity extends AllenBaseActivity {
     private CampaignAdapter adapter;
 
     private boolean isRefresh = false;
-    private int page = 0;
+    private int page = 1;
     private int pagesize = 20;
     private int uid;
     private List<Campaign> list, sublist;
@@ -109,7 +109,7 @@ public class CampaignActivity extends AllenBaseActivity {
         @Override
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = true;
-            page = 0;
+            page = 1;
             loadData();
         }
 
@@ -159,7 +159,7 @@ public class CampaignActivity extends AllenBaseActivity {
                         list = sublist;
                         mater.finishRefresh();
                     } else {
-                        if (page == 1) {
+                        if (page == 2) {
                             list = sublist;
                         } else {
                             list.addAll(sublist);

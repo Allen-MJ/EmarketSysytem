@@ -38,7 +38,7 @@ public class NoticeActivity extends AllenBaseActivity {
     private boolean isRefresh = false;
     private List<Notice> list,sublist;
     private NoticeAdapter adapter;
-    private int page = 0;
+    private int page = 1;
     private int pagesize = 10;
     private int uid;
 
@@ -88,7 +88,7 @@ public class NoticeActivity extends AllenBaseActivity {
         @Override
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = true;
-            page = 0;
+            page = 1;
             loadData();
         }
 
@@ -127,7 +127,7 @@ public class NoticeActivity extends AllenBaseActivity {
                         list = sublist;
                         mater.finishRefresh();
                     } else {
-                        if (page == 1) {
+                        if (page == 2) {
                             list = sublist;
                         } else {
                             list.addAll(sublist);

@@ -41,7 +41,7 @@ public class PointFragment extends Fragment {
     MaterialRefreshLayout mater;
     private SharedPreferences shared;
     private boolean isRefresh = false;
-    private int page = 0;
+    private int page = 1;
     private int pagesize = 10;
     private int uid;
     private ActivityHelper actHelper;
@@ -128,7 +128,7 @@ public class PointFragment extends Fragment {
         @Override
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = true;
-            page = 0;
+            page = 1;
             loadData();
         }
 
@@ -175,7 +175,7 @@ public class PointFragment extends Fragment {
                         list = sublist;
                         mater.finishRefresh();
                     }else{
-                        if(page==1){
+                        if(page==2){
                             list = sublist;
                         }else{
                             list.addAll(sublist);

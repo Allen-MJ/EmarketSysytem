@@ -37,7 +37,7 @@ public class TicketFragment extends Fragment {
     MaterialRefreshLayout mater;
     private SharedPreferences shared;
     private int type,uid;
-    private int page = 0;
+    private int page = 1;
     private int pagesize = 10;
     private TicketAdapter adapter;
     private List<Order> list,sublist;
@@ -89,7 +89,7 @@ public class TicketFragment extends Fragment {
         @Override
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = true;
-            page = 0;
+            page = 1;
             loadData();
         }
 
@@ -137,7 +137,7 @@ public class TicketFragment extends Fragment {
                         list = sublist;
                         mater.finishRefresh();
                     }else{
-                        if(page==1){
+                        if(page==2){
                             list = sublist;
                         }else{
                             list.addAll(sublist);

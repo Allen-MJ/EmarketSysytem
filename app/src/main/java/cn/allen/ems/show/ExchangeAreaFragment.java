@@ -47,7 +47,7 @@ public class ExchangeAreaFragment extends Fragment {
     private ActivityHelper actHelper;
     private List<MessageShow> list, sublist;
     private CommonAdapter<MessageShow> adapter;
-    private int page = 0;
+    private int page = 1;
     private int pagesize = 10;
 
     public static ExchangeAreaFragment init() {
@@ -83,7 +83,7 @@ public class ExchangeAreaFragment extends Fragment {
         if (resultCode == getActivity().RESULT_OK) {
             if (requestCode == 100) {
                 isRefresh = true;
-                page = 0;
+                page = 1;
                 loadData();
             }
         }
@@ -119,7 +119,7 @@ public class ExchangeAreaFragment extends Fragment {
         @Override
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = true;
-            page = 0;
+            page = 1;
             loadData();
         }
 
@@ -153,7 +153,7 @@ public class ExchangeAreaFragment extends Fragment {
                         list = sublist;
                         refreshLayout.finishRefresh();
                     } else {
-                        if (page == 1) {
+                        if (page == 2) {
                             list = sublist;
                         } else {
                             list.addAll(sublist);

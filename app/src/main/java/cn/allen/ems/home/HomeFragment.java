@@ -319,7 +319,7 @@ public class HomeFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                list = WebHelper.init().getTipsList(0, 5).getList();
+                list = WebHelper.init().getTipsList(1, 5).getList();
                 handler.sendEmptyMessage(100);
             }
         }).start();

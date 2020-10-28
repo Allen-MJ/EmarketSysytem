@@ -6,6 +6,7 @@ public class PhotoShow implements Serializable {
     private int showid;
     private String showcontent;
     private String showpicurl;
+    private String thumbnail;
     private int showtype;
     private int userid;
     private String createtime;
@@ -25,6 +26,14 @@ public class PhotoShow implements Serializable {
                 ", createtime='" + createtime + '\'' +
                 ", auditstatus=" + auditstatus +
                 '}';
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public int getShowid() {

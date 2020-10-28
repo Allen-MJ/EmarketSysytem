@@ -52,7 +52,7 @@ public class PhotoWarFragment extends Fragment {
     CardView issue;
     private SharedPreferences shared;
     private boolean isRefresh = false;
-    private int page = 0;
+    private int page = 1;
     private int pagesize = 10;
     private int uid;
     private ActivityHelper actHelper;
@@ -92,7 +92,7 @@ public class PhotoWarFragment extends Fragment {
         if (resultCode == getActivity().RESULT_OK) {
             if (requestCode == 100) {
                 isRefresh = true;
-                page = 0;
+                page = 1;
                 loadData();
             }
         }
@@ -115,8 +115,9 @@ public class PhotoWarFragment extends Fragment {
             public void convert(ViewHolder holder, PhotoShow entity, int position) {
 
                 if (entity.getShowpicurl().contains("Videos")) {
-                    AppCompatImageView imageView = holder.getView(R.id.iv_photo);
-                    new MyTask(imageView).execute(entity.getShowpicurl());
+//                    AppCompatImageView imageView = holder.getView(R.id.iv_photo);
+//                    new MyTask(imageView).execute(entity.getShowpicurl());
+                    holder.setImageByUrl(R.id.iv_photo, entity.getThumbnail(), R.drawable.mis_default_error);
                 } else {
                     holder.setImageByUrl(R.id.iv_photo, entity.getShowpicurl(), R.drawable.mis_default_error);
                 }
@@ -152,7 +153,7 @@ public class PhotoWarFragment extends Fragment {
         @Override
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
             isRefresh = true;
-            page = 0;
+            page = 1;
             loadData();
         }
 
@@ -184,7 +185,7 @@ public class PhotoWarFragment extends Fragment {
                         list = sublist;
                         refreshLayout.finishRefresh();
                     } else {
-                        if (page == 1) {
+                        if (page == 2) {
                             list = sublist;
                         } else {
                             list.addAll(sublist);
