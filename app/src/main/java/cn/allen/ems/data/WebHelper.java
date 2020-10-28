@@ -395,7 +395,7 @@ public class WebHelper {
         Response response = service.getWebservice(Api.SetDefaultAddress,objects,Constants.RequestType);
         Message msg = new Message();
         if(response.isSuccess("200")){
-            msg.what = 0;
+            msg.what = 2;
         }else{
             msg.what = -1;
         }

@@ -45,6 +45,7 @@ public class AddressActivity extends AllenBaseActivity {
     private List<Address> list;
     private int uid;
     private AddressAdapter adapter;
+    private boolean isChoice = false;
 
     @Override
     protected boolean isStatusBarColorWhite() {
@@ -69,6 +70,7 @@ public class AddressActivity extends AllenBaseActivity {
 
     @Override
     protected void initBar() {
+        isChoice = getIntent().getBooleanExtra(Constants.Choice,false);
         ButterKnife.bind(this);
         setSupportActionBar(bar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -112,7 +114,10 @@ public class AddressActivity extends AllenBaseActivity {
     private AddressAdapter.OnItemClickListener listener = new AddressAdapter.OnItemClickListener() {
         @Override
         public void itemClick(View v, Address entry) {
-
+            if(isChoice){
+                setResult(RESULT_OK,getIntent().putExtra(Constants.Choice,entry));
+                finish();
+            }
         }
 
         @Override
@@ -142,7 +147,7 @@ public class AddressActivity extends AllenBaseActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     dialogInterface.dismiss();
-                    init(entry.getId());
+                    init(entry.getId(),entry);
                 }
             }, "", new DialogInterface.OnClickListener() {
                 @Override
@@ -173,7 +178,9 @@ public class AddressActivity extends AllenBaseActivity {
         }).start();
     }
 
-    private void init(int addressid){
+    private Address def;
+    private void init(int addressid,Address entry){
+        def = entry;
         showProgressDialog("");
         new Thread(new Runnable() {
             @Override
@@ -194,6 +201,20 @@ public class AddressActivity extends AllenBaseActivity {
                         mater.finishRefresh();
                     }
                     adapter.setList(list);
+                    break;
+                case 2:
+                    dismissProgressDialog();
+//                    entry.getArea()+entry.getCity()+entry.getCounty()+entry.getDetailaddress()
+                    AllenManager.getInstance().getStoragePreference().edit()
+                            .putString(Constants.User_Default_Address_Uname,def.getRecipiment())
+                            .putString(Constants.User_Default_Address_Phone,def.getTelphone())
+                            .putString(Constants.User_Default_Address_Area,def.getArea())
+                            .putString(Constants.User_Default_Address_City,def.getCity())
+                            .putString(Constants.User_Default_Address_County,def.getCounty())
+                            .putString(Constants.User_Default_Address_Detailaddress,def.getDetailaddress()).apply();
+                    MsgUtils.showShortToast(context, (String) msg.obj);
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
+                    loadData();
                     break;
                 case 0:
                     dismissProgressDialog();

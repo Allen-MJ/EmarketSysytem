@@ -62,8 +62,8 @@ public class OrderFragment extends Fragment {
     private int uid;
     private ActivityHelper actHelper;
     private List<Order> list, sublist;
-//    private OrderAdapter adapter;
-    private CommonAdapter<Order> adapter;
+    private OrderAdapter adapter;
+//    private CommonAdapter<Order> adapter;
     private String mcity;
     private List<City> first, secound, third;
 
@@ -105,7 +105,8 @@ public class OrderFragment extends Fragment {
     private void initAdapter() {
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(manager);
-        adapter=new CommonAdapter<Order>(getContext(),R.layout.item_order) {
+        adapter = new OrderAdapter();
+        /*adapter=new CommonAdapter<Order>(getContext(),R.layout.item_order) {
             @Override
             public void convert(ViewHolder holder, Order entry, int position) {
                 holder.setText(R.id.order_item_title,entry.getShopname());
@@ -122,13 +123,13 @@ public class OrderFragment extends Fragment {
                     }
                 });
             }
-        };
+        };*/
         recyclerView.setAdapter(adapter);
     }
 
     private void addEvent(View view) {
         mater.setMaterialRefreshListener(materListener);
-        adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
+        /*adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Logger.e("order"," 11111");
@@ -140,8 +141,8 @@ public class OrderFragment extends Fragment {
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                 return false;
             }
-        });
-//        adapter.setOnItemClickListener(listener);
+        });*/
+        adapter.setOnItemClickListener(listener);
     }
 
     private MaterialRefreshListener materListener = new MaterialRefreshListener() {
@@ -159,14 +160,19 @@ public class OrderFragment extends Fragment {
         }
     };
 
-//    private OrderAdapter.OnItemClickListener listener = new OrderAdapter.OnItemClickListener() {
-//        @Override
-//        public void itemClick(View v, Order entry) {
-//            Logger.e("order",entry.getShopname());
-//            actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
-//            perOrder(entry.getShopid());
-//        }
-//    };
+    private OrderAdapter.OnItemClickListener listener = new OrderAdapter.OnItemClickListener() {
+        @Override
+        public void itemClick(View v, Order entry) {
+
+        }
+
+        @Override
+        public void orderClick(View v, Order entry) {
+            /*Logger.e("order",entry.getShopname());
+            actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
+            perOrder(entry.getShopid());*/
+        }
+    };
 
     private void loadData() {
         new Thread(new Runnable() {
@@ -217,7 +223,7 @@ public class OrderFragment extends Fragment {
                         actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_FAIL, "");
                     }
                     actHelper.setCanLoadMore(mater, pagesize, list);
-                    adapter.setDatas(list);
+                    adapter.setList(list);
                     break;
                 case 1:
                     actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");

@@ -53,6 +53,7 @@
     <string name="campaign_reward_hint">总奖励</string>
 
     <string name="add_address_hint">新增收货地址</string>
+    <string name="add_address">新建地址</string>
     <string name="add_address_label">添加地址</string>
     <string name="address_person_hint">收货人</string>
     <string name="address_phone_hint">手机号</string>
@@ -104,5 +105,6 @@
     <string name="init_hint">默认</string>
     <string name="save_hint">保存</string>
     <string name="update_hint">更新</string>
+    <string name="ok_bt_hint">确认</string>
     <!--通用 end-->
 </resources>

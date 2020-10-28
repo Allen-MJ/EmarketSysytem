@@ -60,6 +60,8 @@ public class AddAddressActivity extends AllenBaseActivity {
     private List<City> first, secound, third;
     private Address entry;
 
+    private boolean isChoice = false;
+
     @Override
     protected boolean isStatusBarColorWhite() {
         return false;
@@ -73,6 +75,7 @@ public class AddAddressActivity extends AllenBaseActivity {
     @Override
     protected void initBar() {
         ButterKnife.bind(this);
+        isChoice = getIntent().getBooleanExtra(Constants.Choice,false);
         entry = (Address) getIntent().getSerializableExtra(Constants.Entry_Flag);
         bar.setTitle(entry==null?getTitle():"编辑地址");
         setSupportActionBar(bar);
@@ -255,9 +258,29 @@ public class AddAddressActivity extends AllenBaseActivity {
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
                 case 0:
+                    if(type){
+                        AllenManager.getInstance().getStoragePreference().edit()
+                                .putString(Constants.User_Default_Address_Uname,recipiment)
+                                .putString(Constants.User_Default_Address_Phone,telphone)
+                                .putString(Constants.User_Default_Address_Area,area)
+                                .putString(Constants.User_Default_Address_City,city)
+                                .putString(Constants.User_Default_Address_County,county)
+                                .putString(Constants.User_Default_Address_Detailaddress,detailaddress).apply();
+                    }
                     dismissProgressDialog();
                     MsgUtils.showShortToast(context, (String) msg.obj);
-                    setResult(RESULT_OK, getIntent());
+                    if(isChoice){
+                        Address def = new Address();
+                        def.setRecipiment(recipiment);
+                        def.setArea(area);
+                        def.setCity(city);
+                        def.setCounty(county);
+                        def.setDetailaddress(detailaddress);
+                        def.setTelphone(telphone);
+                        setResult(RESULT_OK, getIntent().putExtra(Constants.Choice,def));
+                    }else{
+                        setResult(RESULT_OK, getIntent());
+                    }
                     finish();
                     break;
                 case -1:

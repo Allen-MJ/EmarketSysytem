@@ -42,4 +42,13 @@ public class Constants {
     public static final String User_Id_Back_Url = "_User_Id_back_Url";
     public static final String User_Auth = "_User_Auth";
     public static final String User_Auth_Describe = "_User_Auth_Describe";
+
+    public static final String User_Default_Address_Uname = "_User_Default_Address_Uname";
+    public static final String User_Default_Address_Phone = "_User_Default_Address_Phone";
+    public static final String User_Default_Address_Area = "_User_Default_Address_Area";
+    public static final String User_Default_Address_City = "_User_Default_Address_City";
+    public static final String User_Default_Address_County = "_User_Default_Address_County";
+    public static final String User_Default_Address_Detailaddress = "_User_Default_Address_Detailaddress";
+
+    public static final String Choice = "_choice";
 }

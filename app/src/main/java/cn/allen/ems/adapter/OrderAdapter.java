@@ -91,7 +91,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     public void onClick(View view) {
                         view.setEnabled(false);
                         if(listener!=null){
-                            listener.itemClick(view,entry);
+                            listener.orderClick(view,entry);
                         }
                         view.setEnabled(true);
                     }
@@ -105,5 +105,6 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
     public interface OnItemClickListener{
         void itemClick(View v, Order entry);
+        void orderClick(View v,Order entry);
     }
 }
