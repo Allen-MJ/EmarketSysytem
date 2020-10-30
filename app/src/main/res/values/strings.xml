@@ -82,6 +82,7 @@
     <string name="shop_sift_hint">筛选</string>
     <string name="shop_redeem_hint">立即兑换</string>
     <string name="redeem_ok_hint">确认兑换</string>
+    <string name="redeem_info">商品详情</string>
     <!--商城 end-->
     <!--展示墙 start-->
     <string name="show_issue_hint">发布</string>

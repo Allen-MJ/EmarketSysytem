@@ -17,8 +17,17 @@ public class Order implements Serializable {
     private int receivecount;
     private int verificationcount;
     private float denomination;
+    private String content;
 
     public Order() {
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override

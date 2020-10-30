@@ -923,9 +923,9 @@ public class WebHelper {
      * @param uid
      * @param shopid
      */
-    public void preOrder(Handler handler,int uid,int shopid){
+    public void preOrder(Handler handler,int uid,int shopid,String recipiment,String telphone,String address){
         Object[] objects = new Object[]{
-                "uid",uid,"shopid",shopid
+                "uid",uid,"shopid",shopid,"recipiment",recipiment,"telphone",telphone,"address",address
         };
         Response response = service.getWebservice(Api.PreOrder,objects,Constants.RequestType);
         Message msg = new Message();

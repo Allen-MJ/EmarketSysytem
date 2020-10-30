@@ -239,9 +239,12 @@ public class HomeFragment extends Fragment {
             @Override
             public void OnBannerClick(int position) {
                 VideoTask video = bannerList.get(position);
-                Intent videoIntent = new Intent(getActivity(), WatchActivity.class);
-                videoIntent.putExtra(Constants.Video_Flag, video);
-                startActivityForResult(videoIntent, 13);
+//                Intent videoIntent = new Intent(getActivity(), WatchActivity.class);
+//                videoIntent.putExtra(Constants.Video_Flag, video);
+//                startActivityForResult(videoIntent, 13);
+                Intent intent = new Intent(getActivity(), VideoActivity.class);
+                intent.putExtra(Constants.Video_Url, video.getVideourl());
+                startActivityForResult(intent, 11);
             }
         });
         adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
@@ -604,6 +607,8 @@ public class HomeFragment extends Fragment {
                     isFist = (boolean) msg.obj;
                     break;
                 case -20:
+                    actHelper.dismissProgressDialog();
+                    break;
                 case -10:
                     actHelper.dismissProgressDialog();
                     MsgUtils.showLongToast(getContext(), (String) msg.obj);

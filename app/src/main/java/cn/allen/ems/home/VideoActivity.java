@@ -42,7 +42,7 @@ public class VideoActivity extends AllenIMBaseActivity implements IMediaPlayer.O
     //    private String ak = "1efe1b8bbccc4ea18fdc23f8fd6a2c5e";
     private String ak = "a72d997704aa40a287836019304e1a4a";
     private BDCloudVideoView mVV;
-    private TimeMeter meter;
+//    private TimeMeter meter;
 
     @Override
     protected boolean isStatusBarColorWhite() {
@@ -76,9 +76,9 @@ public class VideoActivity extends AllenIMBaseActivity implements IMediaPlayer.O
             isPausedByOnPause = true;
             mVV.pause();
         }
-        if (meter.isWorking()) {
-            meter.pause();
-        }
+//        if (meter.isWorking()) {
+//            meter.pause();
+//        }
 
     }
 
@@ -93,9 +93,9 @@ public class VideoActivity extends AllenIMBaseActivity implements IMediaPlayer.O
             isPausedByOnPause = false;
             mVV.start();
         }
-        if (!meter.isWorking()) {
-            meter.resume();
-        }
+//        if (!meter.isWorking()) {
+//            meter.resume();
+//        }
 
     }
 
@@ -131,7 +131,7 @@ public class VideoActivity extends AllenIMBaseActivity implements IMediaPlayer.O
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
-        meter = TimeMeter.getInstance();
+//        meter = TimeMeter.getInstance();
         /**
          * 设置ak
          */
@@ -157,24 +157,24 @@ public class VideoActivity extends AllenIMBaseActivity implements IMediaPlayer.O
 
     @Override
     protected void addEvent() {
-        meter.setTimerLisener(new TimeMeter.OnTimerLisener() {
-            @Override
-            public void onStart() {
-            }
-
-            @Override
-            public void onInTime(long inTime) {
-                timeClose.setText(inTime + "");
-            }
-
-            @Override
-            public void onEnd() {
-//                if (taskid != -1) {
-//                    watch();
-//                }
-                timeClose.setText("关闭");
-            }
-        });
+//        meter.setTimerLisener(new TimeMeter.OnTimerLisener() {
+//            @Override
+//            public void onStart() {
+//            }
+//
+//            @Override
+//            public void onInTime(long inTime) {
+//                timeClose.setText(inTime + "");
+//            }
+//
+//            @Override
+//            public void onEnd() {
+////                if (taskid != -1) {
+////                    watch();
+////                }
+//                timeClose.setText("关闭");
+//            }
+//        });
     }
 
     @Override
@@ -209,7 +209,7 @@ public class VideoActivity extends AllenIMBaseActivity implements IMediaPlayer.O
 
     @Override
     public void onPrepared(IMediaPlayer iMediaPlayer) {
-            meter.start();
+//            meter.start();
     }
 
     @Override

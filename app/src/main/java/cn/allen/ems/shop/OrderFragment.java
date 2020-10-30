@@ -1,6 +1,7 @@
 package cn.allen.ems.shop;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import allen.frame.adapter.ViewHolder;
 import allen.frame.entry.City;
 import allen.frame.tools.ChoiceTypeDialog;
 import allen.frame.tools.CityUtil;
+import allen.frame.tools.CommonPopupWindow;
 import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
 import allen.frame.tools.StringUtils;
@@ -26,6 +28,8 @@ import allen.frame.widget.MaterialRefreshLayout;
 import allen.frame.widget.MaterialRefreshListener;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -40,7 +44,10 @@ import butterknife.Unbinder;
 import cn.allen.ems.R;
 import cn.allen.ems.adapter.OrderAdapter;
 import cn.allen.ems.data.WebHelper;
+import cn.allen.ems.entry.Address;
 import cn.allen.ems.entry.Order;
+import cn.allen.ems.user.AddAddressActivity;
+import cn.allen.ems.user.AddressActivity;
 import cn.allen.ems.utils.Constants;
 
 public class OrderFragment extends Fragment {
@@ -145,6 +152,31 @@ public class OrderFragment extends Fragment {
         adapter.setOnItemClickListener(listener);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode== Activity.RESULT_OK){
+            switch (requestCode){
+                case 100:
+                    isRefresh = true;
+                    page = 1;
+                    loadData();
+                    break;
+                case 101:
+                    def = (Address) data.getSerializableExtra(Constants.Choice);
+                    name.setText(def==null?(shared.getString(Constants.User_Default_Address_Uname,"")
+                            +"  "+shared.getString(Constants.User_Default_Address_Phone,""))
+                            :(def.getRecipiment()+"  "+def.getTelphone()));
+                    adress.setText(def==null?(shared.getString(Constants.User_Default_Address_Area,"")
+                            +shared.getString(Constants.User_Default_Address_City,"")
+                            +shared.getString(Constants.User_Default_Address_County,"")
+                            +shared.getString(Constants.User_Default_Address_Detailaddress,""))
+                            :(def.getArea()+def.getCity()+def.getCounty()+def.getDetailaddress()));
+                    break;
+            }
+        }
+    }
+
     private MaterialRefreshListener materListener = new MaterialRefreshListener() {
         @Override
         public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
@@ -159,18 +191,66 @@ public class OrderFragment extends Fragment {
             loadData();
         }
     };
-
+    CommonPopupWindow dialog;
+    AppCompatTextView name;
+    AppCompatTextView adress;
+    private Address def;
     private OrderAdapter.OnItemClickListener listener = new OrderAdapter.OnItemClickListener() {
         @Override
         public void itemClick(View v, Order entry) {
-
+            Intent intent=new Intent(getContext(),OrderInfoActivity.class);
+            intent.putExtra("order",entry);
+            startActivityForResult(intent,100);
         }
 
         @Override
         public void orderClick(View v, Order entry) {
-            /*Logger.e("order",entry.getShopname());
-            actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_START,"");
-            perOrder(entry.getShopid());*/
+            dialog = new CommonPopupWindow.Builder(getActivity()).setBackGroundLevel(0.5f)
+                    .setWidthAndHeight(0,0,true).setOutsideTouchable(true).setView(R.layout.dialog_default_adress)
+                    .setViewOnclickListener(new CommonPopupWindow.ViewInterface() {
+                        @Override
+                        public void getChildView(View view, int layoutResId) {
+                            switch (layoutResId){
+                                case R.layout.dialog_default_adress:
+                                    name = view.findViewById(R.id.def_name);
+                                    adress = view.findViewById(R.id.def_adress);
+                                    name.setText(def==null?(shared.getString(Constants.User_Default_Address_Uname,"")
+                                            +"  "+shared.getString(Constants.User_Default_Address_Phone,""))
+                                            :(def.getRecipiment()+"  "+def.getTelphone()));
+                                    adress.setText(def==null?(shared.getString(Constants.User_Default_Address_Area,"")
+                                            +shared.getString(Constants.User_Default_Address_City,"")
+                                            +shared.getString(Constants.User_Default_Address_County,"")
+                                            +shared.getString(Constants.User_Default_Address_Detailaddress,""))
+                                            :(def.getArea()+def.getCity()+def.getCounty()+def.getDetailaddress()));
+                                    AppCompatTextView add = view.findViewById(R.id.add_address);
+                                    AppCompatImageView choice = view.findViewById(R.id.set_adress);
+                                    AppCompatButton ok = view.findViewById(R.id.ok_bt);
+                                    add.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            startActivityForResult(new Intent(getActivity(), AddAddressActivity.class).putExtra(Constants.Choice,true),101);
+                                        }
+                                    });
+                                    choice.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            startActivityForResult(new Intent(getActivity(), AddressActivity.class).putExtra(Constants.Choice,true),101);
+                                        }
+                                    });
+                                    ok.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            dialog.dismiss();
+                                            Logger.e("order",entry.getShopname());
+                                            actHelper.showProgressDialog("");
+                                            perOrder(entry.getShopid());
+                                        }
+                                    });
+                                    break;
+                            }
+                        }
+                    }).create();
+            dialog.showAsDropDown(v);
         }
     };
 
@@ -188,7 +268,8 @@ public class OrderFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                WebHelper.init().preOrder(handler,uid,shopId);
+                WebHelper.init().preOrder(handler, uid, shopId, def == null ? shared.getString(Constants.User_Default_Address_Uname, "") : def.getRecipiment(), def == null ? shared.getString(Constants.User_Default_Address_Phone, "") : def.getTelphone(), adress.getText().toString());
+
             }
         }).start();
     }
@@ -227,7 +308,10 @@ public class OrderFragment extends Fragment {
                     break;
                 case 1:
                     actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
-                    MsgUtils.showMDMessage(getContext(),(String)msg.obj);
+                    actHelper.dismissProgressDialog();
+                    MsgUtils.showLongToast(getContext(),(String)msg.obj);
+                    isRefresh = true;
+                    page=1;
                     loadData();
                     currency();
                     break;

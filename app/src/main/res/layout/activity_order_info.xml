@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".shop.OrderInfoActivity">
+
+    <include layout="@layout/alen_toolbar_layout" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/item_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/frame_four_distance"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/frame_four_distance"
+            app:cardElevation="1dp"
+            app:contentPadding="@dimen/frame_four_distance">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/frame_210_distance"
+                    android:background="@drawable/yellow_fill_bg"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/order_icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/order_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/frame_two_distance"
+                            android:textColor="@color/text_gray_color"
+                            android:textSize="@dimen/frame_text_normal_size"
+                            android:textStyle="bold" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/order_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/frame_two_distance"
+                            android:textColor="@color/text_gray_color"
+                            android:textSize="@dimen/frame_text_small_size" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/order_count"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/frame_two_distance"
+                            android:textColor="@color/text_gray_color"
+                            android:textSize="@dimen/frame_text_small_size" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|start"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/order_change"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@mipmap/ic_logo_50_s"
+                            android:gravity="center"
+                            android:padding="@dimen/frame_four_distance"
+                            android:textColor="@color/text_yellow_color"
+                            android:textSize="@dimen/frame_text_smaller_size" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/order_gold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@mipmap/ic_logo_51_s"
+                            android:gravity="center"
+                            android:padding="@dimen/frame_four_distance"
+                            android:textColor="@color/text_yellow_color"
+                            android:textSize="@dimen/frame_text_smaller_size" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/order_diamond"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@mipmap/ic_logo_52_s"
+                            android:gravity="center"
+                            android:padding="@dimen/frame_four_distance"
+                            android:textColor="@color/text_yellow_color"
+                            android:textSize="@dimen/frame_text_smaller_size" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.cardview.widget.CardView>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/frame_eight_distance"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/order_redeem"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/frame_title_height"
+        android:background="@drawable/frame_btn_selector"
+        android:gravity="center"
+        android:text="@string/shop_redeem_hint"
+        android:textColor="@color/text_white_color"
+        android:textSize="@dimen/frame_text_big_size"
+        android:textStyle="bold" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

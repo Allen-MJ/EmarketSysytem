@@ -82,16 +82,23 @@ public class PointFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode== Activity.RESULT_OK){
-            if(requestCode==101){
-                def = (Address) data.getSerializableExtra(Constants.Choice);
-                name.setText(def==null?(shared.getString(Constants.User_Default_Address_Uname,"")
-                        +"  "+shared.getString(Constants.User_Default_Address_Phone,""))
-                        :(def.getRecipiment()+"  "+def.getTelphone()));
-                adress.setText(def==null?(shared.getString(Constants.User_Default_Address_Area,"")
-                        +shared.getString(Constants.User_Default_Address_City,"")
-                        +shared.getString(Constants.User_Default_Address_County,"")
-                        +shared.getString(Constants.User_Default_Address_Detailaddress,""))
-                        :(def.getArea()+def.getCity()+def.getCounty()+def.getDetailaddress()));
+            switch (requestCode){
+                case 100:
+                    isRefresh = true;
+                    page = 1;
+                    loadData();
+                    break;
+                case 101:
+                    def = (Address) data.getSerializableExtra(Constants.Choice);
+                    name.setText(def==null?(shared.getString(Constants.User_Default_Address_Uname,"")
+                            +"  "+shared.getString(Constants.User_Default_Address_Phone,""))
+                            :(def.getRecipiment()+"  "+def.getTelphone()));
+                    adress.setText(def==null?(shared.getString(Constants.User_Default_Address_Area,"")
+                            +shared.getString(Constants.User_Default_Address_City,"")
+                            +shared.getString(Constants.User_Default_Address_County,"")
+                            +shared.getString(Constants.User_Default_Address_Detailaddress,""))
+                            :(def.getArea()+def.getCity()+def.getCounty()+def.getDetailaddress()));
+                    break;
             }
         }
     }
@@ -174,7 +181,9 @@ public class PointFragment extends Fragment {
     private OrderAdapter.OnItemClickListener listener = new OrderAdapter.OnItemClickListener() {
         @Override
         public void itemClick(View v, Order entry) {
-
+            Intent intent=new Intent(getContext(),OrderInfoActivity.class);
+            intent.putExtra("order",entry);
+            startActivityForResult(intent,100);
         }
 
         @Override
@@ -242,9 +251,18 @@ public class PointFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                WebHelper.init().preOrder(handler,uid,shopId);
+                WebHelper.init().preOrder(handler, uid, shopId, def == null ? shared.getString(Constants.User_Default_Address_Uname, "") : def.getRecipiment(), def == null ? shared.getString(Constants.User_Default_Address_Phone, "") : def.getTelphone(), adress.getText().toString());
+
             }
         }).start();
+    }
+    private void currency(){
+        new Thread(){
+            @Override
+            public void run() {
+                WebHelper.init().currency(handler,uid);
+            }
+        }.start();
     }
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler(){
@@ -271,9 +289,18 @@ public class PointFragment extends Fragment {
                     adapter.setList(list);
                     break;
                 case 1:
+                    actHelper.setLoadUi(ActivityHelper.PROGRESS_STATE_SUCCES,"");
                     actHelper.dismissProgressDialog();
-                    MsgUtils.showMDMessage(getContext(),(String)msg.obj);
+                    MsgUtils.showLongToast(getContext(),(String)msg.obj);
+                    isRefresh = true;
+                    page=1;
                     loadData();
+                    currency();
+                    break;
+                case 120:
+                    Intent mIntent = new Intent("update");
+                    //发送广播
+                    getActivity().sendBroadcast(mIntent);
                     break;
                 case -1:
                     actHelper.dismissProgressDialog();
