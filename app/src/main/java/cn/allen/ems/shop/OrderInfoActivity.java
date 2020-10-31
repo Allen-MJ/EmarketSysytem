@@ -23,8 +23,10 @@ import com.bumptech.glide.Glide;
 import allen.frame.AllenBaseActivity;
 import allen.frame.AllenManager;
 import allen.frame.tools.CommonPopupWindow;
+import allen.frame.tools.EncryptUtils;
 import allen.frame.tools.Logger;
 import allen.frame.tools.MsgUtils;
+import allen.frame.tools.StringUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -35,6 +37,7 @@ import cn.allen.ems.entry.Order;
 import cn.allen.ems.user.AddAddressActivity;
 import cn.allen.ems.user.AddressActivity;
 import cn.allen.ems.utils.Constants;
+import cn.allen.ems.utils.URLImageParser;
 
 public class OrderInfoActivity extends AllenBaseActivity {
 
@@ -95,7 +98,9 @@ public class OrderInfoActivity extends AllenBaseActivity {
         orderGold.setText("" + orderEntry.getCurrency2());
         orderDiamond.setText("" + orderEntry.getCurrency3());
         Glide.with(context).load(orderEntry.getShoppicurl()).into(orderIcon);
-        tvContent.setText(Html.fromHtml(orderEntry.getContent()==null?"":orderEntry.getContent()));
+        String content=orderEntry.getContent()==null?"": EncryptUtils.unescape(orderEntry.getContent());
+        Logger.e("image:",content);
+        tvContent.setText(Html.fromHtml(content, new URLImageParser(this, tvContent), null));
     }
 
     @Override
