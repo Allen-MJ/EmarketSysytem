@@ -823,10 +823,13 @@ public class WebHelper {
      * @param handler
      * @param uid
      * @param content
+     * @param suffix 后缀名
+     * @param type  1.图片  2.视频
+     * @param photoBase64
      */
-    public void putshowMessage(Handler handler,int uid,String content){
+    public void putshowMessage(Handler handler,int uid,String content,String suffix,int type,String photoBase64){
         Object[] objects = new Object[]{
-                "uid",uid,"content",content
+                "uid",uid,"content",content,"suffix",suffix,"type",type,"photoBase64",photoBase64
         };
         Response response = service.getWebservice(Api.PutshowMessage,objects,Constants.RequestType);
         Message msg = new Message();

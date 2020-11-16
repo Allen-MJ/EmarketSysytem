@@ -34,13 +34,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.allen.ems.R;
+import cn.allen.ems.ShowPicActivity;
 import cn.allen.ems.data.WebHelper;
 import cn.allen.ems.entry.PhotoShow;
 import cn.allen.ems.home.VideoActivity;
-import cn.allen.ems.task.WatchActivity;
 import cn.allen.ems.utils.Constants;
-import cn.allen.ems.utils.MyTask;
-import wseemann.media.FFmpegMediaMetadataRetriever;
 
 public class PhotoWarFragment extends Fragment {
     Unbinder unbinder;
@@ -134,10 +132,16 @@ public class PhotoWarFragment extends Fragment {
         adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (list.get(position).getShowpicurl().contains("Videos")) {
+                PhotoShow entry=list.get(position);
+                if (entry.getShowpicurl().contains("Videos")) {
                     Intent intent = new Intent(getActivity(), VideoActivity.class);
-                    intent.putExtra(Constants.Video_Url, list.get(position).getShowpicurl());
+                    intent.putExtra(Constants.Video_Url, entry.getShowpicurl());
                     startActivityForResult(intent, 11);
+                }else {
+                    Intent intent = new Intent(getActivity(), ShowPicActivity.class);
+                    intent.putExtra("url", entry.getShowpicurl());
+                    intent.putExtra("title", "");
+                    startActivity(intent);
                 }
             }
 

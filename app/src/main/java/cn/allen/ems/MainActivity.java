@@ -115,6 +115,7 @@ public class MainActivity extends AllenBaseActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.item_home:
+                    sendBroadcast(new Intent("bannerResume"));
                     pager.setCurrentItem(0);
                     title.setText("");
                     name.setText(shared.getString(Constants.User_Name,""));
@@ -123,24 +124,29 @@ public class MainActivity extends AllenBaseActivity {
                     city.setVisibility(View.VISIBLE);
                     break;
                 case R.id.item_show:
+                    sendBroadcast(new Intent("bannerPause"));
                     pager.setCurrentItem(1);
                     title.setText(menuItem.getTitle());
                     name.setVisibility(View.GONE);
                     city.setVisibility(View.GONE);
+
                     break;
                 case R.id.item_task:
+                    sendBroadcast(new Intent("bannerPause"));
                     pager.setCurrentItem(2);
                     title.setText(menuItem.getTitle());
                     name.setVisibility(View.GONE);
                     city.setVisibility(View.GONE);
                     break;
                 case R.id.item_shop:
+                    sendBroadcast(new Intent("bannerPause"));
                     pager.setCurrentItem(3);
                     title.setText(menuItem.getTitle());
                     name.setVisibility(View.GONE);
                     city.setVisibility(View.GONE);
                     break;
                 case R.id.item_my:
+                    sendBroadcast(new Intent("bannerPause"));
                     pager.setCurrentItem(4);
                     title.setText("个人中心");
                     name.setVisibility(View.GONE);

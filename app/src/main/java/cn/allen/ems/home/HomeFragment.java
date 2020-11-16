@@ -2,9 +2,11 @@ package cn.allen.ems.home;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.AudioManager;
@@ -173,6 +175,7 @@ public class HomeFragment extends Fragment {
         Logger.e("HomeFragment:", "onDestroy");
         super.onDestroy();
         timeMeter.stop();
+        getActivity().unregisterReceiver(mBroadcastReceiver);
     }
 
     public HBanner getBanner() {
@@ -187,6 +190,7 @@ public class HomeFragment extends Fragment {
 //        city = shared.getString(Constants.User_City, "重庆");
         initAdapter();
         initBanner();
+        registerBoradcastReceiver();
 
         GridLayoutManager smanager = new GridLayoutManager(getActivity(), 2);
         sharedRv.setLayoutManager(smanager);
@@ -652,5 +656,24 @@ public class HomeFragment extends Fragment {
                 break;
         }
     }
+
+    public void registerBoradcastReceiver() {
+        IntentFilter myIntentFilter = new IntentFilter();
+        myIntentFilter.addAction("bannerPause");
+        myIntentFilter.addAction("bannerResume");
+        //注册广播
+        getActivity().registerReceiver(mBroadcastReceiver, myIntentFilter);
+    }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("bannerPause")) {
+                banner.onPause();
+            }else if (intent.getAction().equals("bannerResume")){
+                banner.onResume();
+            }
+        }
+    };
 
 }

@@ -10,6 +10,13 @@ public class MessageShow implements Serializable {
     private int userid;
     private int auditstatus;
     private String createtime;
+    /**
+     * username : 毛哥
+     * thumbnail : http://yx.chilvwz.com/Files/Photos/2020-11/slt20201116143908452.jpg
+     */
+
+    private String username;
+    private String thumbnail;
 
     public MessageShow() {
     }
@@ -81,5 +88,21 @@ public class MessageShow implements Serializable {
 
     public void setCreatetime(String createtime) {
         this.createtime = createtime;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }

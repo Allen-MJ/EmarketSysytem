@@ -74,6 +74,7 @@ public class TaskFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        getActivity().unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override

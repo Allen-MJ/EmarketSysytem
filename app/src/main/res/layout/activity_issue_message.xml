@@ -37,6 +37,39 @@
             android:background="@color/transparent"
             />
     </androidx.cardview.widget.CardView>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/frame_edge_distance">
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="@dimen/frame_165_distance"
+            android:layout_height="@dimen/frame_165_distance"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/ic_logo_14"
+            />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/frame_text_normal_size"
+            android:textColor="@color/text_gray_color"
+            android:padding="@dimen/frame_eight_distance"
+            android:text="上传图片"
+            android:gravity="center"
+            android:layout_gravity="center"
+            />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_marginLeft="@dimen/frame_edge_distance"
+        android:layout_marginRight="@dimen/frame_edge_distance"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"/>
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/regist_bt"
         android:layout_width="match_parent"
