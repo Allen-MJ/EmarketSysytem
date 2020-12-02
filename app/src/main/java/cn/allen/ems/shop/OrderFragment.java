@@ -10,6 +10,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -225,6 +226,13 @@ public class OrderFragment extends Fragment {
                                     AppCompatTextView add = view.findViewById(R.id.add_address);
                                     AppCompatImageView choice = view.findViewById(R.id.set_adress);
                                     AppCompatButton ok = view.findViewById(R.id.ok_bt);
+                                    ImageView close = view.findViewById(R.id.iv_close);
+                                    close.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
                                     add.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {

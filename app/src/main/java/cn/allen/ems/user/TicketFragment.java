@@ -10,6 +10,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -165,6 +166,7 @@ public class TicketFragment extends Fragment {
                                 case R.layout.dialog_default_adress:
                                     name = view.findViewById(R.id.def_name);
                                     adress = view.findViewById(R.id.def_adress);
+
                                     name.setText(def == null ? (shared.getString(Constants.User_Default_Address_Uname, "")
                                             + "  " + shared.getString(Constants.User_Default_Address_Phone, ""))
                                             : (def.getRecipiment() + "  " + def.getTelphone()));
@@ -176,6 +178,13 @@ public class TicketFragment extends Fragment {
                                     AppCompatTextView add = view.findViewById(R.id.add_address);
                                     AppCompatImageView choice = view.findViewById(R.id.set_adress);
                                     AppCompatButton ok = view.findViewById(R.id.ok_bt);
+                                    ImageView close = view.findViewById(R.id.iv_close);
+                                    close.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
                                     add.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
@@ -263,7 +272,7 @@ public class TicketFragment extends Fragment {
                     actHelper.dismissProgressDialog();
                     MsgUtils.showLongToast(getContext(), (String) msg.obj);
                     isRefresh = true;
-                    page=1;
+                    page = 1;
                     loadData();
                     currency();
                     break;
