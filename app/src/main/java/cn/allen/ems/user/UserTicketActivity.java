@@ -51,9 +51,9 @@ public class UserTicketActivity extends AllenBaseActivity {
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
         list = new ArrayList<>();
-        list.add(TicketFragment.init(0));
         list.add(TicketFragment.init(1));
         list.add(TicketFragment.init(2));
+        list.add(TicketFragment.init(3));
         adapter = new FragmentAdapter(getSupportFragmentManager(),list,titles);
         pager.setAdapter(adapter);
         tab.setupWithViewPager(pager);

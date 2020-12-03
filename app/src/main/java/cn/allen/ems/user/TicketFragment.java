@@ -35,6 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.allen.ems.R;
+import cn.allen.ems.ShowPicActivity;
 import cn.allen.ems.adapter.TicketAdapter;
 import cn.allen.ems.data.WebHelper;
 import cn.allen.ems.entry.Address;
@@ -152,7 +153,10 @@ public class TicketFragment extends Fragment {
 
         @Override
         public void rcClick(View v, Order entry) {
-
+            Intent intent = new Intent(getActivity(), ShowPicActivity.class);
+            intent.putExtra("url", entry.getOrderqr());
+            intent.putExtra("title", entry.getShopname());
+            startActivity(intent);
         }
 
         @Override

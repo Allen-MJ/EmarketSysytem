@@ -87,6 +87,7 @@
                             android:textSize="@dimen/frame_text_small_size"
                             android:textColor="@color/text_yellow_color"
                             android:padding="@dimen/frame_four_distance"
+                            android:visibility="gone"
                             android:background="@drawable/yellow_boder_bg"
                             android:text="@string/redeem_ok_hint"/>
                     </androidx.appcompat.widget.LinearLayoutCompat>

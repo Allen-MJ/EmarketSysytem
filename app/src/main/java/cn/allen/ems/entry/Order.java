@@ -19,6 +19,9 @@ public class Order implements Serializable {
     private float denomination;
     private String content;
 
+    private String status;
+    private String orderqr;
+
     public Order() {
     }
 
@@ -160,5 +163,21 @@ public class Order implements Serializable {
 
     public void setDenomination(float denomination) {
         this.denomination = denomination;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getOrderqr() {
+        return orderqr;
+    }
+
+    public void setOrderqr(String orderqr) {
+        this.orderqr = orderqr;
     }
 }
