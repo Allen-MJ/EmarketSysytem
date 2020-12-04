@@ -70,9 +70,15 @@ public class TicketAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if(entry!=null){
                 name.setText(entry.getShopname());
                 date.setText("使用时间:"+entry.getUsetimestart().substring(0,7)+"-"+entry.getUsetimeend().substring(0,7));
-                count.setText("数量:"+entry.getShopstock());
+
                 address.setText("店铺地址:");
                 Glide.with(view.getContext()).load(entry.getShoppicurl()).into(icon);
+                if (entry.getShoptype()==2){
+                    rccode.setVisibility(View.GONE);
+                    count.setText("运单号:"+entry.getWaybill());
+                }else {
+                    count.setText("兑换时间:"+entry.getFetchtime());
+                }
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

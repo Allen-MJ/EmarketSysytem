@@ -874,9 +874,9 @@ public class WebHelper {
      * @param type
      * @return
      */
-    public Data<Order> getShopByUid(int uid,int type,int page,int pagesize){
+    public Data<Order> getShopByUid(int uid,int type,int shoptype,int page,int pagesize){
         Object[] objects = new Object[]{
-                "uid",uid,"status",type,"page",page,"pagesize",pagesize
+                "uid",uid,"status",type,"page",page,"pagesize",pagesize,"shoptype",shoptype
         };
         Response response = service.getWebservice(Api.GetShopByUid,objects,Constants.RequestType);
         Data<Order> data = new Data<>();

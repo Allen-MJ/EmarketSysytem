@@ -51,6 +51,7 @@ public class TicketFragment extends Fragment {
     MaterialRefreshLayout mater;
     private SharedPreferences shared;
     private int type, uid;
+    private int shopType=1;
     private int page = 1;
     private int pagesize = 10;
     private TicketAdapter adapter;
@@ -85,6 +86,9 @@ public class TicketFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         type = getArguments().getInt("type", 0);
+        if (type==0){
+            shopType=2;
+        }
         shared = AllenManager.getInstance().getStoragePreference();
         uid = shared.getInt(Constants.User_Id, -1);
         mater.setLoadMore(false);
@@ -223,7 +227,7 @@ public class TicketFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sublist = WebHelper.init().getShopByUid(uid, type, page++, pagesize).getList();
+                sublist = WebHelper.init().getShopByUid(uid, type, shopType,page++, pagesize).getList();
                 handler.sendEmptyMessage(0);
             }
         }).start();

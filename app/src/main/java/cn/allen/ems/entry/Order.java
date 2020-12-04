@@ -21,6 +21,18 @@ public class Order implements Serializable {
 
     private String status;
     private String orderqr;
+    /**
+     * fetchtime : 兑换时间
+     * verificationtime : 核销时间
+     */
+
+    private String fetchtime;
+    private String verificationtime;
+    /**
+     * waybill : 运单号
+     */
+
+    private String waybill;
 
     public Order() {
     }
@@ -179,5 +191,29 @@ public class Order implements Serializable {
 
     public void setOrderqr(String orderqr) {
         this.orderqr = orderqr;
+    }
+
+    public String getFetchtime() {
+        return fetchtime;
+    }
+
+    public void setFetchtime(String fetchtime) {
+        this.fetchtime = fetchtime;
+    }
+
+    public String getVerificationtime() {
+        return verificationtime;
+    }
+
+    public void setVerificationtime(String verificationtime) {
+        this.verificationtime = verificationtime;
+    }
+
+    public String getWaybill() {
+        return waybill;
+    }
+
+    public void setWaybill(String waybill) {
+        this.waybill = waybill;
     }
 }

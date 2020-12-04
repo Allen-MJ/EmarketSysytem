@@ -27,7 +27,7 @@ public class UserTicketActivity extends AllenBaseActivity {
     @BindView(R.id.pager)
     ContrlScrollViewPager pager;
 
-    private String[] titles = new String[]{"未使用","已使用","已过期"};
+    private String[] titles = new String[]{"未使用","已使用","已过期","平台商品"};
     FragmentAdapter adapter;
     private List<Fragment> list;
 
@@ -54,6 +54,7 @@ public class UserTicketActivity extends AllenBaseActivity {
         list.add(TicketFragment.init(1));
         list.add(TicketFragment.init(2));
         list.add(TicketFragment.init(3));
+        list.add(TicketFragment.init(0));
         adapter = new FragmentAdapter(getSupportFragmentManager(),list,titles);
         pager.setAdapter(adapter);
         tab.setupWithViewPager(pager);

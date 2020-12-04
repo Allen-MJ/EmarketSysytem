@@ -57,6 +57,7 @@ public class HttpUtil {
             RequestBody body = RequestBody.create(JSON, json);
             Request request = new Request.Builder().url(url + mothed).post(body).build();
             Response response = null;
+            Logger.http("url>>", url+mothed+"--"+json);
             response = client.newCall(request).execute();
             Logger.http("Response>>", response.toString());
             if (response.isSuccessful()) {
