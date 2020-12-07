@@ -1,8 +1,10 @@
 package cn.allen.ems.home;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -115,7 +117,7 @@ public class VideoActivity extends AllenIMBaseActivity implements IMediaPlayer.O
         if (mVV != null) {
             mVV.enterBackground();
         }
-
+        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_MUTE, 0);//设为静音
         super.onStop();
     }
 
@@ -129,8 +131,12 @@ public class VideoActivity extends AllenIMBaseActivity implements IMediaPlayer.O
         super.onDestroy();
     }
 
+    private AudioManager audioManager;
+
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_UNMUTE, 0);//取消静音
 //        meter = TimeMeter.getInstance();
         /**
          * 设置ak

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">营销</string>
+    <string name="app_name">乐兑</string>
     <!--登录 start-->
     <string name="login_name_hint">请输入账号</string>
     <string name="login_psw_hint">请输入密码</string>
