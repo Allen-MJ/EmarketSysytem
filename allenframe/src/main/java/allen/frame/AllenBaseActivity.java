@@ -3,6 +3,7 @@ package allen.frame;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +31,7 @@ public abstract class AllenBaseActivity extends AppCompatActivity {
 				getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 			}
 		}
+		audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		setContentView(getLayoutResID());
 		initBar();
 		initUI(savedInstanceState);
@@ -93,8 +95,14 @@ public abstract class AllenBaseActivity extends AppCompatActivity {
 			dialog.dismiss();
 		}
 	}
-	
-	public void setCanLoadMore(MaterialRefreshLayout mater,int pageSize,int csize){
+	private AudioManager audioManager;
+	@Override
+	protected void onPause() {
+		super.onPause();
+		audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_UNMUTE, 0);//取消静音
+	}
+
+	public void setCanLoadMore(MaterialRefreshLayout mater, int pageSize, int csize){
 		if(csize>0&&csize%pageSize==0){
 			mater.setLoadMore(true);
 		}else{

@@ -1,8 +1,10 @@
 package cn.allen.ems.task;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -131,9 +133,11 @@ public class WatchActivity extends AllenIMBaseActivity implements IMediaPlayer.O
         mVV = null;
         super.onDestroy();
     }
-
+    private AudioManager audioManager;
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
+//        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+//        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_UNMUTE, 0);//取消静音
         meter = TimeMeter.getInstance();
         /**
          * 设置ak

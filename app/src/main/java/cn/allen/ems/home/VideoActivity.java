@@ -117,7 +117,6 @@ public class VideoActivity extends AllenIMBaseActivity implements IMediaPlayer.O
         if (mVV != null) {
             mVV.enterBackground();
         }
-        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_MUTE, 0);//设为静音
         super.onStop();
     }
 
@@ -135,8 +134,8 @@ public class VideoActivity extends AllenIMBaseActivity implements IMediaPlayer.O
 
     @Override
     protected void initUI(@Nullable Bundle savedInstanceState) {
-        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_UNMUTE, 0);//取消静音
+//        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+//        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_UNMUTE, 0);//取消静音
 //        meter = TimeMeter.getInstance();
         /**
          * 设置ak

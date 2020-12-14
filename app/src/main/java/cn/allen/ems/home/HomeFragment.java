@@ -29,6 +29,7 @@ import com.lake.banner.ImageGravityType;
 import com.lake.banner.Transformer;
 import com.lake.banner.VideoGravityType;
 import com.lake.banner.listener.OnBannerListener;
+import com.lake.banner.loader.VideoLoader;
 import com.lake.banner.loader.ViewItemBean;
 
 import java.io.File;
@@ -137,8 +138,11 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.e("HomeFragment:", "onDestroyView");
+        banner.onPause();
         unbinder.unbind();
         handler.removeCallbacks(runnable);
+
     }
 
     @Override
@@ -150,25 +154,37 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Logger.e("HomeFragment:", "onResume");
+        Log.e("HomeFragment:", "onResume");
         banner.onResume();
+        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_MUTE, 0);//设为静音
         super.onResume();
 
     }
 
     @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        Log.e("HomeFragment:", "onViewStateRestored");
+        banner.onResume();
+        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_MUTE, 0);//设为静音
+        super.onViewStateRestored(savedInstanceState);
+
+    }
+
+    @Override
     public void onPause() {
-        Logger.e("HomeFragment:", "onPause");
+        Log.e("HomeFragment:", "onPause");
         banner.onPause();
         super.onPause();
     }
 
     @Override
     public void onStop() {
-        Logger.e("HomeFragment:", "onStop");
+        Log.e("HomeFragment:", "onStop");
         banner.onStop();
         super.onStop();
     }
+
+
 
     @Override
     public void onDestroy() {
@@ -672,6 +688,7 @@ public class HomeFragment extends Fragment {
                 banner.onPause();
             }else if (intent.getAction().equals("bannerResume")){
                 banner.onResume();
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_MUTE, 0);//设为静音
             }
         }
     };
