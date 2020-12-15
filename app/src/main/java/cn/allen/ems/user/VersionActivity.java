@@ -122,7 +122,7 @@ public class VersionActivity extends AllenBaseActivity {
                         }, false);
                     }
                     break;
-                case -1:
+                case 1:
                     dialog.dismissDownDialog();
                     int result = (Integer) msg.obj;
                     if(result == 0){
@@ -136,6 +136,10 @@ public class VersionActivity extends AllenBaseActivity {
                     }else{
                         MsgUtils.exitNotOutMDMessage(context, "下载失败,请稍后再试!");
                     }
+                    break;
+                case -1:
+                    dismissProgressDialog();
+                    MsgUtils.showMDMessage(context,msg.obj.toString());
                     break;
             }
         }
