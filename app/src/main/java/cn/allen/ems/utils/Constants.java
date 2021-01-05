@@ -3,7 +3,8 @@ package cn.allen.ems.utils;
 import cn.allen.ems.data.WebService;
 
 public class Constants {
-    public static final String Url = "http://yx.chilvwz.com/api/App/";
+//    public static final String Url = "http://yx.chilvwz.com/api/App/";
+    public static final String Url = "http://yx.yzjsoft.com/api/app/";
     public static final int RequestType = WebService.Post;
 
     public static final String APPFILE_NAME = "version";
